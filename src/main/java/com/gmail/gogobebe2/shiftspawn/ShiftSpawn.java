@@ -159,13 +159,12 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
             float pitch = loc.getPitch();
             float yaw = loc.getYaw();
 
-            ConfigurationSection spawnSettings = getConfig().getConfigurationSection("spawns");
-            spawnSettings.set(id + ".world", worldName);
-            spawnSettings.set(id + ".x", x);
-            spawnSettings.set(id + ".y", y);
-            spawnSettings.set(id + ".z", z);
-            spawnSettings.set(id + ".pitch", pitch);
-            spawnSettings.set(id + ".yaw", yaw);
+            getConfig().set("spawns." + id + ".world", worldName);
+            getConfig().set("spawns." + id + ".x", x);
+            getConfig().set("spawns." + id + ".y", y);
+            getConfig().set("spawns." + id + ".z", z);
+            getConfig().set("spawns." + id + ".pitch", pitch);
+            getConfig().set("spawns." + id + ".yaw", yaw);
             saveConfig();
 
             player.sendMessage(ChatColor.GREEN + "Spawn number " + ChatColor.BLUE + id + ChatColor.GREEN + " set in "
