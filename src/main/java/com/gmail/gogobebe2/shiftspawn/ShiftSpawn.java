@@ -14,13 +14,17 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ShiftSpawn extends JavaPlugin implements Listener {
     private GameState gameState = GameState.WAITING;
+    Map<Player, Location> playerSpawns = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -38,18 +42,45 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         player.teleport(getLocationConfig("main"));
+        event.setJoinMessage(ChatColor.DARK_PURPLE + player.getName() + " left the game.");
         if (gameState.equals(GameState.WAITING)) {
             if (Bukkit.getOnlinePlayers().size() >= 6) {
                 gameState = GameState.STARTING;
-                event.setJoinMessage(ChatColor.DARK_PURPLE + player.getName()
-                        + " joined");
-
                 double time = getConfig().getDouble("time before games starts");
                 broadcastTimeLeft(time);
                 BukkitTask task = new Timer(this, time).runTaskTimer(this, 0, 20);
             }
             event.setJoinMessage(ChatColor.DARK_PURPLE + event.getPlayer().getName() + " joined. We need "
                     + (getConfig().getInt("minimum players before game starts") - Bukkit.getOnlinePlayers().size()) + " more players to start.");
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onPlayerLeave(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        event.setQuitMessage(ChatColor.DARK_PURPLE + player.getName() + " left the game.");
+        if (gameState.equals(GameState.STARTING)) {
+            if (Bukkit.getOnlinePlayers().size() < getConfig().getInt("minimum players before game starts")) {
+                gameState = GameState.WAITING;
+                event.setQuitMessage(ChatColor.DARK_PURPLE + "Well, " + player.getName()
+                        + " left, so there's not enough players to start. Blame them!");
+            }
+        }
+        else if (gameState.equals(GameState.STARTED)) {
+            if (playerSpawns.containsKey(player)) {
+                playerSpawns.remove(player);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        if (playerSpawns.containsKey(player)) {
+            event.setRespawnLocation(playerSpawns.get(player));
+        }
+        else {
+            event.setRespawnLocation(getLocationConfig("main"));
         }
     }
 
@@ -73,7 +104,9 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
         for (Player player : Bukkit.getOnlinePlayers()) {
             String id = spawnIDs.get(spawnIDIndex);
 
-            player.teleport(getLocationConfig(id));
+            Location spawn = getLocationConfig(id);
+            player.teleport(spawn);
+            playerSpawns.put(player, spawn);
 
             if (spawnIDIndex < spawnIDs.size()) {
                 spawnIDIndex++;
@@ -87,18 +120,6 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
     public static void broadcastTimeLeft(double time) {
         Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Game starting in "
                 + time + " seconds...");
-    }
-
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onPlayerLeave(PlayerQuitEvent event) {
-        if (gameState.equals(GameState.STARTING)) {
-            if (Bukkit.getOnlinePlayers().size() < getConfig().getInt("minimum players before game starts")) {
-                gameState = GameState.WAITING;
-                event.setQuitMessage(ChatColor.DARK_PURPLE + "Well, " + event.getPlayer().getName()
-                        + " left, so there's not enough players to start. Blame them!");
-            }
-        }
-
     }
 
     @Override
