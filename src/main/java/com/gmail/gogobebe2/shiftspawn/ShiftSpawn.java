@@ -1,10 +1,7 @@
 package com.gmail.gogobebe2.shiftspawn;
 
 import com.google.common.collect.Lists;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -29,6 +26,11 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         getLogger().info("Starting up ShiftSpawn. If you need me to update this plugin, email at gogobebe2@gmail.com");
+        if (!getConfig().isSet("spawns.main.world")) {
+            for (int i = 0; i < 10; i++) {
+                getLogger().severe("No main spawn set, to set it, type /shiftspawn main");
+            }
+        }
         Bukkit.getPluginManager().registerEvents(this, this);
         saveDefaultConfig();
     }
@@ -44,14 +46,14 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
         player.teleport(getLocationConfig("main"));
         event.setJoinMessage(ChatColor.DARK_PURPLE + player.getName() + " left the game.");
         if (gameState.equals(GameState.WAITING)) {
-            if (Bukkit.getOnlinePlayers().size() >= 6) {
+            double time = getConfig().getDouble("time before games starts");
+            if (Bukkit.getOnlinePlayers().size() >= getConfig().getInt("minimum players before game starts")) {
                 gameState = GameState.STARTING;
-                double time = getConfig().getDouble("time before games starts");
                 broadcastTimeLeft(time);
                 BukkitTask task = new Timer(this, time).runTaskTimer(this, 0, 20);
             }
             event.setJoinMessage(ChatColor.DARK_PURPLE + event.getPlayer().getName() + " joined. We need "
-                    + (getConfig().getInt("minimum players before game starts") - Bukkit.getOnlinePlayers().size()) + " more players to start.");
+                    + (time - Bukkit.getOnlinePlayers().size()) + " more players to start.");
         }
     }
 
@@ -88,11 +90,11 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
         ConfigurationSection spawnData = getConfig().getConfigurationSection("spawns." + id);
 
         World world = Bukkit.getWorld(spawnData.getString("world"));
-        double x = getConfig().getDouble("x");
-        double y = getConfig().getDouble("y");
-        double z = getConfig().getDouble("z");
-        float yaw = (float) getConfig().getDouble("yaw");
-        float pitch = (float) getConfig().getDouble("pitch");
+        double x = spawnData.getDouble("x");
+        double y = spawnData.getDouble("y");
+        double z = spawnData.getDouble("z");
+        float yaw = (float) spawnData.getDouble("yaw");
+        float pitch = (float) spawnData.getDouble("pitch");
 
         return new Location(world, x, y, z, yaw, pitch);
     }
