@@ -1,6 +1,5 @@
 package com.gmail.gogobebe2.shiftspawn;
 
-import com.google.common.collect.Lists;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -19,12 +18,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ShiftSpawn extends JavaPlugin implements Listener {
     private GameState gameState = GameState.WAITING;
     Map<Player, Location> playerSpawns = new HashMap<>();
+    Timer timer;
+    BukkitTask task;
 
     @Override
     public void onEnable() {
@@ -36,6 +36,9 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
         }
         Bukkit.getPluginManager().registerEvents(this, this);
         saveDefaultConfig();
+        double time = getConfig().getDouble("time before games starts");
+        timer = new Timer(this, time);
+        task = timer.runTaskTimer(this, 0, 20);
     }
 
     @Override
@@ -61,8 +64,7 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
             int minPlayers = getConfig().getInt("minimum players before game starts");
             if (Bukkit.getOnlinePlayers().size() >= minPlayers) {
                 gameState = GameState.STARTING;
-                broadcastTimeLeft(time);
-                BukkitTask task = new Timer(this, time).runTaskTimer(this, 0, 20);
+                broadcastTimeBeforeStart(time);
             }
             event.setJoinMessage(ChatColor.DARK_PURPLE + event.getPlayer().getName() + " joined. We need "
                     + (minPlayers - Bukkit.getOnlinePlayers().size()) + " more players to start.");
@@ -79,11 +81,8 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
                 event.setQuitMessage(ChatColor.DARK_PURPLE + "Well, " + player.getName()
                         + " left, so there's not enough players to start. Blame them!");
             }
-        }
-        else if (gameState.equals(GameState.STARTED)) {
-            if (playerSpawns.containsKey(player)) {
-                playerSpawns.remove(player);
-            }
+        } else if (playerSpawns.containsKey(player)) {
+            playerSpawns.remove(player);
         }
     }
 
@@ -92,13 +91,12 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
         Player player = event.getPlayer();
         if (playerSpawns.containsKey(player)) {
             spawn(player, playerSpawns.get(player));
-        }
-        else {
+        } else {
             event.setRespawnLocation(getLocationConfig("main"));
         }
     }
 
-    private void spawn(Player player, Location spawn) {
+    public void spawn(Player player, Location spawn) {
         player.teleport(spawn);
         Inventory inventory = player.getInventory();
         inventory.addItem(new ItemStack(Material.WOOD_PICKAXE, 1));
@@ -106,27 +104,7 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
         player.updateInventory();
     }
 
-    public void start() {
-        List<String> spawnIDs = Lists.newArrayList(getConfig().getConfigurationSection("spawns").getKeys(false));
-        spawnIDs.remove("main");
-        int spawnIDIndex = 0;
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            String id = spawnIDs.get(spawnIDIndex);
-
-            Location spawn = getLocationConfig(id);
-            spawn(player, spawn);
-            playerSpawns.put(player, spawn);
-
-            if (spawnIDIndex < spawnIDs.size()) {
-                spawnIDIndex++;
-            } else {
-                spawnIDIndex = 0;
-            }
-
-        }
-    }
-
-    private Location getLocationConfig(String id) {
+    public Location getLocationConfig(String id) {
         ConfigurationSection spawnData = getConfig().getConfigurationSection("spawns." + id);
 
         World world = Bukkit.getWorld(spawnData.getString("world"));
@@ -139,7 +117,7 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
         return new Location(world, x, y, z, yaw, pitch);
     }
 
-    public static void broadcastTimeLeft(double time) {
+    public static void broadcastTimeBeforeStart(double time) {
         Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Game starting in "
                 + time + " seconds...");
     }
@@ -195,4 +173,15 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
         return false;
     }
 
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
+    public Map<Player, Location> getPlayerSpawns() {
+        return playerSpawns;
+    }
 }
