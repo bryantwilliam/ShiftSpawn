@@ -10,8 +10,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -38,6 +41,14 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         getLogger().info("Disabling ShiftSpawn. If you need me to update this plugin, email at gogobebe2@gmail.com");
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onPlayerFall(PlayerMoveEvent event) {
+        if (event.getTo().getY() < 0) {
+            event.setCancelled(true);
+            event.getPlayer().setHealth(0);
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -80,10 +91,38 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
         if (playerSpawns.containsKey(player)) {
-            event.setRespawnLocation(playerSpawns.get(player));
+            spawn(player, playerSpawns.get(player));
         }
         else {
             event.setRespawnLocation(getLocationConfig("main"));
+        }
+    }
+
+    private void spawn(Player player, Location spawn) {
+        player.teleport(spawn);
+        Inventory inventory = player.getInventory();
+        inventory.addItem(new ItemStack(Material.WOOD_PICKAXE, 1));
+        inventory.addItem(new ItemStack(Material.WOOD_SWORD, 1));
+        player.updateInventory();
+    }
+
+    public void start() {
+        List<String> spawnIDs = Lists.newArrayList(getConfig().getConfigurationSection("spawns").getKeys(false));
+        spawnIDs.remove("main");
+        int spawnIDIndex = 0;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            String id = spawnIDs.get(spawnIDIndex);
+
+            Location spawn = getLocationConfig(id);
+            spawn(player, spawn);
+            playerSpawns.put(player, spawn);
+
+            if (spawnIDIndex < spawnIDs.size()) {
+                spawnIDIndex++;
+            } else {
+                spawnIDIndex = 0;
+            }
+
         }
     }
 
@@ -98,26 +137,6 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
         float pitch = (float) spawnData.getDouble("pitch");
 
         return new Location(world, x, y, z, yaw, pitch);
-    }
-
-    public void start() {
-        List<String> spawnIDs = Lists.newArrayList(getConfig().getConfigurationSection("spawns").getKeys(false));
-        spawnIDs.remove("main");
-        int spawnIDIndex = 0;
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            String id = spawnIDs.get(spawnIDIndex);
-
-            Location spawn = getLocationConfig(id);
-            player.teleport(spawn);
-            playerSpawns.put(player, spawn);
-
-            if (spawnIDIndex < spawnIDs.size()) {
-                spawnIDIndex++;
-            } else {
-                spawnIDIndex = 0;
-            }
-
-        }
     }
 
     public static void broadcastTimeLeft(double time) {
