@@ -29,13 +29,14 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         getLogger().info("Starting up ShiftSpawn. If you need me to update this plugin, email at gogobebe2@gmail.com");
+        getConfig().options().copyDefaults(true);
+        saveDefaultConfig();
         if (!getConfig().isSet("spawns.main.world")) {
             for (int i = 0; i < 10; i++) {
                 getLogger().severe("No main spawn set, to set it, type /shiftspawn main");
             }
         }
         Bukkit.getPluginManager().registerEvents(this, this);
-        saveDefaultConfig();
         double time = getConfig().getDouble("time before games starts (in minutes)");
         timer = new Timer(this, time);
         task = timer.runTaskTimer(this, 0, 20);
@@ -120,7 +121,7 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (label.equalsIgnoreCase("shiftspawn") || label.equalsIgnoreCase("sp")) {
+        if (label.equalsIgnoreCase("shiftspawn")) {
             if (!sender.hasPermission("shiftspawn.*")) {
                 sender.sendMessage(ChatColor.RED + "You sneaky bum! You aren't allowed to use that command!!");
                 return true;
