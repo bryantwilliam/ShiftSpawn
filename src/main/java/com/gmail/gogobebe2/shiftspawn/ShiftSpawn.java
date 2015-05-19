@@ -36,7 +36,7 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
         }
         Bukkit.getPluginManager().registerEvents(this, this);
         saveDefaultConfig();
-        double time = getConfig().getDouble("time before games starts");
+        double time = getConfig().getDouble("time before games starts (in minutes)");
         timer = new Timer(this, time);
         task = timer.runTaskTimer(this, 0, 20);
     }
@@ -60,7 +60,7 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
         player.teleport(getLocationConfig("main"));
         event.setJoinMessage(ChatColor.DARK_PURPLE + player.getName() + " left the game.");
         if (gameState.equals(GameState.WAITING)) {
-            double time = getConfig().getDouble("time before games starts");
+            double time = getConfig().getDouble("time before games starts (in minutes)");
             int minPlayers = getConfig().getInt("minimum players before game starts");
             if (Bukkit.getOnlinePlayers().size() >= minPlayers) {
                 gameState = GameState.STARTING;

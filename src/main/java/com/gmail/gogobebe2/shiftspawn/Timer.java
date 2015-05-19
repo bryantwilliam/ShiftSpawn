@@ -56,7 +56,7 @@ public class Timer extends BukkitRunnable {
             }
         }
         if (plugin.getGameState().equals(GameState.STARTED)) {
-            if (time == plugin.getConfig().getDouble("game time")) {
+            if (time == plugin.getConfig().getDouble("game time (in minutes)")) {
                 Bukkit.broadcastMessage(ChatColor.GREEN + "You have " + ChatColor.BOLD + time + ChatColor.GREEN
                         + " minutes to mine the alpha core. Go!");
             }
@@ -97,7 +97,7 @@ public class Timer extends BukkitRunnable {
                 spawnIDIndex = 0;
             }
         }
-        this.time = plugin.getConfig().getDouble("game time");
+        this.time = plugin.getConfig().getDouble("game time (in minutes)");
         plugin.setGameState(GameState.STARTED);
     }
 

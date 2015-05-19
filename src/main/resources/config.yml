@@ -1,5 +1,5 @@
-// time in minutes below...
+# time in minutes below...
 minimum players before game starts: 6
-time before games starts: 30.00
-game time: 15.00
+time before games starts (in minutes): 30
+game time (in minutes): 15
 spawns:
