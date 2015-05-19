@@ -65,8 +65,10 @@ public class ShiftSpawn extends JavaPlugin implements Listener {
             if (Bukkit.getOnlinePlayers().size() >= minPlayers) {
                 gameState = GameState.STARTING;
             }
-            event.setJoinMessage(ChatColor.DARK_PURPLE + event.getPlayer().getName() + " joined. We need "
-                    + (minPlayers - Bukkit.getOnlinePlayers().size()) + " more players to start.");
+            else {
+                event.setJoinMessage(ChatColor.DARK_PURPLE + event.getPlayer().getName() + " joined. We need "
+                        + (minPlayers - Bukkit.getOnlinePlayers().size()) + " more players to start.");
+            }
         }
     }
 
