@@ -101,6 +101,19 @@ public class Timer {
             scheduler.cancelTask(this.timerIncrementer);
             this.isTimerRunning = false;
         }
+        if (this.gameState.equals(GameState.STARTING)) {
+            Bukkit.broadcastMessage("Game starting!!");
+            this.gameState = GameState.STARTED;
+            // TODO: Start game and start timer.
+        }
+        else if (this.gameState.equals(GameState.STARTED)) {
+            Bukkit.broadcastMessage("Game over!!");
+            this.gameState = GameState.RESTARTING;
+            // TODO: End game and start short timer.
+        }
+        else if (this.gameState.equals(GameState.RESTARTING)) {
+            // TODO: Restart server.
+        }
     }
 
     public int getMinutes() {
