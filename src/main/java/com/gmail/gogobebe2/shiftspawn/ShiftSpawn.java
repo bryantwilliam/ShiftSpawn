@@ -7,17 +7,25 @@ public class ShiftSpawn extends JavaPlugin {
     public final static String MIN_PLAYERS_KEY = "Minimum players before game starts";
     public final static String TIME_BEFORE_START_KEY = "Time before games starts";
     public final static String GAME_TIME = "Game time";
+
     @Override
     public void onEnable() {
         getLogger().info("Starting up ShiftSpawn. If you need me to update this plugin, email at gogobebe2@gmail.com");
         saveDefaultConfig();
-        Timer timer = new Timer(this);
-        if (Bukkit.getOnlinePlayers().size() > getConfig().getInt(MIN_PLAYERS_KEY)) {
-            timer.setGameState(GameState.STARTING);
-            timer.setTime(getConfig().getString(TIME_BEFORE_START_KEY));
+        Game game = new Game(this);
+        if (isEnoughPlayersToStart()) {
+            beginStarting(game);
         }
 
-        timer.startTimer(false);
+        game.startTimer(false);
+    }
+
+    private boolean isEnoughPlayersToStart() {
+        return Bukkit.getOnlinePlayers().size() > getConfig().getInt(MIN_PLAYERS_KEY);
+    }
+    private void beginStarting(Game game) {
+        game.setGameState(GameState.STARTING);
+        game.setTime(getConfig().getString(TIME_BEFORE_START_KEY));
     }
 
     @Override

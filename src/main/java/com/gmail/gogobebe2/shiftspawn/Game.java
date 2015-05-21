@@ -7,7 +7,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.regex.PatternSyntaxException;
 
-public class Timer {
+public class Game {
     private int minutes = 0;
     private int seconds = 0;
     private boolean isTimerRunning = false;
@@ -16,15 +16,15 @@ public class Timer {
     private int timerIncrementer;
     private GameState gameState;
 
-    public Timer(ShiftSpawn plugin) {
+    public Game(ShiftSpawn plugin) {
         this(plugin, GameState.WAITING);
     }
 
-    public Timer(ShiftSpawn plugin, GameState gameState) {
+    public Game(ShiftSpawn plugin, GameState gameState) {
         this(plugin, gameState, "0:00");
     }
 
-    public Timer(ShiftSpawn plugin, GameState gameState, String timeFormat) {
+    public Game(ShiftSpawn plugin, GameState gameState, String timeFormat) {
         this.plugin = plugin;
         this.gameState = gameState;
         setTime(timeFormat);
@@ -44,6 +44,7 @@ public class Timer {
     }
 
     public void startTimer(final boolean goUp) {
+        // goUp decides whether the countdown counts up or down.
         if (!isTimerRunning()) {
             this.timerIncrementer = scheduler.scheduleSyncRepeatingTask(plugin, new Runnable() {
                 @Override
@@ -94,8 +95,12 @@ public class Timer {
         }
     }
 
-    public void startTimer() {
-        startTimer(true);
+    private void endGame() {
+        this.gameState = GameState.RESTARTING;
+    }
+
+    private void startGame() {
+        this.gameState = GameState.STARTED;
     }
 
     public void stopTimer() {
@@ -103,22 +108,32 @@ public class Timer {
             scheduler.cancelTask(this.timerIncrementer);
             this.isTimerRunning = false;
         }
-        if (this.gameState.equals(GameState.WAITING) || this.gameState.equals(GameState.RESTARTING)) {
-            // TODO: start timer again.
+        switch (this.gameState) {
+            case RESTARTING:
+                // TODO: Restart server.
+                Bukkit.getServer().shutdown();
+            case WAITING:
+                // Just keep looping and use the timer to decide how to use ".." or "...".
+                setMinutes(Integer.MAX_VALUE);
+                break;
+            case STARTING:
+                Bukkit.broadcastMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Game starting!");
+                setTime(plugin.getConfig().getString(ShiftSpawn.GAME_TIME));
+                startGame();
+                break;
+            case STARTED:
+                Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Game over!");
+                endGame();
+                // 1 minute before restart server and use the timer to decide how to use ".." or "...".
+                setTime("1:00");
+                break;
+            default:
+                Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Error! Ask admin to fix immediately!!!");
+                plugin.getLogger().severe("Internal error! No Game State set!?!?!? Ask willy to fix. Email him at: gogobebe2@gmail.com");
+                return;
         }
-        if (this.gameState.equals(GameState.STARTING)) {
-            Bukkit.broadcastMessage("Game starting!!");
-            this.gameState = GameState.STARTED;
-            // TODO: Start game and start timer.
-        }
-        else if (this.gameState.equals(GameState.STARTED)) {
-            Bukkit.broadcastMessage("Game over!!");
-            this.gameState = GameState.RESTARTING;
-            // TODO: End game and start short timer.
-        }
-        else if (this.gameState.equals(GameState.RESTARTING)) {
-            // TODO: Restart server.
-        }
+        startTimer(false);
+
     }
 
     public int getMinutes() {
