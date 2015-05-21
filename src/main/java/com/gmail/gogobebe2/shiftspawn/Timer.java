@@ -55,13 +55,15 @@ public class Timer {
                                     String prefix;
                                     switch (gameState) {
                                         case WAITING:
-                                            return ChatColor.BLUE + "Waiting." + (seconds % 2 == 0 ? ".." : ".");
+                                            return ChatColor.BLUE + "" + ChatColor.BOLD + "Waiting." + (seconds % 2 == 0 ? ".." : ".");
                                         case STARTING:
                                             prefix = ChatColor.DARK_AQUA + "Starting in: " + ChatColor.AQUA;
                                             break;
                                         case STARTED:
                                             prefix = ChatColor.GREEN + "Time left: " + ChatColor.DARK_GREEN;
                                             break;
+                                        case RESTARTING:
+                                            return ChatColor.RED + "" + ChatColor.BOLD + "Restarting" + (seconds % 2 == 0 ? ".." : ".");
                                         default:
                                             prefix = ChatColor.RED + "Error! " + ChatColor.RESET;
                                             break;
@@ -100,6 +102,22 @@ public class Timer {
         if (isTimerRunning) {
             scheduler.cancelTask(this.timerIncrementer);
             this.isTimerRunning = false;
+        }
+        if (this.gameState.equals(GameState.WAITING) || this.gameState.equals(GameState.RESTARTING)) {
+            // TODO: start timer again.
+        }
+        if (this.gameState.equals(GameState.STARTING)) {
+            Bukkit.broadcastMessage("Game starting!!");
+            this.gameState = GameState.STARTED;
+            // TODO: Start game and start timer.
+        }
+        else if (this.gameState.equals(GameState.STARTED)) {
+            Bukkit.broadcastMessage("Game over!!");
+            this.gameState = GameState.RESTARTING;
+            // TODO: End game and start short timer.
+        }
+        else if (this.gameState.equals(GameState.RESTARTING)) {
+            // TODO: Restart server.
         }
     }
 
