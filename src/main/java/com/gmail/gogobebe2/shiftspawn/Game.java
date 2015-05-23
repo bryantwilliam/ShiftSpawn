@@ -49,14 +49,14 @@ public class Game {
             this.timerIncrementer = scheduler.scheduleSyncRepeatingTask(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    PlaceholderAPI.registerOfflinePlaceholder("shiftspawn", true,
+                    PlaceholderAPI.registerOfflinePlaceholder("shift_timer", true,
                             new PlaceholderAPI.PlaceholderRequestEventHandler() {
                                 @Override
                                 public String onPlaceholderRequest(PlaceholderAPI.PlaceholderRequestEvent e) {
                                     String prefix;
                                     switch (gameState) {
                                         case WAITING:
-                                            return ChatColor.BLUE + "" + ChatColor.BOLD + "Waiting." + (seconds % 2 == 0 ? ".." : ".");
+                                            return ChatColor.BLUE + "" + ChatColor.BOLD + "Waiting.." + (seconds % 2 == 0 ? "." : "");
                                         case STARTING:
                                             prefix = ChatColor.DARK_AQUA + "Starting in: " + ChatColor.AQUA;
                                             break;
@@ -64,7 +64,7 @@ public class Game {
                                             prefix = ChatColor.GREEN + "Time left: " + ChatColor.DARK_GREEN;
                                             break;
                                         case RESTARTING:
-                                            return ChatColor.RED + "" + ChatColor.BOLD + "Restarting" + (seconds % 2 == 0 ? ".." : ".");
+                                            return ChatColor.RED + "" + ChatColor.BOLD + "Restarting.." + (seconds % 2 == 0 ? "." : "");
                                         default:
                                             prefix = ChatColor.RED + "Error! " + ChatColor.RESET;
                                             break;
@@ -72,6 +72,18 @@ public class Game {
                                     return prefix + getTime();
                                 }
                             });
+                    if (gameState.equals(GameState.STARTED)) {
+                        PlaceholderAPI.registerOfflinePlaceholder("shift_scores", true,
+                                new PlaceholderAPI.PlaceholderRequestEventHandler() {
+                                    @Override
+                                    public String onPlaceholderRequest(PlaceholderAPI.PlaceholderRequestEvent e) {
+                                        // TODO: add scores in here.
+                                        return "No scores yet";
+                                    }
+                                });
+                    }
+
+
                     if (goUp) {
                         seconds++;
                         if (seconds == 60) {
@@ -110,7 +122,6 @@ public class Game {
         }
         switch (this.gameState) {
             case RESTARTING:
-                // TODO: Restart server.
                 Bukkit.getServer().shutdown();
             case WAITING:
                 // Just keep looping and use the timer to decide how to use ".." or "...".
