@@ -15,8 +15,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.UUID;
-
 public class Listeners implements Listener {
     private ShiftSpawn plugin;
     private Game game;
@@ -46,7 +44,6 @@ public class Listeners implements Listener {
         int minPlayers = plugin.getConfig().getInt(ShiftSpawn.MIN_PLAYERS_KEY);
         Player player = event.getPlayer();
         String playerName = player.getName();
-        UUID uuid = player.getUniqueId();
         event.setQuitMessage(ChatColor.DARK_PURPLE + playerName + " left the game.");
         if (minPlayers < Bukkit.getOnlinePlayers().size()) {
             if (game.getGameState().equals(GameState.WAITING)) {
@@ -70,33 +67,36 @@ public class Listeners implements Listener {
     }
 
     private void spawn(final Player PLAYER) {
-        UUID uuid = PLAYER.getUniqueId();
         PLAYER.spigot().respawn();
         String id;
         if (game.getGameState().equals(GameState.WAITING)) {
             id = "main";
         } else {
-            if (plugin.getPlayerSpawns().containsKey(uuid)) {
-                id = plugin.getPlayerSpawns().get(uuid);
+            if (plugin.containsPlayer(PLAYER)) {
+                id = plugin.getParticipant(PLAYER).getSpawnID();
             } else {
                 id = plugin.getNextSpawnIndex();
-                plugin.getPlayerSpawns().put(uuid, id);
+                plugin.getParticipants().add(new Participant(PLAYER, id));
+
+                PLAYER.setHealth(20);
+                PLAYER.setFoodLevel(20);
+                Inventory inventory = PLAYER.getInventory();
+                inventory.clear();
+
+                ItemStack pickaxe = new ItemStack(Material.WOOD_PICKAXE, 1);
+                ItemMeta pickaxeMeta = pickaxe.getItemMeta();
+                pickaxeMeta.setDisplayName(ChatColor.AQUA + "Trusy old pickaxe");
+                pickaxe.setItemMeta(pickaxeMeta);
+
+                ItemStack sword = new ItemStack(Material.WOOD_SWORD, 1);
+                ItemMeta swordMeta = sword.getItemMeta();
+                swordMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Trusy old sword");
+                sword.setItemMeta(swordMeta);
+
+                inventory.addItem(pickaxe);
+                inventory.addItem(sword);
+                PLAYER.updateInventory();
             }
-            Inventory inventory = PLAYER.getInventory();
-
-            ItemStack pickaxe = new ItemStack(Material.WOOD_PICKAXE, 1);
-            ItemMeta pickaxeMeta = pickaxe.getItemMeta();
-            pickaxeMeta.setDisplayName(ChatColor.AQUA + "Trusy old pickaxe");
-            pickaxe.setItemMeta(pickaxeMeta);
-
-            ItemStack sword = new ItemStack(Material.WOOD_SWORD, 1);
-            ItemMeta swordMeta = sword.getItemMeta();
-            swordMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Trusy old sword");
-            sword.setItemMeta(swordMeta);
-
-            inventory.addItem(pickaxe);
-            inventory.addItem(sword);
-            PLAYER.updateInventory();
         }
         PLAYER.teleport(plugin.loadSpawn(id));
     }

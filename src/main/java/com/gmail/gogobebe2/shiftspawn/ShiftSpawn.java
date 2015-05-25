@@ -18,7 +18,7 @@ public class ShiftSpawn extends JavaPlugin {
     public final static String ALPHA_CORE_ID = "Alpha Core Block ID";
     private Game game;
     private int spawnIndex;
-    private Map<UUID, String> playerSpawns = new HashMap<>();
+    private List<Participant> participants = new ArrayList<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -139,7 +139,28 @@ public class ShiftSpawn extends JavaPlugin {
         this.spawnIndex = spawnIndex;
     }
 
-    public Map<UUID, String> getPlayerSpawns() {
-        return this.playerSpawns;
+    public List<Participant> getParticipants() {
+        return this.participants;
+    }
+
+    public boolean containsPlayer(Player player) {
+        if (participants.isEmpty()) {
+            return false;
+        }
+        for (Participant participant : participants) {
+            if (participant.getPlayer().equals(player)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Participant getParticipant(Player player) {
+        for (Participant participant : participants) {
+            if (participant.getPlayer().equals(player)) {
+                return participant;
+            }
+        }
+        return null;
     }
 }
