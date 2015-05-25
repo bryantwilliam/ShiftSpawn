@@ -60,7 +60,8 @@ public class ShiftSpawn extends JavaPlugin {
             getConfig().set("Spawns." + id + ".Pitch", PITCH);
             getConfig().set("Spawns." + id + ".Yaw", YAW);
             saveConfig();
-
+            player.sendMessage(ChatColor.GREEN + "Set " + (id.equalsIgnoreCase("main") ? "the main spawn." : " the spawn id " + id));
+            return true;
         }
         return false;
     }
@@ -114,18 +115,6 @@ public class ShiftSpawn extends JavaPlugin {
             }
         }
     }
-
-    public boolean tryBeginStarting() {
-        boolean wasSuccessful = false;
-        if (Bukkit.getOnlinePlayers().size() > getConfig().getInt(MIN_PLAYERS_KEY) && game.getGameState().equals(GameState.WAITING)) {
-            game.setGameState(GameState.STARTING);
-            game.setTime(getConfig().getString(TIME_BEFORE_START_KEY));
-            wasSuccessful = true;
-        }
-        game.startTimer(false);
-        return wasSuccessful;
-    }
-
 
     public Game getGame() {
         return this.game;

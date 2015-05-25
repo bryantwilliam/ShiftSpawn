@@ -24,11 +24,22 @@ public class Listeners implements Listener {
         this.game = plugin.getGame();
     }
 
+    public boolean tryBeginStarting() {
+        boolean wasSuccessful = false;
+        if (Bukkit.getOnlinePlayers().size() >= plugin.getConfig().getInt(ShiftSpawn.MIN_PLAYERS_KEY) && game.getGameState().equals(GameState.WAITING)) {
+            game.setGameState(GameState.STARTING);
+            game.setTime(plugin.getConfig().getString(ShiftSpawn.TIME_BEFORE_START_KEY));
+            wasSuccessful = true;
+        }
+        game.startTimer(false);
+        return wasSuccessful;
+    }
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         String playerName = player.getName();
-        if (game.getGameState().equals(GameState.WAITING) && !plugin.tryBeginStarting()) {
+        if (game.getGameState().equals(GameState.WAITING) && !tryBeginStarting()) {
             event.setJoinMessage(ChatColor.DARK_PURPLE + playerName + " joined. We need "
                     + (plugin.getConfig().getInt(ShiftSpawn.MIN_PLAYERS_KEY) - Bukkit.getOnlinePlayers().size())
                     + " more players to start.");
@@ -37,7 +48,6 @@ public class Listeners implements Listener {
         }
         spawn(player);
     }
-
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLeaveEvent(PlayerQuitEvent event) {
