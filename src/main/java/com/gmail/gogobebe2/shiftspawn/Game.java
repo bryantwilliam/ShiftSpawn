@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.PatternSyntaxException;
 
 public class Game {
@@ -17,6 +19,7 @@ public class Game {
     private BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
     private int timerIncrementer;
     private GameState gameState;
+    private List<Team> individualScores = new ArrayList<>();
 
     public Game(ShiftSpawn plugin) {
         this(plugin, GameState.WAITING);
@@ -105,6 +108,13 @@ public class Game {
                             break;
                     }
                     timerObj.setDisplayName(msg);
+                    for (Participant participant : plugin.getParticipants()) {
+                        Team individual = board.registerNewTeam("individual");
+                        individual.addPlayer(participant.getPlayer());
+                        individualScores.add(individual);
+                        individual.setSuffix(ChatColor.YELLOW + "[" + participant.getScore() + "]");
+                    }
+
                     // TODO: add individual scores: Score score = timerObj.getScore(ChatColor.DARK_GREEN + )
                     Objective allObj = board.registerNewObjective("all_score", "dummy");
                     allObj.setDisplaySlot(DisplaySlot.SIDEBAR);
