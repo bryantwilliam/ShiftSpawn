@@ -3,7 +3,9 @@ package com.gmail.gogobebe2.shiftspawn;
 import be.maximvdw.featherboard.api.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scoreboard.*;
 
 import java.util.regex.PatternSyntaxException;
 
@@ -32,8 +34,20 @@ public class Game {
 
     public void setTime(String timeFormat) throws NumberFormatException, PatternSyntaxException {
         String[] times = timeFormat.split(":");
-        setMinutes(Integer.parseInt(times[0]));
-        setSeconds(Integer.parseInt(times[1]));
+        if (times[0].equalsIgnoreCase("")) {
+            setMinutes(0);
+        }
+        else {
+            setMinutes(Integer.parseInt(times[0]));
+        }
+
+        if (times[1].equalsIgnoreCase("")) {
+            setSeconds(0);
+        }
+        else {
+            setSeconds(Integer.parseInt(times[1]));
+        }
+
     }
 
     public String getTime() {
@@ -49,29 +63,57 @@ public class Game {
             this.timerIncrementer = scheduler.scheduleSyncRepeatingTask(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    PlaceholderAPI.registerOfflinePlaceholder("shift_timer", true,
-                            new PlaceholderAPI.PlaceholderRequestEventHandler() {
-                                @Override
-                                public String onPlaceholderRequest(PlaceholderAPI.PlaceholderRequestEvent e) {
-                                    String prefix;
-                                    switch (gameState) {
-                                        case WAITING:
-                                            return ChatColor.BLUE + "" + ChatColor.BOLD + "Waiting.." + (seconds % 2 == 0 ? "." : "");
-                                        case STARTING:
-                                            prefix = ChatColor.DARK_AQUA + "Starting in: " + ChatColor.AQUA;
-                                            break;
-                                        case STARTED:
-                                            prefix = ChatColor.GREEN + "Time left: " + ChatColor.DARK_GREEN;
-                                            break;
-                                        case RESTARTING:
-                                            return ChatColor.RED + "" + ChatColor.BOLD + "Restarting.." + (seconds % 2 == 0 ? "." : "");
-                                        default:
-                                            prefix = ChatColor.RED + "Error! " + ChatColor.RESET;
-                                            break;
-                                    }
-                                    return prefix + getTime();
-                                }
-                            });
+                    ScoreboardManager manager = Bukkit.getScoreboardManager();
+                    if (!gameState.equals(GameState.WAITING)) {
+                        Scoreboard boardUnderPlayer = manager.getNewScoreboard();
+
+                        Objective objectiveScore = boardUnderPlayer.registerNewObjective("score", "dummy");
+                        objectiveScore.setDisplaySlot(DisplaySlot.BELOW_NAME);
+                        objectiveScore.setDisplayName("score");
+
+                        for(Player online : Bukkit.getOnlinePlayers()){
+                            Score score = objectiveScore.getScore(online);
+                            score.setScore(plugin.getParticipant(online).getScore());
+                        }
+
+                        for(Player online : Bukkit.getOnlinePlayers()){
+                            online.setScoreboard(boardUnderPlayer);
+                        }
+                    }
+
+                    Scoreboard board = manager.getNewScoreboard();
+                    Objective timerObj = board.registerNewObjective("timer", "dummy");
+                    timerObj.setDisplaySlot(DisplaySlot.SIDEBAR);
+
+
+                    String msg;
+                    switch (gameState) {
+                        case WAITING:
+                            msg = ChatColor.BLUE + "" + ChatColor.BOLD + "Waiting.." + (seconds % 2 == 0 ? "." : "");
+                            break;
+                        case STARTING:
+                            msg = ChatColor.DARK_AQUA + "Starting in: " + ChatColor.AQUA + getTime();
+                            break;
+                        case STARTED:
+                            msg = ChatColor.GREEN + "Time left: " + ChatColor.DARK_GREEN + getTime();
+                            break;
+                        case RESTARTING:
+                            msg = ChatColor.RED + "" + ChatColor.BOLD + "Restarting.." + (seconds % 2 == 0 ? "." : "");
+                            break;
+                        default:
+                            msg = ChatColor.RED + "Error! " + ChatColor.RESET;
+                            break;
+                    }
+                    timerObj.setDisplayName(msg);
+                    // TODO: add individual scores: Score score = timerObj.getScore(ChatColor.DARK_GREEN + )
+                    Objective allObj = board.registerNewObjective("all_score", "dummy");
+                    allObj.setDisplaySlot(DisplaySlot.SIDEBAR);
+                    allObj.setDisplayName(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "Everyone's scores");
+                    for (Participant participant : plugin.getParticipants()) {
+                        Score s = allObj.getScore(ChatColor.GREEN + participant.getPlayer().getName() + ":");
+                        s.setScore(participant.getScore());
+                    }
+
                     if (gameState.equals(GameState.STARTED)) {
                         PlaceholderAPI.registerOfflinePlaceholder("shift_scores", true,
                                 new PlaceholderAPI.PlaceholderRequestEventHandler() {
