@@ -3,13 +3,15 @@ package com.gmail.gogobebe2.shiftspawn;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 public class ShiftSpawn extends JavaPlugin {
     public final static String MIN_PLAYERS_KEY = "Minimum players before game starts";
@@ -33,6 +35,7 @@ public class ShiftSpawn extends JavaPlugin {
             Player player = (Player) sender;
             if (args.length < 1) {
                 sender.sendMessage(ChatColor.RED + "Enter a spawn id /shiftspawn <'main':number>");
+                return true;
             }
             String id = args[0].toLowerCase();
             if (!id.equalsIgnoreCase("main")) {
@@ -64,16 +67,6 @@ public class ShiftSpawn extends JavaPlugin {
             return true;
         }
         return false;
-    }
-
-    public Location loadSpawn(String id) {
-        final World WORLD = Bukkit.getWorld(getConfig().getString("Spawns." + id + ".World"));
-        final double X = getConfig().getDouble("Spawns." + id + ".X");
-        final double Y = getConfig().getDouble("Spawns." + id + ".Y");
-        final double Z = getConfig().getDouble("Spawns." + id + ".Z");
-        final float PITCH = (float) getConfig().getDouble("Spawns." + id + ".Pitch");
-        final float YAW = (float) getConfig().getDouble("Spawns." + id + ".Yaw");
-        return new Location(WORLD, X, Y, Z, YAW, PITCH);
     }
 
     public String getNextSpawnIndex() {

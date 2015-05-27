@@ -1,6 +1,5 @@
 package com.gmail.gogobebe2.shiftspawn;
 
-import be.maximvdw.featherboard.api.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -113,9 +112,9 @@ public class Game {
                         individual.addPlayer(participant.getPlayer());
                         individualScores.add(individual);
                         individual.setSuffix(ChatColor.YELLOW + "[" + participant.getScore() + "]");
+                        individual.setDisplayName(ChatColor.LIGHT_PURPLE + "Your score: " + ChatColor.WHITE + participant.getScore());
                     }
 
-                    // TODO: add individual scores: Score score = timerObj.getScore(ChatColor.DARK_GREEN + )
                     Objective allObj = board.registerNewObjective("all_score", "dummy");
                     allObj.setDisplaySlot(DisplaySlot.SIDEBAR);
                     allObj.setDisplayName(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "Everyone's scores");
@@ -123,18 +122,6 @@ public class Game {
                         Score s = allObj.getScore(ChatColor.GREEN + participant.getPlayer().getName() + ":");
                         s.setScore(participant.getScore());
                     }
-
-                    if (gameState.equals(GameState.STARTED)) {
-                        PlaceholderAPI.registerOfflinePlaceholder("shift_scores", true,
-                                new PlaceholderAPI.PlaceholderRequestEventHandler() {
-                                    @Override
-                                    public String onPlaceholderRequest(PlaceholderAPI.PlaceholderRequestEvent e) {
-                                        // TODO: add scores in here.
-                                        return "No scores yet";
-                                    }
-                                });
-                    }
-
 
                     if (goUp) {
                         seconds++;

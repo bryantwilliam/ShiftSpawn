@@ -1,8 +1,6 @@
 package com.gmail.gogobebe2.shiftspawn;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -113,10 +111,19 @@ public class Listeners implements Listener {
                 PLAYER.updateInventory();
             }
         }
-        PLAYER.teleport(plugin.loadSpawn(id));
+        PLAYER.teleport(loadSpawn(id));
     }
 
 
+    private Location loadSpawn(String id) {
+        final World WORLD = Bukkit.getWorld(plugin.getConfig().getString("Spawns." + id + ".World"));
+        final double X = plugin.getConfig().getDouble("Spawns." + id + ".X");
+        final double Y = plugin.getConfig().getDouble("Spawns." + id + ".Y");
+        final double Z = plugin.getConfig().getDouble("Spawns." + id + ".Z");
+        final float PITCH = (float) plugin.getConfig().getDouble("Spawns." + id + ".Pitch");
+        final float YAW = (float) plugin.getConfig().getDouble("Spawns." + id + ".Yaw");
+        return new Location(WORLD, X, Y, Z, YAW, PITCH);
+    }
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
         Player player = event.getPlayer();
