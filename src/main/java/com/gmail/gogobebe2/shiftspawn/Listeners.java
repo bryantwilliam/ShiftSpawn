@@ -24,6 +24,7 @@ public class Listeners implements Listener {
         boolean wasSuccessful = false;
         if (Bukkit.getOnlinePlayers().size() >= plugin.getConfig().getInt(ShiftSpawn.MIN_PLAYERS_KEY) && game.getGameState().equals(GameState.WAITING)) {
             game.setGameState(GameState.STARTING);
+            Bukkit.broadcastMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "Game starting in " + plugin.getConfig().get(ShiftSpawn.TIME_BEFORE_START_KEY));
             game.setTime(plugin.getConfig().getString(ShiftSpawn.TIME_BEFORE_START_KEY));
             wasSuccessful = true;
         }
@@ -36,10 +37,7 @@ public class Listeners implements Listener {
         String playerName = player.getName();
         event.setJoinMessage(ChatColor.DARK_PURPLE + playerName + " joined the game.");
         if (game.getGameState().equals(GameState.WAITING)) {
-            if (Bukkit.getOnlinePlayers().size() >= plugin.getConfig().getInt(ShiftSpawn.MIN_PLAYERS_KEY) && game.getGameState().equals(GameState.WAITING)) {
-                game.setGameState(GameState.STARTING);
-                game.setTime(plugin.getConfig().getString(ShiftSpawn.TIME_BEFORE_START_KEY));
-            } else {
+            if (!tryBeginStarting()) {
                 event.setJoinMessage(ChatColor.DARK_PURPLE + playerName + " joined. We need "
                         + (plugin.getConfig().getInt(ShiftSpawn.MIN_PLAYERS_KEY) - Bukkit.getOnlinePlayers().size())
                         + " more players to start.");

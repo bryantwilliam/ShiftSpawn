@@ -68,7 +68,8 @@ public class Game {
                             Scoreboard boardUnderPlayer = manager.getNewScoreboard();
                             Objective objectiveScore = boardUnderPlayer.registerNewObjective("score", "dummy");
                             objectiveScore.setDisplaySlot(DisplaySlot.BELOW_NAME);
-                            objectiveScore.setDisplayName(ChatColor.DARK_GREEN + "Score: " + ChatColor.GREEN + plugin.getParticipant(online).getScore());
+                            Score score = objectiveScore.getScore(ChatColor.DARK_GREEN + "Score: " + ChatColor.GREEN);
+                            score.setScore(plugin.getParticipant(online).getScore() + 6);
                             online.setScoreboard(boardUnderPlayer);
                         }
                     }
@@ -105,7 +106,7 @@ public class Game {
 
                     statusObj.setDisplayName(msg);
                     for (Participant participant : plugin.getParticipants()) {
-                        Team individual = board.registerNewTeam("individual");
+                        Team individual = board.registerNewTeam(participant.getPlayer().getName());
                         individual.addPlayer(participant.getPlayer());
                         individualScores.add(individual);
                         individual.setSuffix(ChatColor.YELLOW + "[" + participant.getScore() + "]");
