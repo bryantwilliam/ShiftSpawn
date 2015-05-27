@@ -6,9 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Game {
     private int minutes = 0;
     private int seconds = 0;
@@ -17,15 +14,6 @@ public class Game {
     private BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
     private int timerIncrementer;
     private GameState gameState;
-    private List<Team> individualScores = new ArrayList<>();
-
-    public Game(ShiftSpawn plugin) {
-        this(plugin, GameState.WAITING);
-    }
-
-    public Game(ShiftSpawn plugin, GameState gameState) {
-        this(plugin, gameState, "0:00");
-    }
 
     public Game(ShiftSpawn plugin, GameState gameState, String timeFormat) {
         this.plugin = plugin;
@@ -113,7 +101,6 @@ public class Game {
                     for (Participant participant : plugin.getParticipants()) {
                         Team individual = board.registerNewTeam(participant.getPlayer().getName());
                         individual.addPlayer(participant.getPlayer());
-                        individualScores.add(individual);
                         individual.setSuffix(ChatColor.YELLOW + "[" + participant.getScore() + "]");
                         individual.setDisplayName(ChatColor.LIGHT_PURPLE + "Your score: " + ChatColor.WHITE + participant.getScore());
                         participant.getPlayer().setScoreboard(board);

@@ -52,17 +52,16 @@ public class Listeners implements Listener {
         Player player = event.getPlayer();
         String playerName = player.getName();
         event.setQuitMessage(ChatColor.DARK_PURPLE + playerName + " left the game.");
-        if (minPlayers < Bukkit.getOnlinePlayers().size()) {
-            if (game.getGameState().equals(GameState.WAITING)) {
-                event.setQuitMessage(ChatColor.DARK_PURPLE + playerName + " left the game. We need "
-                        + (minPlayers - Bukkit.getOnlinePlayers().size())
-                        + " more players to start.");
-            } else if (game.getGameState().equals(GameState.STARTING) || game.getGameState().equals(GameState.WAITING)) {
-                event.setQuitMessage(ChatColor.DARK_PURPLE + "Well, " + playerName
-                        + " left, so there's not enough players to start. Blame them!");
+        if (minPlayers < Bukkit.getOnlinePlayers().size() && (game.getGameState().equals(GameState.STARTING) || game.getGameState().equals(GameState.WAITING))) {
+            event.setQuitMessage(ChatColor.DARK_PURPLE + playerName + " left the game. We now need "
+                    + (minPlayers - Bukkit.getOnlinePlayers().size())
+                    + " more players to start. All " + playerName
+                    + "'s fault. Blame them because now it'll take longer to start!!");
+            game.setGameState(GameState.WAITING);
+            if (plugin.containsPlayer(player)) {
+                plugin.getParticipants().remove(plugin.getParticipant(player));
             }
         }
-
     }
 
     @EventHandler(priority = EventPriority.HIGH)
