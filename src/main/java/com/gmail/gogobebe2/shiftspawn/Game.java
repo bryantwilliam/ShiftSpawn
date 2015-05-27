@@ -44,7 +44,7 @@ public class Game {
         return getMinutes() + ":" + getSeconds();
     }
 
-    private void showBoardUnderName(Scoreboard board) {
+    private void showScoreTag(Scoreboard board) {
         if (gameState.equals(GameState.STARTED)) {
             // TODO: use teams to make it per individual player only.
             Player player = Bukkit.getPlayer("gogobebe2"); // TODO: Will remove this line later.
@@ -56,20 +56,20 @@ public class Game {
             player.setScoreboard(board);
         }
     }
+
+    private void showMainObjectives(Scoreboard board) {
+
+    }
+
     public void startTimer() {
         if (!isTimerRunning()) {
             this.timerIncrementer = scheduler.scheduleSyncRepeatingTask(plugin, new Runnable() {
                 @Override
                 public void run() {
                     Bukkit.broadcastMessage("debug 1: gameState.name(): " + gameState.name() + ", getTime(): " + getTime());
-
                     ScoreboardManager manager = Bukkit.getScoreboardManager();
                     Scoreboard board = manager.getNewScoreboard();
-
-                    showBoardUnderName(board);
-
-                    Objective statusObj = board.registerNewObjective("status", "dummy");
-                    statusObj.setDisplaySlot(DisplaySlot.SIDEBAR);
+                    showScoreTag(board);
 
                     String msg;
                     switch (gameState) {
@@ -89,14 +89,17 @@ public class Game {
                             msg = ChatColor.RED + "Error! " + ChatColor.RESET;
                             break;
                     }
-                    Objective allObj = board.registerNewObjective("all_score", "dummy");
-                    allObj.setDisplaySlot(DisplaySlot.SIDEBAR);
-                    allObj.setDisplayName(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "Everyone's scores");
+
+                    Objective all_score = board.registerNewObjective("all_score", "dummy");
+                    all_score.setDisplaySlot(DisplaySlot.SIDEBAR);
+                    all_score.setDisplayName(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "Everyone's scores");
                     for (Participant participant : plugin.getParticipants()) {
-                        Score s = allObj.getScore(ChatColor.GREEN + participant.getPlayer().getName() + ":");
+                        Score s = all_score.getScore(ChatColor.GREEN + participant.getPlayer().getName() + ":");
                         s.setScore(participant.getScore());
                     }
 
+                    Objective statusObj = board.registerNewObjective("status", "dummy");
+                    statusObj.setDisplaySlot(DisplaySlot.SIDEBAR);
                     statusObj.setDisplayName(msg);
                     for (Participant participant : plugin.getParticipants()) {
                         Team individual = board.registerNewTeam(participant.getPlayer().getName());
