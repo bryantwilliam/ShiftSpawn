@@ -56,25 +56,30 @@ public class Game {
         return getMinutes() + ":" + getSeconds();
     }
 
+    private void showBoardUnderName(Scoreboard board) {
+        if (gameState.equals(GameState.STARTED)) {
+            // TODO: use teams to make it per individual player only.
+            Player player = Bukkit.getPlayer("gogobebe2"); // TODO: Will remove this line later.
+            Objective o = board.registerNewObjective("score", "dummy");
+            o.setDisplaySlot(DisplaySlot.BELOW_NAME);
+            o.setDisplayName(ChatColor.DARK_GREEN + "Points");
+            Score score = o.getScore(player.getName());
+            score.setScore(plugin.getParticipant(player).getScore());
+            player.setScoreboard(board);
+        }
+    }
     public void startTimer() {
         if (!isTimerRunning()) {
             this.timerIncrementer = scheduler.scheduleSyncRepeatingTask(plugin, new Runnable() {
                 @Override
                 public void run() {
                     Bukkit.broadcastMessage("debug 1: gameState.name(): " + gameState.name() + ", getTime(): " + getTime());
-                    ScoreboardManager manager = Bukkit.getScoreboardManager();
-                    if (gameState.equals(GameState.STARTED)) {
-                        for (Player online : Bukkit.getOnlinePlayers()) {
-                            Scoreboard boardUnderPlayer = manager.getNewScoreboard();
-                            Objective objectiveScore = boardUnderPlayer.registerNewObjective("score", "dummy");
-                            objectiveScore.setDisplaySlot(DisplaySlot.BELOW_NAME);
-                            Score score = objectiveScore.getScore(ChatColor.DARK_GREEN + "Score: " + ChatColor.GREEN);
-                            score.setScore(plugin.getParticipant(online).getScore() + 6);
-                            online.setScoreboard(boardUnderPlayer);
-                        }
-                    }
 
+                    ScoreboardManager manager = Bukkit.getScoreboardManager();
                     Scoreboard board = manager.getNewScoreboard();
+
+                    showBoardUnderName(board);
+
                     Objective statusObj = board.registerNewObjective("status", "dummy");
                     statusObj.setDisplaySlot(DisplaySlot.SIDEBAR);
 
