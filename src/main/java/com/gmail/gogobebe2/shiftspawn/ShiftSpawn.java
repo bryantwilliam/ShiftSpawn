@@ -1,11 +1,12 @@
 package com.gmail.gogobebe2.shiftspawn;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -69,6 +70,51 @@ public class ShiftSpawn extends JavaPlugin {
         return false;
     }
 
+    public void spawn(final Player PLAYER) {
+        PLAYER.spigot().respawn();
+        String id;
+        if (game.getGameState().equals(GameState.STARTED)) {
+            if (containsPlayer(PLAYER)) {
+                id = getParticipant(PLAYER).getSpawnID();
+            } else {
+                id = getNextSpawnIndex();
+                getParticipants().add(new Participant(PLAYER, id));
+            }
+            PLAYER.setHealth(20);
+            PLAYER.setFoodLevel(20);
+            Inventory inventory = PLAYER.getInventory();
+            inventory.clear();
+
+            ItemStack pickaxe = new ItemStack(Material.WOOD_PICKAXE, 1);
+            ItemMeta pickaxeMeta = pickaxe.getItemMeta();
+            pickaxeMeta.setDisplayName(ChatColor.AQUA + "Trusy old pickaxe");
+            pickaxe.setItemMeta(pickaxeMeta);
+
+            ItemStack sword = new ItemStack(Material.WOOD_SWORD, 1);
+            ItemMeta swordMeta = sword.getItemMeta();
+            swordMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Trusy old sword");
+            sword.setItemMeta(swordMeta);
+
+            inventory.addItem(pickaxe);
+            inventory.addItem(sword);
+            PLAYER.updateInventory();
+        }
+        else {
+            id = "main";
+        }
+        PLAYER.teleport(loadSpawn(id));
+    }
+
+    public Location loadSpawn(String id) {
+        final World WORLD = Bukkit.getWorld(getConfig().getString("Spawns." + id + ".World"));
+        final double X = getConfig().getDouble("Spawns." + id + ".X");
+        final double Y = getConfig().getDouble("Spawns." + id + ".Y");
+        final double Z = getConfig().getDouble("Spawns." + id + ".Z");
+        final float PITCH = (float) getConfig().getDouble("Spawns." + id + ".Pitch");
+        final float YAW = (float) getConfig().getDouble("Spawns." + id + ".Yaw");
+        return new Location(WORLD, X, Y, Z, YAW, PITCH);
+    }
+
     public String getNextSpawnIndex() {
         List<String> ids = new ArrayList<>();
         ids.addAll(getConfig().getConfigurationSection("Spawns").getKeys(false));
@@ -90,7 +136,7 @@ public class ShiftSpawn extends JavaPlugin {
         saveDefaultConfig();
         this.game = new Game(this);
         game.setGameState(GameState.WAITING);
-        game.startTimer(false);
+        game.startTimer();
         Bukkit.getPluginManager().registerEvents(new Listeners(this), this);
         if (!Bukkit.getOnlinePlayers().isEmpty()) {
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -137,12 +183,12 @@ public class ShiftSpawn extends JavaPlugin {
         return false;
     }
 
-    public Participant getParticipant(Player player) {
+    public Participant getParticipant(Player player) throws NullPointerException {
         for (Participant participant : participants) {
             if (participant.getPlayer().equals(player)) {
                 return participant;
             }
         }
-        return null;
+        throw new NullPointerException(player.getName() + " has not had his participant set yet");
     }
 }

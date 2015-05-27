@@ -8,7 +8,6 @@ import org.bukkit.scoreboard.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.PatternSyntaxException;
 
 public class Game {
     private int minutes = 0;
@@ -34,19 +33,17 @@ public class Game {
         setTime(timeFormat);
     }
 
-    public void setTime(String timeFormat) throws NumberFormatException, PatternSyntaxException {
+    public void setTime(String timeFormat) {
         String[] times = timeFormat.split(":");
         if (times[0].equalsIgnoreCase("")) {
             setMinutes(0);
-        }
-        else {
+        } else {
             setMinutes(Integer.parseInt(times[0]));
         }
 
         if (times[1].equalsIgnoreCase("")) {
             setSeconds(0);
-        }
-        else {
+        } else {
             setSeconds(Integer.parseInt(times[1]));
         }
 
@@ -59,8 +56,7 @@ public class Game {
         return getMinutes() + ":" + getSeconds();
     }
 
-    public void startTimer(final boolean goUp) {
-        // goUp decides whether the countdown counts up or down.
+    public void startTimer() {
         if (!isTimerRunning()) {
             this.timerIncrementer = scheduler.scheduleSyncRepeatingTask(plugin, new Runnable() {
                 @Override
@@ -68,17 +64,14 @@ public class Game {
                     ScoreboardManager manager = Bukkit.getScoreboardManager();
                     if (!gameState.equals(GameState.WAITING)) {
                         Scoreboard boardUnderPlayer = manager.getNewScoreboard();
-
                         Objective objectiveScore = boardUnderPlayer.registerNewObjective("score", "dummy");
                         objectiveScore.setDisplaySlot(DisplaySlot.BELOW_NAME);
                         objectiveScore.setDisplayName("score");
-
-                        for(Player online : Bukkit.getOnlinePlayers()){
+                        for (Player online : Bukkit.getOnlinePlayers()) {
                             Score score = objectiveScore.getScore(online);
                             score.setScore(plugin.getParticipant(online).getScore());
                         }
-
-                        for(Player online : Bukkit.getOnlinePlayers()){
+                        for (Player online : Bukkit.getOnlinePlayers()) {
                             online.setScoreboard(boardUnderPlayer);
                         }
                         for (Player online : Bukkit.getOnlinePlayers()) {
@@ -89,7 +82,6 @@ public class Game {
                     Scoreboard board = manager.getNewScoreboard();
                     Objective statusObj = board.registerNewObjective("status", "dummy");
                     statusObj.setDisplaySlot(DisplaySlot.SIDEBAR);
-
 
                     String msg;
                     switch (gameState) {
@@ -127,27 +119,10 @@ public class Game {
                         participant.getPlayer().setScoreboard(board);
                     }
 
-
-                    for (Player online : Bukkit.getOnlinePlayers()) {
-
-                    }
-
-                    if (goUp) {
-                        seconds++;
-                        if (seconds == 60) {
-                            minutes++;
-                            seconds = 0;
-                        }
-                    } else {
-                        if (seconds != 0 || minutes != 0) {
-                            seconds--;
-                            if (seconds == -1) {
-                                minutes--;
-                                seconds = 59;
-                            } else if (seconds == 0 && minutes == 0) {
-                                stopTimer();
-                            }
-                        }
+                    seconds++;
+                    if (seconds == 60) {
+                        minutes++;
+                        seconds = 0;
                     }
                 }
             }, 0L, 20L);
@@ -161,6 +136,9 @@ public class Game {
 
     private void startGame() {
         this.gameState = GameState.STARTED;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            plugin.spawn(player);
+        }
     }
 
     public void stopTimer() {
@@ -191,7 +169,7 @@ public class Game {
                 plugin.getLogger().severe("Internal error! No Game State set!?!?!? Ask willy to fix. Email him at: gogobebe2@gmail.com");
                 return;
         }
-        startTimer(false);
+        startTimer();
 
     }
 
