@@ -81,6 +81,9 @@ public class Game {
                         for(Player online : Bukkit.getOnlinePlayers()){
                             online.setScoreboard(boardUnderPlayer);
                         }
+                        for (Player online : Bukkit.getOnlinePlayers()) {
+                            online.setScoreboard(boardUnderPlayer);
+                        }
                     }
 
                     Scoreboard board = manager.getNewScoreboard();
@@ -106,6 +109,14 @@ public class Game {
                             msg = ChatColor.RED + "Error! " + ChatColor.RESET;
                             break;
                     }
+                    Objective allObj = board.registerNewObjective("all_score", "dummy");
+                    allObj.setDisplaySlot(DisplaySlot.SIDEBAR);
+                    allObj.setDisplayName(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "Everyone's scores");
+                    for (Participant participant : plugin.getParticipants()) {
+                        Score s = allObj.getScore(ChatColor.GREEN + participant.getPlayer().getName() + ":");
+                        s.setScore(participant.getScore());
+                    }
+
                     statusObj.setDisplayName(msg);
                     for (Participant participant : plugin.getParticipants()) {
                         Team individual = board.registerNewTeam("individual");
@@ -113,14 +124,12 @@ public class Game {
                         individualScores.add(individual);
                         individual.setSuffix(ChatColor.YELLOW + "[" + participant.getScore() + "]");
                         individual.setDisplayName(ChatColor.LIGHT_PURPLE + "Your score: " + ChatColor.WHITE + participant.getScore());
+                        participant.getPlayer().setScoreboard(board);
                     }
 
-                    Objective allObj = board.registerNewObjective("all_score", "dummy");
-                    allObj.setDisplaySlot(DisplaySlot.SIDEBAR);
-                    allObj.setDisplayName(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "Everyone's scores");
-                    for (Participant participant : plugin.getParticipants()) {
-                        Score s = allObj.getScore(ChatColor.GREEN + participant.getPlayer().getName() + ":");
-                        s.setScore(participant.getScore());
+
+                    for (Player online : Bukkit.getOnlinePlayers()) {
+
                     }
 
                     if (goUp) {

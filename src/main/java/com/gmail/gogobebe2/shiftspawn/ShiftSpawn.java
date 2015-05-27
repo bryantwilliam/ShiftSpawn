@@ -63,7 +63,7 @@ public class ShiftSpawn extends JavaPlugin {
             getConfig().set("Spawns." + id + ".Pitch", PITCH);
             getConfig().set("Spawns." + id + ".Yaw", YAW);
             saveConfig();
-            player.sendMessage(ChatColor.GREEN + "Set " + (id.equalsIgnoreCase("main") ? "the main spawn." : " the spawn id " + id));
+            player.sendMessage(ChatColor.GREEN + "Set " + (id.equalsIgnoreCase("main") ? "the main spawn." : "the spawn id " + id));
             return true;
         }
         return false;
