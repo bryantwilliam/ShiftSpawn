@@ -61,20 +61,14 @@ public class Game {
             this.timerIncrementer = scheduler.scheduleSyncRepeatingTask(plugin, new Runnable() {
                 @Override
                 public void run() {
+                    Bukkit.broadcastMessage("debug 1: gameState.name(): " + gameState.name() + ", getTime(): " + getTime());
                     ScoreboardManager manager = Bukkit.getScoreboardManager();
-                    if (!gameState.equals(GameState.WAITING)) {
-                        Scoreboard boardUnderPlayer = manager.getNewScoreboard();
-                        Objective objectiveScore = boardUnderPlayer.registerNewObjective("score", "dummy");
-                        objectiveScore.setDisplaySlot(DisplaySlot.BELOW_NAME);
-                        objectiveScore.setDisplayName("score");
+                    if (gameState.equals(GameState.STARTED)) {
                         for (Player online : Bukkit.getOnlinePlayers()) {
-                            Score score = objectiveScore.getScore(online);
-                            score.setScore(plugin.getParticipant(online).getScore());
-                        }
-                        for (Player online : Bukkit.getOnlinePlayers()) {
-                            online.setScoreboard(boardUnderPlayer);
-                        }
-                        for (Player online : Bukkit.getOnlinePlayers()) {
+                            Scoreboard boardUnderPlayer = manager.getNewScoreboard();
+                            Objective objectiveScore = boardUnderPlayer.registerNewObjective("score", "dummy");
+                            objectiveScore.setDisplaySlot(DisplaySlot.BELOW_NAME);
+                            objectiveScore.setDisplayName(ChatColor.DARK_GREEN + "Score: " + ChatColor.GREEN + plugin.getParticipant(online).getScore());
                             online.setScoreboard(boardUnderPlayer);
                         }
                     }
@@ -119,10 +113,14 @@ public class Game {
                         participant.getPlayer().setScoreboard(board);
                     }
 
-                    seconds++;
-                    if (seconds == 60) {
-                        minutes++;
-                        seconds = 0;
+                    if (seconds != 0 || minutes != 0) {
+                        seconds--;
+                        if (seconds == -1) {
+                            minutes--;
+                            seconds = 59;
+                        } else if (seconds == 0 && minutes == 0) {
+                            stopTimer();
+                        }
                     }
                 }
             }, 0L, 20L);

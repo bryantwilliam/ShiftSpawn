@@ -34,6 +34,7 @@ public class Listeners implements Listener {
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         String playerName = player.getName();
+        event.setJoinMessage(ChatColor.DARK_PURPLE + playerName + " joined the game.");
         if (game.getGameState().equals(GameState.WAITING)) {
             if (Bukkit.getOnlinePlayers().size() >= plugin.getConfig().getInt(ShiftSpawn.MIN_PLAYERS_KEY) && game.getGameState().equals(GameState.WAITING)) {
                 game.setGameState(GameState.STARTING);
@@ -43,8 +44,6 @@ public class Listeners implements Listener {
                         + (plugin.getConfig().getInt(ShiftSpawn.MIN_PLAYERS_KEY) - Bukkit.getOnlinePlayers().size())
                         + " more players to start.");
             }
-        } else {
-            event.setJoinMessage(ChatColor.DARK_PURPLE + playerName + " joined the game.");
         }
         plugin.spawn(player);
     }
