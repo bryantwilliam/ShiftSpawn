@@ -84,8 +84,8 @@ public class Game {
                     }
 
                     Scoreboard board = manager.getNewScoreboard();
-                    Objective timerObj = board.registerNewObjective("timer", "dummy");
-                    timerObj.setDisplaySlot(DisplaySlot.SIDEBAR);
+                    Objective statusObj = board.registerNewObjective("status", "dummy");
+                    statusObj.setDisplaySlot(DisplaySlot.SIDEBAR);
 
 
                     String msg;
@@ -106,7 +106,7 @@ public class Game {
                             msg = ChatColor.RED + "Error! " + ChatColor.RESET;
                             break;
                     }
-                    timerObj.setDisplayName(msg);
+                    statusObj.setDisplayName(msg);
                     for (Participant participant : plugin.getParticipants()) {
                         Team individual = board.registerNewTeam("individual");
                         individual.addPlayer(participant.getPlayer());
