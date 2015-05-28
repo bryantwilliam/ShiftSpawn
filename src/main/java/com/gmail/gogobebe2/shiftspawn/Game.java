@@ -53,7 +53,6 @@ public class Game {
             o.setDisplayName(ChatColor.DARK_GREEN + "Points");
             Score score = o.getScore(player.getName());
             score.setScore(plugin.getParticipant(player).getScore());
-            player.setScoreboard(board);
         }
     }
 
@@ -104,7 +103,8 @@ public class Game {
                     for (Participant participant : plugin.getParticipants()) {
                         Team individual = board.registerNewTeam(participant.getPlayer().getName());
                         individual.addPlayer(participant.getPlayer());
-                        individual.setSuffix(ChatColor.YELLOW + "[" + participant.getScore() + "]");
+                        // TODO: change participant.getScore() to kills.
+                        individual.setPrefix(ChatColor.YELLOW + "[" + participant.getScore() + "]" + ChatColor.AQUA + ChatColor.BOLD);
                         individual.setDisplayName(ChatColor.LIGHT_PURPLE + "Your score: " + ChatColor.WHITE + participant.getScore());
                         participant.getPlayer().setScoreboard(board);
                     }
