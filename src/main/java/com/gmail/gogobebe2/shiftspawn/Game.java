@@ -45,10 +45,8 @@ public class Game {
     }
 
     private void showScoreTag(Scoreboard board) {
-        if (gameState.equals(GameState.STARTED)) {
-            // TODO: use teams to make it per individual player only.
-            Player player = Bukkit.getPlayer("gogobebe2"); // TODO: Will remove this line later.
-            Objective o = board.registerNewObjective("score", "dummy");
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Objective o = board.registerNewObjective(player.getName() + "_score", "dummy");
             o.setDisplaySlot(DisplaySlot.BELOW_NAME);
             o.setDisplayName(ChatColor.DARK_GREEN + "Points");
             Score score = o.getScore(player.getName());
@@ -56,8 +54,34 @@ public class Game {
         }
     }
 
-    private void showMainObjectives(Scoreboard board) {
+    private void showStatus(Scoreboard board) {
+        Objective o = board.registerNewObjective("status", "dummy");
+        o.setDisplaySlot(DisplaySlot.SIDEBAR);
+        o.setDisplayName(getStatus());
+        Score score = o.getScore(ChatColor.BLACK + "" + ChatColor.MAGIC + "");
+        // So it's always at the top of the scoreboard...
+        score.setScore(Bukkit.getOnlinePlayers().size() + 2);
+    }
 
+    private void showKillsTag(Scoreboard board) {
+        for (Participant participant : plugin.getParticipants()) {
+            participant.getPlayer().setDisplayName(ChatColor.YELLOW + "[" + participant.getKills() + "] " + ChatColor.AQUA + ChatColor.BOLD);
+        }
+    }
+
+    private String getStatus() {
+        switch (gameState) {
+            case WAITING:
+                return ChatColor.BLUE + "" + ChatColor.BOLD + "Waiting.." + (seconds % 2 == 0 ? "." : "");
+            case STARTING:
+                return ChatColor.DARK_AQUA + "Starting in: " + ChatColor.AQUA + getTime();
+            case STARTED:
+                return ChatColor.GREEN + "Time left: " + ChatColor.DARK_GREEN + getTime();
+            case RESTARTING:
+                return ChatColor.RED + "" + ChatColor.BOLD + "Restarting.." + (seconds % 2 == 0 ? "." : "");
+            default:
+                return ChatColor.RED + "Error! " + ChatColor.RESET;
+        }
     }
 
     public void startTimer() {
@@ -67,46 +91,19 @@ public class Game {
                 public void run() {
                     Bukkit.broadcastMessage("debug 1: gameState.name(): " + gameState.name() + ", getTime(): " + getTime());
                     ScoreboardManager manager = Bukkit.getScoreboardManager();
-                    Scoreboard board = manager.getNewScoreboard();
-                    showScoreTag(board);
-
-                    String msg;
-                    switch (gameState) {
-                        case WAITING:
-                            msg = ChatColor.BLUE + "" + ChatColor.BOLD + "Waiting.." + (seconds % 2 == 0 ? "." : "");
-                            break;
-                        case STARTING:
-                            msg = ChatColor.DARK_AQUA + "Starting in: " + ChatColor.AQUA + getTime();
-                            break;
-                        case STARTED:
-                            msg = ChatColor.GREEN + "Time left: " + ChatColor.DARK_GREEN + getTime();
-                            break;
-                        case RESTARTING:
-                            msg = ChatColor.RED + "" + ChatColor.BOLD + "Restarting.." + (seconds % 2 == 0 ? "." : "");
-                            break;
-                        default:
-                            msg = ChatColor.RED + "Error! " + ChatColor.RESET;
-                            break;
+                    Scoreboard scoreboard = manager.getNewScoreboard();
+                    if (gameState.equals(GameState.STARTED)) {
+                        showScoreTag(scoreboard);
+                        showKillsTag(scoreboard);
                     }
+                    showStatus(scoreboard);
 
-                    Objective all_score = board.registerNewObjective("all_score", "dummy");
+                    Objective all_score = scoreboard.registerNewObjective("all_score", "dummy");
                     all_score.setDisplaySlot(DisplaySlot.SIDEBAR);
                     all_score.setDisplayName(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "Everyone's scores");
                     for (Participant participant : plugin.getParticipants()) {
                         Score s = all_score.getScore(ChatColor.GREEN + participant.getPlayer().getName() + ":");
                         s.setScore(participant.getScore());
-                    }
-
-                    Objective statusObj = board.registerNewObjective("status", "dummy");
-                    statusObj.setDisplaySlot(DisplaySlot.SIDEBAR);
-                    statusObj.setDisplayName(msg);
-                    for (Participant participant : plugin.getParticipants()) {
-                        Team individual = board.registerNewTeam(participant.getPlayer().getName());
-                        individual.addPlayer(participant.getPlayer());
-                        // TODO: change participant.getScore() to kills.
-                        individual.setPrefix(ChatColor.YELLOW + "[" + participant.getScore() + "]" + ChatColor.AQUA + ChatColor.BOLD);
-                        individual.setDisplayName(ChatColor.LIGHT_PURPLE + "Your score: " + ChatColor.WHITE + participant.getScore());
-                        participant.getPlayer().setScoreboard(board);
                     }
 
                     if (seconds != 0 || minutes != 0) {
