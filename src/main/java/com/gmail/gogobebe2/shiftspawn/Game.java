@@ -98,8 +98,7 @@ public class Game {
                 name = player.getName().substring(0, 11);
             }
             Team team = getTeam(name + "_team", scoreboard);
-            team.setDisplayName(ChatColor.YELLOW + "[" + participant.getKills() + "] " + ChatColor.AQUA + ChatColor.BOLD);
-            team.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD);
+            team.setPrefix(ChatColor.YELLOW + "[" + participant.getKills() + "] " + ChatColor.AQUA + ChatColor.BOLD);
             team.addPlayer(player);
         }
     }
