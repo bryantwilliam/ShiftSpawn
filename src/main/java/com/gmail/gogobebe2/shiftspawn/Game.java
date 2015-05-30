@@ -50,7 +50,7 @@ public class Game {
                 return o;
             }
         }
-        return scoreboard.registerNewObjective(name + "_tag", "dummy");
+        return scoreboard.registerNewObjective(name, "dummy");
     }
 
     private void showScoreTag(Player player) {
@@ -88,7 +88,7 @@ public class Game {
                 return t;
             }
         }
-        return scoreboard.registerNewTeam(name + "_tag");
+        return scoreboard.registerNewTeam(name);
     }
     private void showKillsTag() {
         for (Participant participant : plugin.getParticipants()) {
