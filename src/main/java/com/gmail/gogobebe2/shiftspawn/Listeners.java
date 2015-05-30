@@ -84,6 +84,6 @@ public class Listeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDeath(PlayerDeathEvent event) {
-
+        plugin.spawn(event.getEntity());
     }
 }

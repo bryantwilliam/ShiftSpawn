@@ -140,32 +140,32 @@ public class Game {
 
     public void startTimer() {
         if (!isTimerRunning()) {
-            this.timerIncrementer = scheduler.scheduleSyncRepeatingTask(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    Bukkit.broadcastMessage("debug 1: gameState.name(): " + gameState.name() + ", getTime(): " + getTime());
-                    if (gameState.equals(GameState.STARTED)) {
-                        for (Player player : Bukkit.getOnlinePlayers()) {
-                            showScoreTag(player);
-                            showKillsTag();
-                            showEveryoneScoreSide(player);
-                            showStatus(player);
-                        }
-                    }
-
-                    if (seconds != 0 || minutes != 0) {
-                        seconds--;
-                        if (seconds == -1) {
-                            minutes--;
-                            seconds = 59;
-                        } else if (seconds == 0 && minutes == 0) {
-                            stopTimer();
-                        }
-                    }
-                }
-            }, 0L, 20L);
             this.isTimerRunning = true;
         }
+        this.timerIncrementer = scheduler.scheduleSyncRepeatingTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                Bukkit.broadcastMessage("debug 1: gameState.name(): " + gameState.name() + ", getTime(): " + getTime());
+                if (gameState.equals(GameState.STARTED)) {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        showScoreTag(player);
+                        showKillsTag();
+                        showEveryoneScoreSide(player);
+                        showStatus(player);
+                    }
+                }
+
+                if (seconds != 0 || minutes != 0) {
+                    seconds--;
+                    if (seconds == -1) {
+                        minutes--;
+                        seconds = 59;
+                    } else if (seconds == 0 && minutes == 0) {
+                        stopTimer();
+                    }
+                }
+            }
+        }, 0L, 20L);
     }
 
     private void endGame() {
