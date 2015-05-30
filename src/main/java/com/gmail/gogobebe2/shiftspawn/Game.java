@@ -190,17 +190,20 @@ public class Game {
             case WAITING:
                 // Just keep looping and use the timer to decide how to use ".." or "...".
                 setMinutes(Integer.MAX_VALUE);
+                startTimer();
                 break;
             case STARTING:
                 Bukkit.broadcastMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Game starting!");
                 setTime(plugin.getConfig().getString(ShiftSpawn.GAME_TIME));
                 startGame();
+                startTimer();
                 break;
             case STARTED:
                 Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Game over!");
                 endGame();
                 // 1 minute before restart server and use the timer to decide how to use ".." or "...".
                 setTime("1:00");
+                startTimer();
                 break;
             default:
                 Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Error! Ask admin to fix immediately!!!");
