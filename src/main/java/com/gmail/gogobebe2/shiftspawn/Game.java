@@ -46,7 +46,7 @@ public class Game {
 
     private void showScoreTag(Player player) {
         Scoreboard scoreboard = player.getScoreboard();
-        Objective o = scoreboard.registerNewObjective(player.getName().indexOf(0, 11) + "_tag", "dummy");
+        Objective o = scoreboard.registerNewObjective(player.getName().substring(0, 12) + "_tag", "dummy");
         o.setDisplaySlot(DisplaySlot.BELOW_NAME);
         o.setDisplayName(ChatColor.DARK_GREEN + "Points");
         player.setDisplayName(ChatColor.YELLOW + " [");
@@ -69,7 +69,10 @@ public class Game {
 
     private void showKillsTag() {
         for (Participant participant : plugin.getParticipants()) {
-            participant.getPlayer().setDisplayName(ChatColor.YELLOW + "[" + participant.getKills() + "] " + ChatColor.AQUA + ChatColor.BOLD);
+            Player player = participant.getPlayer();
+            Team team = participant.getPlayer().getScoreboard().registerNewTeam(player.getName().substring(0, 11) + "_team");
+            team.setDisplayName(ChatColor.YELLOW + "[" + participant.getKills() + "] " + ChatColor.AQUA + ChatColor.BOLD);
+            team.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD);
         }
     }
 
@@ -85,10 +88,12 @@ public class Game {
         player.setScoreboard(scoreboard);
     }
 
-    private void showScoreSide(Scoreboard scoreboard) {
+    private void showScoreSide(Player player) {
+        Scoreboard scoreboard = player.getScoreboard();
         Objective o = scoreboard.registerNewObjective("score_side", "dummy");
         o.setDisplaySlot(DisplaySlot.SIDEBAR);
         o.setDisplayName(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD);
+        player.setScoreboard(scoreboard);
     }
 
     private String getStatus() {
