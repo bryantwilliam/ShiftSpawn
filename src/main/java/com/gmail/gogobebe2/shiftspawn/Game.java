@@ -46,7 +46,7 @@ public class Game {
 
     private void showScoreTag(Player player) {
         Scoreboard scoreboard = player.getScoreboard();
-        Objective o = scoreboard.registerNewObjective(player.getName() + "score_tag", "dummy");
+        Objective o = scoreboard.registerNewObjective(player.getName().indexOf(0, 11) + "_tag", "dummy");
         o.setDisplaySlot(DisplaySlot.BELOW_NAME);
         o.setDisplayName(ChatColor.DARK_GREEN + "Points");
         player.setDisplayName(ChatColor.YELLOW + " [");
