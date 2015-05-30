@@ -87,12 +87,12 @@ public class ShiftSpawn extends JavaPlugin {
 
             ItemStack pickaxe = new ItemStack(Material.WOOD_PICKAXE, 1);
             ItemMeta pickaxeMeta = pickaxe.getItemMeta();
-            pickaxeMeta.setDisplayName(ChatColor.AQUA + "Trusy old pickaxe");
+            pickaxeMeta.setDisplayName(ChatColor.AQUA + "Trusty old pickaxe");
             pickaxe.setItemMeta(pickaxeMeta);
 
             ItemStack sword = new ItemStack(Material.WOOD_SWORD, 1);
             ItemMeta swordMeta = sword.getItemMeta();
-            swordMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Trusy old sword");
+            swordMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Trusty old sword");
             sword.setItemMeta(swordMeta);
 
             inventory.addItem(pickaxe);

@@ -148,8 +148,8 @@ public class Game {
                         for (Player player : Bukkit.getOnlinePlayers()) {
                             showScoreTag(player);
                             showKillsTag();
-                            showStatus(player);
                             showEveryoneScoreSide(player);
+                            showStatus(player);
                         }
                     }
 
