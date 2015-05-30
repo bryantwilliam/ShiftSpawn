@@ -35,6 +35,7 @@ public class Listeners implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        plugin.spawn(player);
         String playerName = player.getName();
         event.setJoinMessage(ChatColor.DARK_PURPLE + playerName + " joined the game.");
         if (game.getGameState().equals(GameState.WAITING)) {
@@ -44,7 +45,6 @@ public class Listeners implements Listener {
                         + " more players to start.");
             }
         }
-        plugin.spawn(player);
     }
 
     @EventHandler(priority = EventPriority.HIGH)

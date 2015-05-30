@@ -51,6 +51,7 @@ public class Game {
             o.setDisplayName(ChatColor.DARK_GREEN + "Points");
             Score score = o.getScore(player.getName());
             score.setScore(plugin.getParticipant(player).getScore());
+            player.setScoreboard(board);
         }
     }
 
