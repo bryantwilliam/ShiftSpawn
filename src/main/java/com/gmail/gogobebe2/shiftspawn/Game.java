@@ -87,6 +87,7 @@ public class Game {
         }
         return scoreboard.registerNewTeam(name);
     }
+
     private void showKillsTag() {
         for (Participant participant : plugin.getParticipants()) {
             Player player = participant.getPlayer();
@@ -146,15 +147,14 @@ public class Game {
             @Override
             public void run() {
                 Bukkit.broadcastMessage("debug 1: gameState.name(): " + gameState.name() + ", getTime(): " + getTime());
-                if (gameState.equals(GameState.STARTED)) {
-                    for (Player player : Bukkit.getOnlinePlayers()) {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (gameState.equals(GameState.STARTED)) {
                         showScoreTag(player);
                         showKillsTag();
-                        showEveryoneScoreSide(player);
-                        showStatus(player);
                     }
+                    showEveryoneScoreSide(player);
+                    showStatus(player);
                 }
-
                 if (seconds != 0 || minutes != 0) {
                     seconds--;
                     if (seconds == -1) {
