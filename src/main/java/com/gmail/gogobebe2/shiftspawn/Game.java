@@ -75,6 +75,8 @@ public class Game {
         Objective o = getObjective("status_tag", scoreboard);
         o.setDisplaySlot(DisplaySlot.SIDEBAR);
         o.setDisplayName(getStatus());
+        Score score = o.getScore(ChatColor.AQUA + "Players online: ");
+        score.setScore(Bukkit.getOnlinePlayers().size());
         player.setScoreboard(scoreboard);
     }
 
