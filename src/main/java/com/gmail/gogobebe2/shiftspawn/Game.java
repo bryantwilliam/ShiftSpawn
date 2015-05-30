@@ -44,30 +44,51 @@ public class Game {
         return getMinutes() + ":" + getSeconds();
     }
 
-    private void showScoreTag(Scoreboard board) {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            Objective o = board.registerNewObjective(player.getName() + "_score", "dummy");
-            o.setDisplaySlot(DisplaySlot.BELOW_NAME);
-            o.setDisplayName(ChatColor.DARK_GREEN + "Points");
-            Score score = o.getScore(player.getName());
-            score.setScore(plugin.getParticipant(player).getScore());
-            player.setScoreboard(board);
-        }
+    private void showScoreTag(Player player) {
+        Scoreboard scoreboard = player.getScoreboard();
+        Objective o = scoreboard.registerNewObjective(player.getName() + "score_tag", "dummy");
+        o.setDisplaySlot(DisplaySlot.BELOW_NAME);
+        o.setDisplayName(ChatColor.DARK_GREEN + "Points");
+        player.setDisplayName(ChatColor.YELLOW + " [");
+        Score score = o.getScore(player.getName());
+        score.setScore(plugin.getParticipant(player).getScore());
+        player.setScoreboard(scoreboard);
     }
 
-    private void showStatus(Scoreboard board) {
-        Objective o = board.registerNewObjective("status", "dummy");
+    private void showStatus(Player player) {
+        Scoreboard scoreboard = player.getScoreboard();
+        Objective o = scoreboard.registerNewObjective("status_tag", "dummy");
         o.setDisplaySlot(DisplaySlot.SIDEBAR);
         o.setDisplayName(getStatus());
         Score score = o.getScore(ChatColor.BLACK + "" + ChatColor.MAGIC + "");
         // So it's always at the top of the scoreboard...
         score.setScore(Bukkit.getOnlinePlayers().size() + 2);
+        player.setScoreboard(scoreboard);
     }
 
-    private void showKillsTag(Scoreboard board) {
+
+    private void showKillsTag() {
         for (Participant participant : plugin.getParticipants()) {
             participant.getPlayer().setDisplayName(ChatColor.YELLOW + "[" + participant.getKills() + "] " + ChatColor.AQUA + ChatColor.BOLD);
         }
+    }
+
+    private void showEveryoneScoreSide(Player player) {
+        Scoreboard scoreboard = player.getScoreboard();
+        Objective o = scoreboard.registerNewObjective("allScore_side", "dummy");
+        o.setDisplaySlot(DisplaySlot.SIDEBAR);
+        o.setDisplayName(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "Everyone's scores");
+        for (Participant participant : plugin.getParticipants()) {
+            Score s = o.getScore(ChatColor.GREEN + participant.getPlayer().getName() + ":");
+            s.setScore(participant.getScore());
+        }
+        player.setScoreboard(scoreboard);
+    }
+
+    private void showScoreSide(Scoreboard scoreboard) {
+        Objective o = scoreboard.registerNewObjective("score_side", "dummy");
+        o.setDisplaySlot(DisplaySlot.SIDEBAR);
+        o.setDisplayName(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD);
     }
 
     private String getStatus() {
@@ -91,20 +112,13 @@ public class Game {
                 @Override
                 public void run() {
                     Bukkit.broadcastMessage("debug 1: gameState.name(): " + gameState.name() + ", getTime(): " + getTime());
-                    ScoreboardManager manager = Bukkit.getScoreboardManager();
-                    Scoreboard scoreboard = manager.getNewScoreboard();
                     if (gameState.equals(GameState.STARTED)) {
-                        showScoreTag(scoreboard);
-                        showKillsTag(scoreboard);
-                    }
-                    showStatus(scoreboard);
-
-                    Objective all_score = scoreboard.registerNewObjective("all_score", "dummy");
-                    all_score.setDisplaySlot(DisplaySlot.SIDEBAR);
-                    all_score.setDisplayName(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "Everyone's scores");
-                    for (Participant participant : plugin.getParticipants()) {
-                        Score s = all_score.getScore(ChatColor.GREEN + participant.getPlayer().getName() + ":");
-                        s.setScore(participant.getScore());
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            showScoreTag(player);
+                            showKillsTag();
+                            showStatus(player);
+                            showEveryoneScoreSide(player);
+                        }
                     }
 
                     if (seconds != 0 || minutes != 0) {
