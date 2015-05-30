@@ -65,7 +65,7 @@ public class Game {
         o.setDisplaySlot(DisplaySlot.BELOW_NAME);
         o.setDisplayName(ChatColor.DARK_GREEN + "Points");
         player.setDisplayName(ChatColor.YELLOW + " [");
-        Score score = o.getScore(player.getName());
+        Score score = o.getScore(ChatColor.BLUE + "");
         score.setScore(plugin.getParticipant(player).getScore());
         player.setScoreboard(scoreboard);
     }
@@ -152,9 +152,9 @@ public class Game {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (gameState.equals(GameState.STARTED)) {
                         showScoreTag(player);
+                        showEveryoneScoreSide(player);
                         showKillsTag();
                     }
-                    showEveryoneScoreSide(player);
                     showStatus(player);
                 }
                 if (seconds != 0 || minutes != 0) {
