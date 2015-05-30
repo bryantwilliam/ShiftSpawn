@@ -75,9 +75,6 @@ public class Game {
         Objective o = getObjective("status_tag", scoreboard);
         o.setDisplaySlot(DisplaySlot.SIDEBAR);
         o.setDisplayName(getStatus());
-        Score score = o.getScore(ChatColor.BLACK + "" + ChatColor.MAGIC + "");
-        // So it's always at the top of the scoreboard...
-        score.setScore(Bukkit.getOnlinePlayers().size() + 2);
         player.setScoreboard(scoreboard);
     }
 
@@ -103,6 +100,7 @@ public class Game {
             Team team = getTeam(name + "_team", scoreboard);
             team.setDisplayName(ChatColor.YELLOW + "[" + participant.getKills() + "] " + ChatColor.AQUA + ChatColor.BOLD);
             team.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD);
+            team.addPlayer(player);
         }
     }
 
