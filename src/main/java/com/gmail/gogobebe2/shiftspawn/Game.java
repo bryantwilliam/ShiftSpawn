@@ -46,7 +46,13 @@ public class Game {
 
     private void showScoreTag(Player player) {
         Scoreboard scoreboard = player.getScoreboard();
-        Objective o = scoreboard.registerNewObjective(player.getName().substring(0, 12) + "_tag", "dummy");
+        String name;
+        if (player.getName().length() <= 12) {
+            name = player.getName();
+        } else {
+            name = player.getName().substring(0, 12);
+        }
+        Objective o = scoreboard.registerNewObjective(name + "_tag", "dummy");
         o.setDisplaySlot(DisplaySlot.BELOW_NAME);
         o.setDisplayName(ChatColor.DARK_GREEN + "Points");
         player.setDisplayName(ChatColor.YELLOW + " [");
@@ -70,7 +76,13 @@ public class Game {
     private void showKillsTag() {
         for (Participant participant : plugin.getParticipants()) {
             Player player = participant.getPlayer();
-            Team team = participant.getPlayer().getScoreboard().registerNewTeam(player.getName().substring(0, 11) + "_team");
+            String name;
+            if (player.getName().length() <= 11) {
+                name = player.getName();
+            } else {
+                name = player.getName().substring(0, 11);
+            }
+            Team team = participant.getPlayer().getScoreboard().registerNewTeam(name + "_team");
             team.setDisplayName(ChatColor.YELLOW + "[" + participant.getKills() + "] " + ChatColor.AQUA + ChatColor.BOLD);
             team.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD);
         }
