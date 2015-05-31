@@ -44,50 +44,65 @@ public class Game {
         return getMinutes() + ":" + getSeconds();
     }
 
-    private Objective getObjective(String name, Scoreboard scoreboard) {
-        for (Objective o : scoreboard.getObjectives()) {
-            if (o.getName().equals(name)) {
-                return o;
-            }
-        }
-        return scoreboard.registerNewObjective(name, "dummy");
-    }
-
     private void showScoreTag(Player player) {
-        Scoreboard scoreboard = player.getScoreboard();
         String name;
         if (player.getName().length() <= 12) {
             name = player.getName();
         } else {
             name = player.getName().substring(0, 12);
         }
-        Objective o = getObjective(name + "_tag", scoreboard);
-        o.setDisplaySlot(DisplaySlot.BELOW_NAME);
-        o.setDisplayName(ChatColor.DARK_GREEN + "Points");
-        player.setDisplayName(ChatColor.YELLOW + " [");
-        Score score = o.getScore(ChatColor.BLUE + "");
+        name = name + "_tag";
+
+        Scoreboard scoreboard = player.getScoreboard();
+        Objective o = scoreboard.getObjective(name);
+
+        if (scoreboard.getObjectives().isEmpty() || o == null) {
+            o = scoreboard.registerNewObjective(name, "dummy");
+            o.setDisplaySlot(DisplaySlot.BELOW_NAME);
+            o.setDisplayName(ChatColor.DARK_GREEN + "Points");
+        }
+
+        Score score = o.getScore(ChatColor.BLUE + name);
         score.setScore(plugin.getParticipant(player).getScore());
         player.setScoreboard(scoreboard);
     }
 
     private void showStatus(Player player) {
+        String name = getObjectiveName(player);
         Scoreboard scoreboard = player.getScoreboard();
-        Objective o = getObjective("status_tag", scoreboard);
-        o.setDisplaySlot(DisplaySlot.SIDEBAR);
+        Objective o = scoreboard.getObjective(name);
         o.setDisplayName(getStatus());
         Score score = o.getScore(ChatColor.AQUA + "Players online: ");
         score.setScore(Bukkit.getOnlinePlayers().size());
         player.setScoreboard(scoreboard);
     }
 
+    private void showEveryoneScoreSide(Player player) {
+        String name = getObjectiveName(player);
+        Scoreboard scoreboard = player.getScoreboard();
+        Objective o = scoreboard.getObjective(name);
 
-    private Team getTeam(String name, Scoreboard scoreboard) {
-        for (Team t : scoreboard.getTeams()) {
-            if (t.getName().equals(name)) {
-                return t;
+        int highestScore = 0;
+        for (Participant participant : plugin.getParticipants()) {
+            Score s = o.getScore(ChatColor.GREEN + participant.getPlayer().getName() + ":");
+            int score = participant.getScore();
+            s.setScore(score);
+
+            if (score > highestScore) {
+                highestScore = participant.getScore();
             }
         }
-        return scoreboard.registerNewTeam(name);
+
+        Score s = o.getScore(ChatColor.LIGHT_PURPLE + "" + ChatColor.UNDERLINE + "Everyone's scores");
+        s.setScore(highestScore + 1);
+        player.setScoreboard(scoreboard);
+    }
+
+    private void showScoreSide(Player player) {
+        String name = "score_side";
+        Scoreboard scoreboard = player.getScoreboard();
+        Objective o = scoreboard.getObjective(name);
+        player.setScoreboard(scoreboard);
     }
 
     private void showKillsTag() {
@@ -100,30 +115,22 @@ public class Game {
             } else {
                 name = player.getName().substring(0, 11);
             }
-            Team team = getTeam(name + "_team", scoreboard);
+            name = name + "_team";
+            Team team = null;
+            boolean foundTeam = false;
+            for (Team t : scoreboard.getTeams()) {
+                if (t.getName().equals(name)) {
+                    team = t;
+                    foundTeam = true;
+                    break;
+                }
+            }
+            if (!foundTeam) {
+               team = scoreboard.registerNewTeam(name);
+            }
             team.setPrefix(ChatColor.YELLOW + "[" + participant.getKills() + "] " + ChatColor.AQUA + ChatColor.BOLD);
             team.addPlayer(player);
         }
-    }
-
-    private void showEveryoneScoreSide(Player player) {
-        Scoreboard scoreboard = player.getScoreboard();
-        Objective o = getObjective("allScore_side", scoreboard);
-        o.setDisplaySlot(DisplaySlot.SIDEBAR);
-        o.setDisplayName(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "Everyone's scores");
-        for (Participant participant : plugin.getParticipants()) {
-            Score s = o.getScore(ChatColor.GREEN + participant.getPlayer().getName() + ":");
-            s.setScore(participant.getScore());
-        }
-        player.setScoreboard(scoreboard);
-    }
-
-    private void showScoreSide(Player player) {
-        Scoreboard scoreboard = player.getScoreboard();
-        Objective o = getObjective("score_side", scoreboard);
-        o.setDisplaySlot(DisplaySlot.SIDEBAR);
-        o.setDisplayName(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD);
-        player.setScoreboard(scoreboard);
     }
 
     private String getStatus() {
@@ -141,6 +148,9 @@ public class Game {
         }
     }
 
+    private String getObjectiveName(Player player) {
+        return "shift_" + player.getName().substring(0, 10);
+    }
     public void startTimer() {
         if (!isTimerRunning()) {
             this.isTimerRunning = true;
@@ -150,6 +160,15 @@ public class Game {
             public void run() {
                 Bukkit.broadcastMessage("debug 1: gameState.name(): " + gameState.name() + ", getTime(): " + getTime());
                 for (Player player : Bukkit.getOnlinePlayers()) {
+                    Scoreboard scoreboard = player.getScoreboard();
+                    String name = getObjectiveName(player);
+                    Objective o = scoreboard.getObjective(name);
+                    if (scoreboard.getObjectives().isEmpty() || o == null) {
+                        o = scoreboard.registerNewObjective(name, "dummy");
+                        o.setDisplaySlot(DisplaySlot.SIDEBAR);
+                        o.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Shift Scores");
+                    }
+                    // TODO: remove all other player.setScoreboard(...); and see if it works if it's just here.
                     if (gameState.equals(GameState.STARTED)) {
                         showScoreTag(player);
                         showEveryoneScoreSide(player);
@@ -170,17 +189,6 @@ public class Game {
         }, 0L, 20L);
     }
 
-    private void endGame() {
-        this.gameState = GameState.RESTARTING;
-    }
-
-    private void startGame() {
-        this.gameState = GameState.STARTED;
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            plugin.spawn(player);
-        }
-    }
-
     public void stopTimer() {
         if (isTimerRunning) {
             scheduler.cancelTask(this.timerIncrementer);
@@ -197,12 +205,15 @@ public class Game {
             case STARTING:
                 Bukkit.broadcastMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Game starting!");
                 setTime(plugin.getConfig().getString(ShiftSpawn.GAME_TIME));
-                startGame();
+                this.gameState = GameState.STARTED;
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    plugin.spawn(player);
+                }
                 startTimer();
                 break;
             case STARTED:
                 Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Game over!");
-                endGame();
+                this.gameState = GameState.RESTARTING;
                 // 1 minute before restart server and use the timer to decide how to use ".." or "...".
                 setTime("1:00");
                 startTimer();
@@ -213,7 +224,6 @@ public class Game {
                 return;
         }
         startTimer();
-
     }
 
     public int getMinutes() {
