@@ -71,9 +71,11 @@ public class Game {
         String name = getObjectiveName(player);
         Scoreboard scoreboard = player.getScoreboard();
         Objective o = scoreboard.getObjective(name);
-        o.setDisplayName(getStatus());
-        Score score = o.getScore(ChatColor.AQUA + "Players online: ");
-        score.setScore(Bukkit.getOnlinePlayers().size());
+        int onlineAmount = Bukkit.getOnlinePlayers().size();
+        Score status = o.getScore(getStatus());
+        status.setScore(onlineAmount + 1);
+        Score online = o.getScore(ChatColor.AQUA + "Players online: ");
+        online.setScore(onlineAmount);
         player.setScoreboard(scoreboard);
     }
 
