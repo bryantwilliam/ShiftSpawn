@@ -108,9 +108,12 @@ public class Game {
     }
 
     private void showKillsTag() {
+        Bukkit.broadcastMessage("debug 1...");
         for (Participant participant : plugin.getParticipants()) {
             Player player = participant.getPlayer();
+            Bukkit.broadcastMessage("debug 2: " + player.getName() + ", " + participant.getKills());
             Scoreboard scoreboard = player.getScoreboard();
+
             String name;
             if (player.getName().length() <= 11) {
                 name = player.getName();
@@ -118,21 +121,26 @@ public class Game {
                 name = player.getName().substring(0, 11);
             }
             name = name + "_team";
+            Bukkit.broadcastMessage("debug 3: " + name);
             Team team = null;
             boolean foundTeam = false;
-            for (Team t : scoreboard.getTeams()) {
-                if (t.getName().equals(name)) {
-                    team = t;
-                    foundTeam = true;
-                    break;
+            if (!scoreboard.getTeams().isEmpty()) {
+                for (Team t : scoreboard.getTeams()) {
+                    if (t.getName().equals(name)) {
+                        team = scoreboard.getTeam(name);
+                        foundTeam = true;
+                        break;
+                    }
                 }
             }
+            Bukkit.broadcastMessage("debug 4: " + foundTeam);
             if (!foundTeam) {
-               team = scoreboard.registerNewTeam(name);
+                team = scoreboard.registerNewTeam(name);
+                Bukkit.broadcastMessage("debug 5");
             }
             team.setPrefix(ChatColor.YELLOW + "[" + participant.getKills() + "] " + ChatColor.AQUA + ChatColor.BOLD);
             team.addPlayer(player);
-            player.setScoreboard(scoreboard);
+            Bukkit.broadcastMessage("debug 6");
         }
     }
 
@@ -180,10 +188,10 @@ public class Game {
                         player.setScoreboard(scoreboard);
                     }
                     // TODO: remove all other player.setScoreboard(...); and see if it works if it's just here.
+                    showKillsTag();
                     if (gameState.equals(GameState.STARTED)) {
                         showScoreTag(player);
                         showEveryoneScoreSide(player);
-                        showKillsTag();
                     }
                     showStatus(player);
                 }

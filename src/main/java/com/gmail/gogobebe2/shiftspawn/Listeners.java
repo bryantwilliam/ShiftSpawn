@@ -35,7 +35,6 @@ public class Listeners implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        player.setScoreboard(player.getServer().getScoreboardManager().getNewScoreboard());
         plugin.spawn(player);
         String playerName = player.getName();
         event.setJoinMessage(ChatColor.DARK_PURPLE + playerName + " joined the game.");
