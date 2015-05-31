@@ -149,8 +149,15 @@ public class Game {
     }
 
     private String getObjectiveName(Player player) {
-        return "shift_" + player.getName().substring(0, 10);
+        String name;
+        if (player.getName().length() <= 10) {
+            name = player.getName();
+        } else {
+            name = player.getName().substring(0, 10);
+        }
+        return "shift_" + name;
     }
+
     public void startTimer() {
         if (!isTimerRunning()) {
             this.isTimerRunning = true;
