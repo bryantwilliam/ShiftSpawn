@@ -132,6 +132,7 @@ public class Game {
             }
             team.setPrefix(ChatColor.YELLOW + "[" + participant.getKills() + "] " + ChatColor.AQUA + ChatColor.BOLD);
             team.addPlayer(player);
+            player.setScoreboard(scoreboard);
         }
     }
 
@@ -176,6 +177,7 @@ public class Game {
                         o = scoreboard.registerNewObjective(name, "dummy");
                         o.setDisplaySlot(DisplaySlot.SIDEBAR);
                         o.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Shift Scores");
+                        player.setScoreboard(scoreboard);
                     }
                     // TODO: remove all other player.setScoreboard(...); and see if it works if it's just here.
                     if (gameState.equals(GameState.STARTED)) {
