@@ -45,6 +45,9 @@ public class Listeners implements Listener {
                         + " more players to start.");
             }
         }
+        if (plugin.hasParticipantSet(player)) {
+            plugin.getParticipant(player).setOnline(true);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -59,11 +62,10 @@ public class Listeners implements Listener {
                     + " more players to start. All " + playerName
                     + "'s fault. Blame them because now it'll take longer to start!!");
             game.setGameState(GameState.WAITING);
-            if (plugin.containsPlayer(player)) {
-                plugin.getParticipants().remove(plugin.getParticipant(player));
+            if (plugin.hasParticipantSet(player)) {
+                plugin.getParticipant(player).setOnline(false);
             }
         }
-        // TODO: remove Status Section score on player leave.
     }
 
     @EventHandler(priority = EventPriority.HIGH)

@@ -18,6 +18,7 @@ public class Participant {
     private Objective objective;
     private TopScoresSection topScoresSection;
     private StatusSection statusSection;
+    private boolean online;
 
     public Participant(ShiftSpawn plugin, final Player PLAYER, String spawnID) {
         this(plugin, PLAYER, spawnID, 0, 0);
@@ -92,5 +93,13 @@ public class Participant {
 
     public void setStatusSection(StatusSection statusSection) {
         this.statusSection = statusSection;
+    }
+
+    public boolean isOnline() {
+        return this.online;
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
     }
 }

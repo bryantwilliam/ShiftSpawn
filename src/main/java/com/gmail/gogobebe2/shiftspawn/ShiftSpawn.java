@@ -74,7 +74,7 @@ public class ShiftSpawn extends JavaPlugin {
         PLAYER.spigot().respawn();
         String id;
         if (game.getGameState().equals(GameState.STARTED)) {
-            if (containsPlayer(PLAYER)) {
+            if (hasParticipantSet(PLAYER)) {
                 id = getParticipant(PLAYER).getSpawnID();
             } else {
                 id = getNextSpawnIndex();
@@ -170,7 +170,17 @@ public class ShiftSpawn extends JavaPlugin {
         return this.participants;
     }
 
-    public boolean containsPlayer(Player player) {
+    public List<Participant> getOnlineParticipants() {
+        List<Participant> temp = new ArrayList<>();
+        for (Participant participant : getParticipants()) {
+            if (participant.isOnline()) {
+                temp.add(participant);
+            }
+        }
+        return temp;
+    }
+
+    public boolean hasParticipantSet(Player player) {
         if (participants.isEmpty()) {
             return false;
         }

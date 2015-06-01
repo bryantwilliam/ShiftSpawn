@@ -16,7 +16,7 @@ public class TopScoresSection extends ScoreboardSection {
     public void displaySection() {
         deleteSection();
         int highestScore = 0;
-        for (Participant participant : getPlugin().getParticipants()) {
+        for (Participant participant : getPlugin().getOnlineParticipants()) {
             setScore(getObjective().getScore(ChatColor.GREEN + participant.getPlayer().getName() + ": "));
             int pScore = participant.getScore();
             setSectionIndex(pScore);
