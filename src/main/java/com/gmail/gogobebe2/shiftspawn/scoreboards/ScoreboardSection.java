@@ -65,12 +65,4 @@ public abstract class ScoreboardSection {
     public void setObjective(Objective objective) {
         this.objective = objective;
     }
-
-    public void setParticipant(Participant participant) {
-        this.participant = participant;
-    }
-
-    public void setPlugin(ShiftSpawn plugin) {
-        this.plugin = plugin;
-    }
 }

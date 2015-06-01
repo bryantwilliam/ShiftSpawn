@@ -67,18 +67,6 @@ public class Game {
         player.setScoreboard(scoreboard);
     }
 
-    private void showStatus(Player player) {
-        String name = "shift";
-        Scoreboard scoreboard = player.getScoreboard();
-        Objective o = scoreboard.getObjective(name);
-        int onlineAmount = Bukkit.getOnlinePlayers().size();
-        Score status = o.getScore(getStatus());
-        status.setScore(onlineAmount + 1);
-        Score online = o.getScore(ChatColor.AQUA + "Players online: ");
-        online.setScore(onlineAmount);
-        player.setScoreboard(scoreboard);
-    }
-
     private void showScoreSide(Player player) {
         String name = "score_side";
         Scoreboard scoreboard = player.getScoreboard();
@@ -123,20 +111,7 @@ public class Game {
         }
     }
 
-    private String getStatus() {
-        switch (gameState) {
-            case WAITING:
-                return ChatColor.BLUE + "" + ChatColor.BOLD + "Waiting.." + (seconds % 2 == 0 ? "." : "");
-            case STARTING:
-                return ChatColor.DARK_AQUA + "Starting in: " + ChatColor.AQUA + getTime();
-            case STARTED:
-                return ChatColor.GREEN + "Time left: " + ChatColor.DARK_GREEN + getTime();
-            case RESTARTING:
-                return ChatColor.RED + "" + ChatColor.BOLD + "Restarting.." + (seconds % 2 == 0 ? "." : "");
-            default:
-                return ChatColor.RED + "Error! " + ChatColor.RESET;
-        }
-    }
+
 
     public void startTimer() {
         if (!isTimerRunning()) {
@@ -150,10 +125,11 @@ public class Game {
                     Player player = participant.getPlayer();
                     showKillsTag();
                     if (gameState.equals(GameState.STARTED)) {
+                        // TODO: refactor the bottom method and make it a scoreboard section object instead.
                         showScoreTag(player);
-                        participant.getTopScores().displaySection();
+                        participant.getTopScoresSection().displaySection();
                     }
-                    showStatus(player);
+                    participant.getStatusSection().displaySection();
 
                 }
                 if (seconds != 0 || minutes != 0) {

@@ -1,6 +1,7 @@
 package com.gmail.gogobebe2.shiftspawn;
 
-import com.gmail.gogobebe2.shiftspawn.scoreboards.TopScores;
+import com.gmail.gogobebe2.shiftspawn.scoreboards.StatusSection;
+import com.gmail.gogobebe2.shiftspawn.scoreboards.TopScoresSection;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -15,7 +16,8 @@ public class Participant {
     private ShiftSpawn plugin;
     private Scoreboard scoreboard;
     private Objective objective;
-    private TopScores topScores;
+    private TopScoresSection topScoresSection;
+    private StatusSection statusSection;
 
     public Participant(ShiftSpawn plugin, final Player PLAYER, String spawnID) {
         this(plugin, PLAYER, spawnID, 0, 0);
@@ -32,7 +34,8 @@ public class Participant {
         this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         this.objective.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Shift Scores");
         PLAYER.setScoreboard(scoreboard);
-        this.topScores = new TopScores(this, objective, plugin);
+        this.topScoresSection = new TopScoresSection(this, objective, plugin);
+        this.statusSection = new StatusSection(this, objective, plugin);
     }
 
     public int getKills() {
@@ -67,8 +70,8 @@ public class Participant {
         return objective;
     }
 
-    public TopScores getTopScores() {
-        return topScores;
+    public TopScoresSection getTopScoresSection() {
+        return topScoresSection;
     }
 
     public void setScore(int score) {
@@ -79,7 +82,15 @@ public class Participant {
         this.spawnID = spawnID;
     }
 
-    public void setTopScores(TopScores topScores) {
-        this.topScores = topScores;
+    public void setTopScoresSection(TopScoresSection topScoresSection) {
+        this.topScoresSection = topScoresSection;
+    }
+
+    public StatusSection getStatusSection() {
+        return statusSection;
+    }
+
+    public void setStatusSection(StatusSection statusSection) {
+        this.statusSection = statusSection;
     }
 }

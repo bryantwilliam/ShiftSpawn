@@ -6,9 +6,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 
-public class TopScores extends ScoreboardSection {
+public class TopScoresSection extends ScoreboardSection {
 
-    public TopScores(Participant participant, Objective objective, ShiftSpawn plugin) {
+    public TopScoresSection(Participant participant, Objective objective, ShiftSpawn plugin) {
         super(participant, objective, plugin);
     }
 
