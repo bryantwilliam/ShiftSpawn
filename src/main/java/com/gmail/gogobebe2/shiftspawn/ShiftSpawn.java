@@ -78,7 +78,7 @@ public class ShiftSpawn extends JavaPlugin {
                 id = getParticipant(PLAYER).getSpawnID();
             } else {
                 id = getNextSpawnIndex();
-                getParticipants().add(new Participant(PLAYER, id));
+                getParticipants().add(new Participant(this, PLAYER, id));
             }
             PLAYER.setHealth(20);
             PLAYER.setFoodLevel(20);
