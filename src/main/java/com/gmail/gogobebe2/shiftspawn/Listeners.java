@@ -63,6 +63,7 @@ public class Listeners implements Listener {
                 plugin.getParticipants().remove(plugin.getParticipant(player));
             }
         }
+        // TODO: remove Status Section score on player leave.
     }
 
     @EventHandler(priority = EventPriority.HIGH)

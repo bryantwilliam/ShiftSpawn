@@ -68,7 +68,7 @@ public class Game {
     }
 
     private void showStatus(Player player) {
-        String name = getObjectiveName(player);
+        String name = "shift";
         Scoreboard scoreboard = player.getScoreboard();
         Objective o = scoreboard.getObjective(name);
         int onlineAmount = Bukkit.getOnlinePlayers().size();
@@ -76,27 +76,6 @@ public class Game {
         status.setScore(onlineAmount + 1);
         Score online = o.getScore(ChatColor.AQUA + "Players online: ");
         online.setScore(onlineAmount);
-        player.setScoreboard(scoreboard);
-    }
-
-    private void showEveryoneScoreSide(Player player) {
-        String name = getObjectiveName(player);
-        Scoreboard scoreboard = player.getScoreboard();
-        Objective o = scoreboard.getObjective(name);
-
-        int highestScore = 0;
-        for (Participant participant : plugin.getParticipants()) {
-            Score s = o.getScore(ChatColor.GREEN + participant.getPlayer().getName() + ":");
-            int score = participant.getScore();
-            s.setScore(score);
-
-            if (score > highestScore) {
-                highestScore = participant.getScore();
-            }
-        }
-
-        Score s = o.getScore(ChatColor.LIGHT_PURPLE + "" + ChatColor.UNDERLINE + "Everyone's scores");
-        s.setScore(highestScore + 1);
         player.setScoreboard(scoreboard);
     }
 
@@ -159,16 +138,6 @@ public class Game {
         }
     }
 
-    private String getObjectiveName(Player player) {
-        String name;
-        if (player.getName().length() <= 10) {
-            name = player.getName();
-        } else {
-            name = player.getName().substring(0, 10);
-        }
-        return "shift_" + name;
-    }
-
     public void startTimer() {
         if (!isTimerRunning()) {
             this.isTimerRunning = true;
@@ -177,23 +146,15 @@ public class Game {
             @Override
             public void run() {
                 Bukkit.broadcastMessage("debug 1: gameState.name(): " + gameState.name() + ", getTime(): " + getTime());
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    Scoreboard scoreboard = player.getScoreboard();
-                    String name = getObjectiveName(player);
-                    Objective o = scoreboard.getObjective(name);
-                    if (scoreboard.getObjectives().isEmpty() || o == null) {
-                        o = scoreboard.registerNewObjective(name, "dummy");
-                        o.setDisplaySlot(DisplaySlot.SIDEBAR);
-                        o.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Shift Scores");
-                        player.setScoreboard(scoreboard);
-                    }
-                    // TODO: remove all other player.setScoreboard(...); and see if it works if it's just here.
+                for (Participant participant : plugin.getParticipants()) {
+                    Player player = participant.getPlayer();
                     showKillsTag();
                     if (gameState.equals(GameState.STARTED)) {
                         showScoreTag(player);
-                        showEveryoneScoreSide(player);
+                        participant.getTopScores().displaySection();
                     }
                     showStatus(player);
+
                 }
                 if (seconds != 0 || minutes != 0) {
                     seconds--;
