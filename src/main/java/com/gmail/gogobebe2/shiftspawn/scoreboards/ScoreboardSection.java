@@ -70,8 +70,4 @@ public abstract class ScoreboardSection {
     public void setScoreboard(Scoreboard scoreboard) {
         this.scoreboard = scoreboard;
     }
-
-    public void setObjective(Objective objective) {
-        this.objective = objective;
-    }
 }

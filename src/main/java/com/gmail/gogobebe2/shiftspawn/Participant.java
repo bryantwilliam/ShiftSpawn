@@ -15,8 +15,6 @@ public class Participant {
     private int kills;
     private String spawnID;
     private Scoreboard scoreboard;
-    private Objective sideObjective;
-    private Objective nameObjective;
     private TopScoresSection topScoresSection;
     private StatusSection statusSection;
     private ScoreTagSection scoreTagSection;
@@ -32,13 +30,12 @@ public class Participant {
         this.score = score;
         this.kills = kills;
         this.scoreboard = PLAYER.getScoreboard();
-        this.sideObjective = scoreboard.registerNewObjective("shift_side_" + PLAYER.getName(), "dummy");
-        this.sideObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        this.sideObjective.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Shift Scores");
-        this.nameObjective = scoreboard.registerNewObjective("shift_name_" + PLAYER.getName(), "dummy");
-        this.nameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
-        this.nameObjective.setDisplayName(ChatColor.DARK_GREEN + "Points");
-        PLAYER.setScoreboard(scoreboard);
+        Objective sideObjective = scoreboard.registerNewObjective("shift_side_" + PLAYER.getName(), "dummy");
+        sideObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        sideObjective.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Shift Scores");
+        Objective nameObjective = scoreboard.registerNewObjective("shift_name_" + PLAYER.getName(), "dummy");
+        nameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+        nameObjective.setDisplayName(ChatColor.DARK_GREEN + "Points");
         this.topScoresSection = new TopScoresSection(this, sideObjective, plugin);
         this.statusSection = new StatusSection(this, sideObjective, plugin);
         this.scoreTagSection = new ScoreTagSection(this, nameObjective, plugin);
@@ -72,10 +69,6 @@ public class Participant {
         return scoreboard;
     }
 
-    public Objective getSideObjective() {
-        return sideObjective;
-    }
-
     public TopScoresSection getTopScoresSection() {
         return topScoresSection;
     }
@@ -106,10 +99,6 @@ public class Participant {
 
     public void setOnline(boolean online) {
         this.online = online;
-    }
-
-    public Objective getNameObjective() {
-        return nameObjective;
     }
 
     public ScoreTagSection getScoreTagSection() {
