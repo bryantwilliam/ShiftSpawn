@@ -1,5 +1,5 @@
 name: ShiftSpawn
-version: 2.7.6-DEVELOPMENT-SNAPSHOT
+version: 2.7.7-DEVELOPMENT-SNAPSHOT
 main: com.gmail.gogobebe2.shiftspawn.ShiftSpawn
 description: Recognises order in which players join server and be able to set spawnpoints for them when the game begins.
 author: William Bryant (gogobebe2)

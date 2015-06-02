@@ -75,8 +75,6 @@ public class Game {
         }
     }
 
-
-
     public void startTimer() {
         if (!isTimerRunning()) {
             this.isTimerRunning = true;

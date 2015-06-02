@@ -8,6 +8,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 public abstract class ScoreboardSection {
     private Score score;
+    private Score subScore;
     private Scoreboard scoreboard;
     private Objective objective;
     private Participant participant;
@@ -38,6 +39,10 @@ public abstract class ScoreboardSection {
         return score;
     }
 
+    public Score getSubScore() {
+        return subScore;
+    }
+
     public Scoreboard getScoreboard() {
         return scoreboard;
     }
@@ -56,6 +61,10 @@ public abstract class ScoreboardSection {
 
     public void setScore(Score score) {
         this.score = score;
+    }
+
+    public void setSubScore(Score subScore) {
+        this.subScore = subScore;
     }
 
     public void setScoreboard(Scoreboard scoreboard) {

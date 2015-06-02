@@ -32,10 +32,10 @@ public class Participant {
         this.score = score;
         this.kills = kills;
         this.scoreboard = PLAYER.getScoreboard();
-        this.sideObjective = scoreboard.registerNewObjective("shift_side", "dummy");
+        this.sideObjective = scoreboard.registerNewObjective("shift_side_" + PLAYER.getName(), "dummy");
         this.sideObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
         this.sideObjective.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Shift Scores");
-        this.nameObjective = scoreboard.registerNewObjective("shift_name", "dummy");
+        this.nameObjective = scoreboard.registerNewObjective("shift_name_" + PLAYER.getName(), "dummy");
         this.nameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         this.nameObjective.setDisplayName(ChatColor.DARK_GREEN + "Points");
         PLAYER.setScoreboard(scoreboard);
