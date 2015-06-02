@@ -21,7 +21,6 @@ public class Participant {
     private StatusSection statusSection;
     private ScoreTagSection scoreTagSection;
     private OnlinePlayerSection onlinePlayerSection;
-    private boolean online;
 
     public Participant(ShiftSpawn plugin, final Player PLAYER, String spawnID) {
         this(plugin, PLAYER, spawnID, 0, 0);
@@ -89,14 +88,6 @@ public class Participant {
     }
     public StatusSection getStatusSection() {
         return statusSection;
-    }
-
-    public boolean isOnline() {
-        return this.online;
-    }
-
-    public void setOnline(boolean online) {
-        this.online = online;
     }
 
     public ScoreTagSection getScoreTagSection() {

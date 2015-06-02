@@ -35,10 +35,7 @@ public class Listeners implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (plugin.hasParticipantSet(player)) {
-            plugin.getParticipant(player).setOnline(true);
-        }
-        else {
+        if (!plugin.hasParticipantSet(player)) {
             plugin.getParticipants().add(new Participant(plugin, player, plugin.getNextSpawnIndex()));
         }
         plugin.spawn(player);
@@ -65,9 +62,6 @@ public class Listeners implements Listener {
                     + " more players to start. All " + playerName
                     + "'s fault. Blame them because now it'll take longer to start!!");
             game.setGameState(GameState.WAITING);
-            if (plugin.hasParticipantSet(player)) {
-                plugin.getParticipant(player).setOnline(false);
-            }
         }
     }
 

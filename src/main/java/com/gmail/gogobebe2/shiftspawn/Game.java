@@ -83,15 +83,17 @@ public class Game {
             @Override
             public void run() {
                 Bukkit.broadcastMessage("debug 1: gameState.name(): " + gameState.name() + ", getTime(): " + getTime());
-                for (Participant participant : plugin.getOnlineParticipants()) {
-                    showKillsTag();
-                    if (gameState.equals(GameState.STARTED)) {
-                        participant.getScoreTagSection().display();
-                        participant.getTopScoresSection().display();
+                for (Participant participant : plugin.getParticipants()) {
+                    if (participant.getPlayer().isOnline()) {
+                        showKillsTag();
+                        if (gameState.equals(GameState.STARTED)) {
+                            participant.getScoreTagSection().display();
+                            participant.getTopScoresSection().display();
+                        }
+                        participant.getStatusSection().display();
+                        participant.getOnlinePlayerSection().display();
+                        Bukkit.broadcastMessage("debug 2: participant.getPlayer().getName(): " + participant.getPlayer().getName());
                     }
-                    participant.getStatusSection().display();
-                    participant.getOnlinePlayerSection().display();
-
                 }
                 if (seconds != 0 || minutes != 0) {
                     seconds--;

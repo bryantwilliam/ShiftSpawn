@@ -166,22 +166,12 @@ public class ShiftSpawn extends JavaPlugin {
         return this.participants;
     }
 
-    public List<Participant> getOnlineParticipants() {
-        List<Participant> temp = new ArrayList<>();
-        for (Participant participant : getParticipants()) {
-            if (participant.isOnline()) {
-                temp.add(participant);
-            }
-        }
-        return temp;
-    }
-
     public boolean hasParticipantSet(Player player) {
         if (participants.isEmpty()) {
             return false;
         }
         for (Participant participant : participants) {
-            if (participant.getPlayer().equals(player)) {
+            if (participant.getPlayer().getUniqueId().equals(player.getUniqueId())) {
                 return true;
             }
         }
