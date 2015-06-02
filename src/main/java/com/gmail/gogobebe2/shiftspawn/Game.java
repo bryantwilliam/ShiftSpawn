@@ -86,10 +86,11 @@ public class Game {
                 for (Participant participant : plugin.getOnlineParticipants()) {
                     showKillsTag();
                     if (gameState.equals(GameState.STARTED)) {
-                        participant.getScoreTagSection().displaySection();
-                        participant.getTopScoresSection().displaySection();
+                        participant.getScoreTagSection().display();
+                        participant.getTopScoresSection().display();
                     }
-                    participant.getStatusSection().displaySection();
+                    participant.getStatusSection().display();
+                    participant.getOnlinePlayerSection().display();
 
                 }
                 if (seconds != 0 || minutes != 0) {

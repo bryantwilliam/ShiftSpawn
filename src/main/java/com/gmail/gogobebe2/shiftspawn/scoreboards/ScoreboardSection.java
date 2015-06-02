@@ -7,8 +7,8 @@ import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
 public abstract class ScoreboardSection {
-    private Score heading;
-    private Score score;
+    private Score heading = null;
+    private Score score = null;
     private Scoreboard scoreboard;
     private Objective objective;
     private Participant participant;
@@ -21,22 +21,28 @@ public abstract class ScoreboardSection {
         this.plugin = plugin;
     }
 
-    public abstract void displaySection();
-
-    public void deleteSection() {
-        scoreboard.resetScores(heading.getEntry());
+    public void display() {
+        arrangeSection();
+        saveSection();
     }
 
-    public void setSectionIndex(int index) {
-        heading.setScore(index);
+    public abstract void arrangeSection();
+
+    public boolean isHeadingSet() {
+        return heading != null;
+    }
+
+    public boolean isScoreSet() {
+        return score != null;
+    }
+
+    public void resestSection() {
+        scoreboard.resetScores(heading.getEntry());
+        scoreboard.resetScores(score.getEntry());
     }
 
     public void saveSection() {
         participant.getPlayer().setScoreboard(scoreboard);
-    }
-
-    public Score getHeading() {
-        return heading;
     }
 
     public Score getScore() {
@@ -59,11 +65,13 @@ public abstract class ScoreboardSection {
         return plugin;
     }
 
-    public void setHeading(Score heading) {
-        this.heading = heading;
+    public void setHeading(String heading, int index) {
+        this.heading = objective.getScore(heading);
+        this.heading.setScore(index);
     }
 
-    public void setScore(Score score) {
-        this.score = score;
+    public void setScore(String score, int index) {
+        this.score = objective.getScore(score);
+        this.score.setScore(index);
     }
 }

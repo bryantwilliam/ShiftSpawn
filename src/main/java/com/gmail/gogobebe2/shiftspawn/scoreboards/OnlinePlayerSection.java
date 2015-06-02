@@ -12,8 +12,8 @@ public class OnlinePlayerSection extends ScoreboardSection {
     }
 
     @Override
-    public void displaySection() {
-        int onlineAmount = Bukkit.getOnlinePlayers().size();
-        setHeading(getObjective().getScore(ChatColor.AQUA + "Players online: "));
+    public void arrangeSection() {
+        setHeading(ChatColor.AQUA + "" + ChatColor.BOLD + "Players online: ", 9);
+        setScore(ChatColor.AQUA + "" + Bukkit.getOnlinePlayers().size(), 8);
     }
 }

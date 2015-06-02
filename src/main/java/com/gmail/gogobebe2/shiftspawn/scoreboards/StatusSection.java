@@ -3,12 +3,10 @@ package com.gmail.gogobebe2.shiftspawn.scoreboards;
 import com.gmail.gogobebe2.shiftspawn.Game;
 import com.gmail.gogobebe2.shiftspawn.Participant;
 import com.gmail.gogobebe2.shiftspawn.ShiftSpawn;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
 
-public class StatusSection extends ScoreboardSection {
+public class StatusSection extends DynamicScoreboardSection {
     private Game game;
 
     public StatusSection(Participant participant, Objective objective, ShiftSpawn plugin) {
@@ -17,16 +15,8 @@ public class StatusSection extends ScoreboardSection {
     }
 
     @Override
-    public void displaySection() {
-        int onlineAmount = Bukkit.getOnlinePlayers().size();
-        if (getHeading() != null) {
-            getScoreboard().resetScores(getHeading().getEntry());
-        }
-        setHeading(getObjective().getScore(getStatus()));
-        getHeading().setScore(onlineAmount + 1);
-        Score online = getObjective().getScore(ChatColor.AQUA + "Players online: ");
-        online.setScore(onlineAmount);
-        saveSection();
+    public void arrangeSection() {
+        setHeading(getStatus(), 10);
     }
 
     private String getStatus() {

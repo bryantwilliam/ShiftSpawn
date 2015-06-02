@@ -5,13 +5,13 @@ import com.gmail.gogobebe2.shiftspawn.ShiftSpawn;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
 
-public class ScoreTagSection extends ScoreboardSection {
+public class ScoreTagSection extends DynamicScoreboardSection {
     public ScoreTagSection(Participant participant, Objective objective, ShiftSpawn plugin) {
         super(participant, objective, plugin);
     }
 
     @Override
-    public void displaySection() {
+    public void arrangeSection() {
         Player player = getParticipant().getPlayer();
         String name;
         if (player.getName().length() <= 12) {
@@ -20,8 +20,6 @@ public class ScoreTagSection extends ScoreboardSection {
             name = player.getName().substring(0, 12);
         }
         name = name + "_tag";
-        setHeading(getObjective().getScore(name));
-        setSectionIndex(getParticipant().getScore());
-        saveSection();
+        setHeading(name, getParticipant().getScore());
     }
 }

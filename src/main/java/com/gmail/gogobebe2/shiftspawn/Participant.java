@@ -1,5 +1,6 @@
 package com.gmail.gogobebe2.shiftspawn;
 
+import com.gmail.gogobebe2.shiftspawn.scoreboards.OnlinePlayerSection;
 import com.gmail.gogobebe2.shiftspawn.scoreboards.ScoreTagSection;
 import com.gmail.gogobebe2.shiftspawn.scoreboards.StatusSection;
 import com.gmail.gogobebe2.shiftspawn.scoreboards.TopScoresSection;
@@ -19,6 +20,7 @@ public class Participant {
     private TopScoresSection topScoresSection;
     private StatusSection statusSection;
     private ScoreTagSection scoreTagSection;
+    private OnlinePlayerSection onlinePlayerSection;
     private boolean online;
 
     public Participant(ShiftSpawn plugin, final Player PLAYER, String spawnID) {
@@ -42,6 +44,7 @@ public class Participant {
         sideObjective.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Shift Scores");
         this.topScoresSection = new TopScoresSection(this, sideObjective, plugin);
         this.statusSection = new StatusSection(this, sideObjective, plugin);
+        this.onlinePlayerSection = new OnlinePlayerSection(this, sideObjective, plugin);
 
         Objective nameObjective = scoreboard.registerNewObjective(getUniqueObjectiveName(playerName, "n"), "dummy");
         nameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
@@ -54,6 +57,10 @@ public class Participant {
     }
 
     public void setKills(int kills) {
+        /*
+         TODO:
+         Use this when a player gets a kill.
+         */
         this.kills = kills;
     }
 
@@ -69,32 +76,19 @@ public class Participant {
         return spawnID;
     }
 
-    public Player getPLAYER() {
-        return PLAYER;
-    }
-
     public TopScoresSection getTopScoresSection() {
         return topScoresSection;
     }
 
     public void setScore(int score) {
+        /*
+        TODO:
+        Use this when a player mines alpha core.
+        */
         this.score = score;
     }
-
-    public void setSpawnID(String spawnID) {
-        this.spawnID = spawnID;
-    }
-
-    public void setTopScoresSection(TopScoresSection topScoresSection) {
-        this.topScoresSection = topScoresSection;
-    }
-
     public StatusSection getStatusSection() {
         return statusSection;
-    }
-
-    public void setStatusSection(StatusSection statusSection) {
-        this.statusSection = statusSection;
     }
 
     public boolean isOnline() {
@@ -109,7 +103,7 @@ public class Participant {
         return scoreTagSection;
     }
 
-    public void setScoreTagSection(ScoreTagSection scoreTagSection) {
-        this.scoreTagSection = scoreTagSection;
+    public OnlinePlayerSection getOnlinePlayerSection() {
+        return onlinePlayerSection;
     }
 }
