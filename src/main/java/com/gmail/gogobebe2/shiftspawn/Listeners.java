@@ -48,7 +48,7 @@ public class Listeners implements Listener {
             plugin.getParticipant(player).setOnline(true);
         }
         else {
-            plugin.getParticipants().add(new Participant(plugin, player, plugin.getParticipant(player).getSpawnID()));
+            plugin.getParticipants().add(new Participant(plugin, player, plugin.getNextSpawnIndex()));
         }
     }
 
