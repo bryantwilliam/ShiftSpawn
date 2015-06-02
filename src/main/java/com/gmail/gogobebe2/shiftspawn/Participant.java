@@ -28,16 +28,18 @@ public class Participant {
         this.spawnID = spawnID;
         this.score = score;
         this.kills = kills;
-        Scoreboard scoreboard = PLAYER.getServer().getScoreboardManager().getNewScoreboard();
+        Scoreboard scoreboard = PLAYER.getScoreboard();
         String playerName = PLAYER.getName();
+
         Objective sideObjective = scoreboard.registerNewObjective(playerName, "dummy");
         sideObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
         sideObjective.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Shift Scores");
+        this.topScoresSection = new TopScoresSection(this, sideObjective, plugin);
+        this.statusSection = new StatusSection(this, sideObjective, plugin);
+
         Objective nameObjective = scoreboard.registerNewObjective("n" + (playerName.length() == 16 ? playerName.substring(0, 15) : playerName), "dummy");
         nameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         nameObjective.setDisplayName(ChatColor.DARK_GREEN + "Points");
-        this.topScoresSection = new TopScoresSection(this, sideObjective, plugin);
-        this.statusSection = new StatusSection(this, sideObjective, plugin);
         this.scoreTagSection = new ScoreTagSection(this, nameObjective, plugin);
     }
 

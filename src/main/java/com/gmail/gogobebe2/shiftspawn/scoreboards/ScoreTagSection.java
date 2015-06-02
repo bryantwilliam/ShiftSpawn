@@ -20,7 +20,7 @@ public class ScoreTagSection extends ScoreboardSection {
             name = player.getName().substring(0, 12);
         }
         name = name + "_tag";
-        setScore(getObjective().getScore(name));
+        setHeading(getObjective().getScore(name));
         setSectionIndex(getParticipant().getScore());
         saveSection();
     }

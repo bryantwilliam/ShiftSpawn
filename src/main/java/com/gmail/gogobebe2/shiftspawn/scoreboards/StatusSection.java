@@ -19,11 +19,11 @@ public class StatusSection extends ScoreboardSection {
     @Override
     public void displaySection() {
         int onlineAmount = Bukkit.getOnlinePlayers().size();
-        if (getScore() != null) {
-            getScoreboard().resetScores(getScore().getEntry());
+        if (getHeading() != null) {
+            getScoreboard().resetScores(getHeading().getEntry());
         }
-        setScore(getObjective().getScore(getStatus()));
-        getScore().setScore(onlineAmount + 1);
+        setHeading(getObjective().getScore(getStatus()));
+        getHeading().setScore(onlineAmount + 1);
         Score online = getObjective().getScore(ChatColor.AQUA + "Players online: ");
         online.setScore(onlineAmount);
         saveSection();

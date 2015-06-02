@@ -7,8 +7,8 @@ import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
 public abstract class ScoreboardSection {
+    private Score heading;
     private Score score;
-    private Score subScore;
     private Scoreboard scoreboard;
     private Objective objective;
     private Participant participant;
@@ -24,23 +24,23 @@ public abstract class ScoreboardSection {
     public abstract void displaySection();
 
     public void deleteSection() {
-        scoreboard.resetScores(score.getEntry());
+        scoreboard.resetScores(heading.getEntry());
     }
 
     public void setSectionIndex(int index) {
-        score.setScore(index);
+        heading.setScore(index);
     }
 
     public void saveSection() {
         participant.getPlayer().setScoreboard(scoreboard);
     }
 
-    public Score getScore() {
-        return score;
+    public Score getHeading() {
+        return heading;
     }
 
-    public Score getSubScore() {
-        return subScore;
+    public Score getScore() {
+        return score;
     }
 
     public Scoreboard getScoreboard() {
@@ -59,15 +59,11 @@ public abstract class ScoreboardSection {
         return plugin;
     }
 
+    public void setHeading(Score heading) {
+        this.heading = heading;
+    }
+
     public void setScore(Score score) {
         this.score = score;
-    }
-
-    public void setSubScore(Score subScore) {
-        this.subScore = subScore;
-    }
-
-    public void setScoreboard(Scoreboard scoreboard) {
-        this.scoreboard = scoreboard;
     }
 }
