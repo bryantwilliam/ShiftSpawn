@@ -9,6 +9,8 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.util.Random;
+
 public class Participant {
     private final Player PLAYER;
     private int score;
@@ -23,6 +25,10 @@ public class Participant {
         this(plugin, PLAYER, spawnID, 0, 0);
     }
 
+    private String getUniqueObjectiveName(String name, String prefix) {
+        return prefix + "_" + new Random().nextInt(9 + 1) + (name.length() >= 12 ? name.substring(0, 132) : name) + new Random().nextInt(9 + 1);
+    }
+
     public Participant(ShiftSpawn plugin, final Player PLAYER, String spawnID, int score, int kills) {
         this.PLAYER = PLAYER;
         this.spawnID = spawnID;
@@ -31,13 +37,13 @@ public class Participant {
         Scoreboard scoreboard = PLAYER.getScoreboard();
         String playerName = PLAYER.getName();
 
-        Objective sideObjective = scoreboard.registerNewObjective("s_" + (playerName.length() == 16 ? playerName.substring(0, 14) : playerName), "dummy");
+        Objective sideObjective = scoreboard.registerNewObjective(getUniqueObjectiveName(playerName, "s"), "dummy");
         sideObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
         sideObjective.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Shift Scores");
         this.topScoresSection = new TopScoresSection(this, sideObjective, plugin);
         this.statusSection = new StatusSection(this, sideObjective, plugin);
 
-        Objective nameObjective = scoreboard.registerNewObjective("n_" + (playerName.length() == 16 ? playerName.substring(0, 14) : playerName), "dummy");
+        Objective nameObjective = scoreboard.registerNewObjective(getUniqueObjectiveName(playerName, "n"), "dummy");
         nameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         nameObjective.setDisplayName(ChatColor.DARK_GREEN + "Points");
         this.scoreTagSection = new ScoreTagSection(this, nameObjective, plugin);
