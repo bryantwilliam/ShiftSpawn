@@ -44,41 +44,9 @@ public class Game {
         return getMinutes() + ":" + getSeconds();
     }
 
-    private void showScoreTag(Player player) {
-        String name;
-        if (player.getName().length() <= 12) {
-            name = player.getName();
-        } else {
-            name = player.getName().substring(0, 12);
-        }
-        name = name + "_tag";
-
-        Scoreboard scoreboard = player.getScoreboard();
-        Objective o = scoreboard.getObjective(name);
-
-        if (scoreboard.getObjectives().isEmpty() || o == null) {
-            o = scoreboard.registerNewObjective(name, "dummy");
-            o.setDisplaySlot(DisplaySlot.BELOW_NAME);
-            o.setDisplayName(ChatColor.DARK_GREEN + "Points");
-        }
-
-        Score score = o.getScore(ChatColor.BLUE + name);
-        score.setScore(plugin.getParticipant(player).getScore());
-        player.setScoreboard(scoreboard);
-    }
-
-    private void showScoreSide(Player player) {
-        String name = "score_side";
-        Scoreboard scoreboard = player.getScoreboard();
-        Objective o = scoreboard.getObjective(name);
-        player.setScoreboard(scoreboard);
-    }
-
     private void showKillsTag() {
-        Bukkit.broadcastMessage("debug 1...");
         for (Participant participant : plugin.getParticipants()) {
             Player player = participant.getPlayer();
-            Bukkit.broadcastMessage("debug 2: " + player.getName() + ", " + participant.getKills());
             Scoreboard scoreboard = player.getScoreboard();
 
             String name;
@@ -88,7 +56,6 @@ public class Game {
                 name = player.getName().substring(0, 11);
             }
             name = name + "_team";
-            Bukkit.broadcastMessage("debug 3: " + name);
             Team team = null;
             boolean foundTeam = false;
             if (!scoreboard.getTeams().isEmpty()) {
@@ -100,14 +67,11 @@ public class Game {
                     }
                 }
             }
-            Bukkit.broadcastMessage("debug 4: " + foundTeam);
             if (!foundTeam) {
                 team = scoreboard.registerNewTeam(name);
-                Bukkit.broadcastMessage("debug 5");
             }
             team.setPrefix(ChatColor.YELLOW + "[" + participant.getKills() + "] " + ChatColor.AQUA + ChatColor.BOLD);
             team.addPlayer(player);
-            Bukkit.broadcastMessage("debug 6");
         }
     }
 
@@ -125,8 +89,7 @@ public class Game {
                     Player player = participant.getPlayer();
                     showKillsTag();
                     if (gameState.equals(GameState.STARTED)) {
-                        // TODO: refactor the bottom method and make it a scoreboard section object instead.
-                        showScoreTag(player);
+                        participant.getScoreTagSection().displaySection();
                         participant.getTopScoresSection().displaySection();
                     }
                     participant.getStatusSection().displaySection();
@@ -154,17 +117,17 @@ public class Game {
             case RESTARTING:
                 Bukkit.getServer().shutdown();
             case WAITING:
-                // Just keep looping and use the timer to decide how to use ".." or "...".
+                // Just keep looping and use the timer to decide how to use ".." or "..."
                 setMinutes(Integer.MAX_VALUE);
                 startTimer();
                 break;
             case STARTING:
                 Bukkit.broadcastMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Game starting!");
-                setTime(plugin.getConfig().getString(ShiftSpawn.GAME_TIME));
                 this.gameState = GameState.STARTED;
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     plugin.spawn(player);
                 }
+                setTime(plugin.getConfig().getString(ShiftSpawn.GAME_TIME));
                 startTimer();
                 break;
             case STARTED:

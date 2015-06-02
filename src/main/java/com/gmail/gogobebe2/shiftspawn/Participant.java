@@ -1,5 +1,6 @@
 package com.gmail.gogobebe2.shiftspawn;
 
+import com.gmail.gogobebe2.shiftspawn.scoreboards.ScoreTagSection;
 import com.gmail.gogobebe2.shiftspawn.scoreboards.StatusSection;
 import com.gmail.gogobebe2.shiftspawn.scoreboards.TopScoresSection;
 import org.bukkit.ChatColor;
@@ -13,11 +14,12 @@ public class Participant {
     private int score;
     private int kills;
     private String spawnID;
-    private ShiftSpawn plugin;
     private Scoreboard scoreboard;
-    private Objective objective;
+    private Objective sideObjective;
+    private Objective nameObjective;
     private TopScoresSection topScoresSection;
     private StatusSection statusSection;
+    private ScoreTagSection scoreTagSection;
     private boolean online;
 
     public Participant(ShiftSpawn plugin, final Player PLAYER, String spawnID) {
@@ -29,14 +31,17 @@ public class Participant {
         this.spawnID = spawnID;
         this.score = score;
         this.kills = kills;
-        this.plugin = plugin;
         this.scoreboard = PLAYER.getScoreboard();
-        this.objective = scoreboard.registerNewObjective("shift_obj", "dummy");
-        this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        this.objective.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Shift Scores");
+        this.sideObjective = scoreboard.registerNewObjective("shift_side", "dummy");
+        this.sideObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        this.sideObjective.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Shift Scores");
+        this.nameObjective = scoreboard.registerNewObjective("shift_name", "dummy");
+        this.nameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+        this.nameObjective.setDisplayName(ChatColor.DARK_GREEN + "Points");
         PLAYER.setScoreboard(scoreboard);
-        this.topScoresSection = new TopScoresSection(this, objective, plugin);
-        this.statusSection = new StatusSection(this, objective, plugin);
+        this.topScoresSection = new TopScoresSection(this, sideObjective, plugin);
+        this.statusSection = new StatusSection(this, sideObjective, plugin);
+        this.scoreTagSection = new ScoreTagSection(this, nameObjective, plugin);
     }
 
     public int getKills() {
@@ -67,8 +72,8 @@ public class Participant {
         return scoreboard;
     }
 
-    public Objective getObjective() {
-        return objective;
+    public Objective getSideObjective() {
+        return sideObjective;
     }
 
     public TopScoresSection getTopScoresSection() {
@@ -101,5 +106,17 @@ public class Participant {
 
     public void setOnline(boolean online) {
         this.online = online;
+    }
+
+    public Objective getNameObjective() {
+        return nameObjective;
+    }
+
+    public ScoreTagSection getScoreTagSection() {
+        return scoreTagSection;
+    }
+
+    public void setScoreTagSection(ScoreTagSection scoreTagSection) {
+        this.scoreTagSection = scoreTagSection;
     }
 }
