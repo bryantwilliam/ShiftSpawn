@@ -11,8 +11,11 @@ public abstract class DynamicScoreboardSection extends ScoreboardSection {
 
     @Override
     public void display() {
-        if (isHeadingSet() || isScoreSet()) {
-            resestSection();
+        if (isHeadingSet()) {
+            resetHeading();
+        }
+        if (isScoreSet()) {
+            resetScore();
         }
         super.display();
     }

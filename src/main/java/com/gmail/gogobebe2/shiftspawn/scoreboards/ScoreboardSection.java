@@ -36,8 +36,11 @@ public abstract class ScoreboardSection {
         return score != null;
     }
 
-    public void resestSection() {
+    public void resetHeading() {
         scoreboard.resetScores(heading.getEntry());
+    }
+
+    public void resetScore() {
         scoreboard.resetScores(score.getEntry());
     }
 
