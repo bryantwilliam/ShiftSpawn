@@ -35,6 +35,12 @@ public class Listeners implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        if (plugin.hasParticipantSet(player)) {
+            plugin.getParticipant(player).setOnline(true);
+        }
+        else {
+            plugin.getParticipants().add(new Participant(plugin, player, plugin.getNextSpawnIndex()));
+        }
         plugin.spawn(player);
         String playerName = player.getName();
         event.setJoinMessage(ChatColor.DARK_PURPLE + playerName + " joined the game.");
@@ -44,12 +50,6 @@ public class Listeners implements Listener {
                         + (plugin.getConfig().getInt(ShiftSpawn.MIN_PLAYERS_KEY) - Bukkit.getOnlinePlayers().size())
                         + " more players to start.");
             }
-        }
-        if (plugin.hasParticipantSet(player)) {
-            plugin.getParticipant(player).setOnline(true);
-        }
-        else {
-            plugin.getParticipants().add(new Participant(plugin, player, plugin.getNextSpawnIndex()));
         }
     }
 
