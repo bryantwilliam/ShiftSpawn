@@ -31,13 +31,13 @@ public class Participant {
         Scoreboard scoreboard = PLAYER.getScoreboard();
         String playerName = PLAYER.getName();
 
-        Objective sideObjective = scoreboard.registerNewObjective(playerName, "dummy");
+        Objective sideObjective = scoreboard.registerNewObjective("s_" + (playerName.length() == 16 ? playerName.substring(0, 14) : playerName), "dummy");
         sideObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
         sideObjective.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Shift Scores");
         this.topScoresSection = new TopScoresSection(this, sideObjective, plugin);
         this.statusSection = new StatusSection(this, sideObjective, plugin);
 
-        Objective nameObjective = scoreboard.registerNewObjective("n" + (playerName.length() == 16 ? playerName.substring(0, 15) : playerName), "dummy");
+        Objective nameObjective = scoreboard.registerNewObjective("n_" + (playerName.length() == 16 ? playerName.substring(0, 14) : playerName), "dummy");
         nameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         nameObjective.setDisplayName(ChatColor.DARK_GREEN + "Points");
         this.scoreTagSection = new ScoreTagSection(this, nameObjective, plugin);
