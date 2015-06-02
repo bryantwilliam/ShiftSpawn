@@ -1,9 +1,9 @@
 package com.gmail.gogobebe2.shiftspawn;
 
-import com.gmail.gogobebe2.shiftspawn.scoreboards.OnlinePlayerSection;
-import com.gmail.gogobebe2.shiftspawn.scoreboards.ScoreTagSection;
-import com.gmail.gogobebe2.shiftspawn.scoreboards.StatusSection;
-import com.gmail.gogobebe2.shiftspawn.scoreboards.TopScoresSection;
+import com.gmail.gogobebe2.shiftspawn.scoreboard.OnlinePlayerSection;
+import com.gmail.gogobebe2.shiftspawn.scoreboard.ScoreTagSection;
+import com.gmail.gogobebe2.shiftspawn.scoreboard.StatusSection;
+import com.gmail.gogobebe2.shiftspawn.scoreboard.TopScoresSection;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -40,7 +40,7 @@ public class Participant {
 
         Objective sideObjective = scoreboard.registerNewObjective(getUniqueObjectiveName(playerName, "s"), "dummy");
         sideObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        sideObjective.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Shift Scores");
+        sideObjective.setDisplayName(ChatColor.DARK_BLUE + "" + ChatColor.BOLD + ChatColor.UNDERLINE + ChatColor.ITALIC +  "Shift Scores");
         this.topScoresSection = new TopScoresSection(this, sideObjective, plugin);
         this.statusSection = new StatusSection(this, sideObjective, plugin);
         this.onlinePlayerSection = new OnlinePlayerSection(this, sideObjective, plugin);

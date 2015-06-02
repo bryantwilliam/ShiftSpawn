@@ -1,4 +1,4 @@
-package com.gmail.gogobebe2.shiftspawn.scoreboards;
+package com.gmail.gogobebe2.shiftspawn.scoreboard;
 
 import com.gmail.gogobebe2.shiftspawn.Participant;
 import com.gmail.gogobebe2.shiftspawn.ShiftSpawn;
@@ -8,7 +8,6 @@ import org.bukkit.scoreboard.Scoreboard;
 
 public abstract class ScoreboardSection {
     private Score heading = null;
-    private Score score = null;
     private Scoreboard scoreboard;
     private Objective objective;
     private Participant participant;
@@ -22,6 +21,9 @@ public abstract class ScoreboardSection {
     }
 
     public void display() {
+        if (isHeadingSet()) {
+            resetHeading();
+        }
         arrangeSection();
         saveSection();
     }
@@ -32,24 +34,12 @@ public abstract class ScoreboardSection {
         return heading != null;
     }
 
-    public boolean isScoreSet() {
-        return score != null;
-    }
-
     public void resetHeading() {
         scoreboard.resetScores(heading.getEntry());
     }
 
-    public void resetScore() {
-        scoreboard.resetScores(score.getEntry());
-    }
-
     public void saveSection() {
         participant.getPlayer().setScoreboard(scoreboard);
-    }
-
-    public Score getScore() {
-        return score;
     }
 
     public Scoreboard getScoreboard() {
@@ -71,10 +61,5 @@ public abstract class ScoreboardSection {
     public void setHeading(String heading, int index) {
         this.heading = objective.getScore(heading);
         this.heading.setScore(index);
-    }
-
-    public void setScore(String score, int index) {
-        this.score = objective.getScore(score);
-        this.score.setScore(index);
     }
 }

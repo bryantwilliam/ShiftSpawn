@@ -1,4 +1,4 @@
-package com.gmail.gogobebe2.shiftspawn.scoreboards;
+package com.gmail.gogobebe2.shiftspawn.scoreboard;
 
 import com.gmail.gogobebe2.shiftspawn.Participant;
 import com.gmail.gogobebe2.shiftspawn.ShiftSpawn;

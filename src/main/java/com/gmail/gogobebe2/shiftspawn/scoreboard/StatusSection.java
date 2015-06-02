@@ -1,4 +1,4 @@
-package com.gmail.gogobebe2.shiftspawn.scoreboards;
+package com.gmail.gogobebe2.shiftspawn.scoreboard;
 
 import com.gmail.gogobebe2.shiftspawn.Game;
 import com.gmail.gogobebe2.shiftspawn.Participant;
@@ -6,7 +6,7 @@ import com.gmail.gogobebe2.shiftspawn.ShiftSpawn;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.Objective;
 
-public class StatusSection extends DynamicScoreboardSection {
+public class StatusSection extends ScoreboardSection {
     private Game game;
 
     public StatusSection(Participant participant, Objective objective, ShiftSpawn plugin) {
