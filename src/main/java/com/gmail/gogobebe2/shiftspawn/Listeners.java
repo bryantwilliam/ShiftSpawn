@@ -7,7 +7,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDamageEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -48,6 +47,9 @@ public class Listeners implements Listener {
         if (plugin.hasParticipantSet(player)) {
             plugin.getParticipant(player).setOnline(true);
         }
+        else {
+            plugin.getParticipants().add(new Participant(plugin, player, plugin.getParticipant(player).getSpawnID()));
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -81,15 +83,6 @@ public class Listeners implements Listener {
         Player player = event.getPlayer();
         if (event.getTo().getY() < 0 && player.getHealth() > 0) {
             player.setHealth(0);
-            plugin.spawn(player);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onPlayerDamagedEvent(EntityDamageByEntityEvent event) {
-        if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
-            Player damager = (Player) event.getDamager();
             plugin.spawn(player);
         }
     }

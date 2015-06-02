@@ -14,7 +14,6 @@ public class Participant {
     private int score;
     private int kills;
     private String spawnID;
-    private Scoreboard scoreboard;
     private TopScoresSection topScoresSection;
     private StatusSection statusSection;
     private ScoreTagSection scoreTagSection;
@@ -29,7 +28,7 @@ public class Participant {
         this.spawnID = spawnID;
         this.score = score;
         this.kills = kills;
-        this.scoreboard = PLAYER.getScoreboard();
+        Scoreboard scoreboard = PLAYER.getServer().getScoreboardManager().getNewScoreboard();
         Objective sideObjective = scoreboard.registerNewObjective("shift_side_" + PLAYER.getName(), "dummy");
         sideObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
         sideObjective.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Shift Scores");
@@ -64,11 +63,6 @@ public class Participant {
     public Player getPLAYER() {
         return PLAYER;
     }
-
-    public Scoreboard getScoreboard() {
-        return scoreboard;
-    }
-
     public TopScoresSection getTopScoresSection() {
         return topScoresSection;
     }

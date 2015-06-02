@@ -84,7 +84,6 @@ public class Game {
             public void run() {
                 Bukkit.broadcastMessage("debug 1: gameState.name(): " + gameState.name() + ", getTime(): " + getTime());
                 for (Participant participant : plugin.getOnlineParticipants()) {
-                    Player player = participant.getPlayer();
                     showKillsTag();
                     if (gameState.equals(GameState.STARTED)) {
                         participant.getScoreTagSection().displaySection();

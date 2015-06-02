@@ -74,12 +74,7 @@ public class ShiftSpawn extends JavaPlugin {
         PLAYER.spigot().respawn();
         String id;
         if (game.getGameState().equals(GameState.STARTED)) {
-            if (hasParticipantSet(PLAYER)) {
-                id = getParticipant(PLAYER).getSpawnID();
-            } else {
-                id = getNextSpawnIndex();
-                getParticipants().add(new Participant(this, PLAYER, id));
-            }
+            id = getParticipant(PLAYER).getSpawnID();
             PLAYER.setHealth(20);
             PLAYER.setFoodLevel(20);
             Inventory inventory = PLAYER.getInventory();
@@ -87,12 +82,13 @@ public class ShiftSpawn extends JavaPlugin {
 
             ItemStack pickaxe = new ItemStack(Material.WOOD_PICKAXE, 1);
             ItemMeta pickaxeMeta = pickaxe.getItemMeta();
-            pickaxeMeta.setDisplayName(ChatColor.AQUA + "Trusty old pickaxe");
+            pickaxeMeta.setDisplayName(ChatColor.AQUA + "Chipped pickaxe");
+            pickaxe.setDurability((short) 8);
             pickaxe.setItemMeta(pickaxeMeta);
 
             ItemStack sword = new ItemStack(Material.WOOD_SWORD, 1);
             ItemMeta swordMeta = sword.getItemMeta();
-            swordMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Trusty old sword");
+            swordMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Trusty sword");
             sword.setItemMeta(swordMeta);
 
             inventory.addItem(pickaxe);
