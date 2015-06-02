@@ -29,10 +29,10 @@ public class Participant {
         this.score = score;
         this.kills = kills;
         Scoreboard scoreboard = PLAYER.getServer().getScoreboardManager().getNewScoreboard();
-        Objective sideObjective = scoreboard.registerNewObjective("shift_side_" + PLAYER.getName(), "dummy");
+        Objective sideObjective = scoreboard.registerNewObjective(PLAYER.getName(), "dummy");
         sideObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
         sideObjective.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Shift Scores");
-        Objective nameObjective = scoreboard.registerNewObjective("shift_name_" + PLAYER.getName(), "dummy");
+        Objective nameObjective = scoreboard.registerNewObjective(PLAYER.getName(), "dummy");
         nameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         nameObjective.setDisplayName(ChatColor.DARK_GREEN + "Points");
         this.topScoresSection = new TopScoresSection(this, sideObjective, plugin);
