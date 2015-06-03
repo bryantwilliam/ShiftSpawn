@@ -40,7 +40,7 @@ public class Participant {
 
         Objective sideObjective = scoreboard.registerNewObjective(getUniqueObjectiveName(playerName, "s"), "dummy");
         sideObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        sideObjective.setDisplayName(ChatColor.DARK_BLUE + "" + ChatColor.BOLD + ChatColor.UNDERLINE + ChatColor.ITALIC +  "Shift Scores");
+        sideObjective.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + ChatColor.UNDERLINE +  "Shift Scores");
         this.topScoresSection = new TopScoresSection(this, sideObjective, plugin);
         this.statusSection = new StatusSection(this, sideObjective, plugin);
         this.onlinePlayerSection = new OnlinePlayerSection(this, sideObjective, plugin);

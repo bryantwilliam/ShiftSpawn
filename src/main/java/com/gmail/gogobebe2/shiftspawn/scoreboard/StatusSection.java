@@ -16,14 +16,14 @@ public class StatusSection extends ScoreboardSection {
 
     @Override
     public void arrangeSection() {
-        setHeading(getStatus(), 10);
+        setHeading(getStatus(), 0);
     }
 
     private String getStatus() {
         String dots = (game.getSeconds() % 2 == 0 ? "." : "");
         switch (game.getGameState()) {
             case WAITING:
-                return ChatColor.BLUE + "" + ChatColor.BOLD + "Waiting.." + dots;
+                return ChatColor.BLUE + "Waiting.." + dots;
             case STARTING:
                 return ChatColor.DARK_AQUA + "Starting in: " + ChatColor.AQUA + game.getTime();
             case STARTED:
@@ -31,7 +31,7 @@ public class StatusSection extends ScoreboardSection {
             case RESTARTING:
                 return ChatColor.RED + "" + ChatColor.BOLD + "Restarting.." + dots;
             default:
-                return ChatColor.RED + "Error! " + ChatColor.RESET;
+                return ChatColor.RED + "Error! ";
         }
     }
 }
