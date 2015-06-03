@@ -34,7 +34,7 @@ public class Listeners implements Listener {
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (!plugin.hasParticipantSet(player)) {
-            plugin.getParticipants().add(new Participant(plugin, player, plugin.getNextSpawnIndex()));
+            plugin.getParticipants().add(new Participant(plugin, player, plugin.getNextSpawnID()));
         }
         plugin.spawn(player);
         String playerName = player.getName();

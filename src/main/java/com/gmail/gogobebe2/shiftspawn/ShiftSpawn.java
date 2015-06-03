@@ -9,10 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class ShiftSpawn extends JavaPlugin {
     public final static String MIN_PLAYERS_KEY = "Minimum players before game starts";
@@ -20,7 +17,7 @@ public class ShiftSpawn extends JavaPlugin {
     public final static String GAME_TIME = "Game time";
     public final static String ALPHA_CORE_ID = "Alpha Core Block ID";
     private Game game;
-    private int spawnIndex;
+    private String spawnID = "-1";
     private List<Participant> participants = new ArrayList<>();
 
     @Override
@@ -75,6 +72,7 @@ public class ShiftSpawn extends JavaPlugin {
         String id;
         if (game.getGameState().equals(GameState.STARTED)) {
             id = getParticipant(PLAYER).getSpawnID();
+            Bukkit.broadcastMessage("debug 2: getParticipant(PLAYER).getSpawnID(); output: " + id);
             PLAYER.setHealth(20);
             PLAYER.setFoodLevel(20);
             Inventory inventory = PLAYER.getInventory();
@@ -96,6 +94,7 @@ public class ShiftSpawn extends JavaPlugin {
             PLAYER.updateInventory();
         } else {
             id = "main";
+            Bukkit.broadcastMessage("debug 2: id: " + id);
         }
         PLAYER.teleport(loadSpawn(id));
     }
@@ -110,7 +109,7 @@ public class ShiftSpawn extends JavaPlugin {
         return new Location(WORLD, X, Y, Z, YAW, PITCH);
     }
 
-    public String getNextSpawnIndex() {
+    public String getNextSpawnID() {
         List<String> ids = new ArrayList<>();
         ids.addAll(getConfig().getConfigurationSection("Spawns").getKeys(false));
         if (ids.contains("main")) {
@@ -118,11 +117,14 @@ public class ShiftSpawn extends JavaPlugin {
         }
         Collections.sort(ids);
         Iterator<String> iterator = ids.iterator();
-        if (!iterator.hasNext()) {
-            return ids.get(0);
+        if (spawnID.equals("-1")) {
+            spawnID = ids.get(new Random().nextInt(ids.size()));
+        } else if (iterator.hasNext()) {
+            spawnID = iterator.next();
         } else {
-            return iterator.next();
+            spawnID = ids.get(0);
         }
+        return spawnID;
     }
 
     @Override
@@ -151,14 +153,6 @@ public class ShiftSpawn extends JavaPlugin {
 
     public Game getGame() {
         return this.game;
-    }
-
-    public int getSpawnIndex() {
-        return this.spawnIndex;
-    }
-
-    public void setSpawnIndex(int spawnIndex) {
-        this.spawnIndex = spawnIndex;
     }
 
     public List<Participant> getParticipants() {

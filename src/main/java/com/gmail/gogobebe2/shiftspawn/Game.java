@@ -92,7 +92,6 @@ public class Game {
                     }
                     participant.getStatusSection().display();
                     participant.getOnlinePlayerSection().display();
-                    Bukkit.broadcastMessage("debug 2: participant.getPlayer().getName(): " + participant.getPlayer().getName());
                 }
                 if (seconds != 0 || minutes != 0) {
                     seconds--;

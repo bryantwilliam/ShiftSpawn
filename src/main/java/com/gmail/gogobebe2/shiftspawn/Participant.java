@@ -4,7 +4,6 @@ import com.gmail.gogobebe2.shiftspawn.scoreboard.OnlinePlayerSection;
 import com.gmail.gogobebe2.shiftspawn.scoreboard.ScoreTagSection;
 import com.gmail.gogobebe2.shiftspawn.scoreboard.StatusSection;
 import com.gmail.gogobebe2.shiftspawn.scoreboard.TopScoresSection;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -46,7 +45,6 @@ public class Participant {
         nameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         nameObjective.setDisplayName(ChatColor.DARK_GREEN + "Points");
         this.scoreTagSection = new ScoreTagSection(this, nameObjective, plugin);
-        Bukkit.broadcastMessage("debug 3: Created a participant for " + playerName + " of the name " + sideObjective.getName() + " and " + nameObjective.getName());
     }
 
     private String getUniqueObjectiveName(String name, String prefix) {
