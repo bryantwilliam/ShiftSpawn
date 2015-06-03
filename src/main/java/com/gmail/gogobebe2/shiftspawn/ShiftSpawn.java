@@ -94,8 +94,7 @@ public class ShiftSpawn extends JavaPlugin {
             inventory.addItem(pickaxe);
             inventory.addItem(sword);
             PLAYER.updateInventory();
-        }
-        else {
+        } else {
             id = "main";
         }
         PLAYER.teleport(loadSpawn(id));
@@ -180,7 +179,7 @@ public class ShiftSpawn extends JavaPlugin {
 
     public Participant getParticipant(Player player) throws NullPointerException {
         for (Participant participant : participants) {
-            if (participant.getPlayer().equals(player)) {
+            if (participant.getPlayer().getUniqueId().equals(player.getUniqueId())) {
                 return participant;
             }
         }

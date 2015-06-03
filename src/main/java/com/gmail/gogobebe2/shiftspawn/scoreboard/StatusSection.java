@@ -25,7 +25,7 @@ public class StatusSection extends ScoreboardSection {
             case WAITING:
                 return ChatColor.BLUE + "Waiting.." + dots;
             case STARTING:
-                return ChatColor.DARK_AQUA + "Starting in: " + ChatColor.AQUA + game.getTime();
+                return ChatColor.AQUA + "Starting in: " + ChatColor.DARK_AQUA + game.getTime();
             case STARTED:
                 return ChatColor.GREEN + "Time left: " + ChatColor.DARK_GREEN + game.getTime();
             case RESTARTING:
