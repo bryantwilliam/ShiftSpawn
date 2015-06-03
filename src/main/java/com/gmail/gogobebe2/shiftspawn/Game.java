@@ -4,7 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scoreboard.*;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 public class Game {
     private int minutes = 0;
@@ -84,16 +85,14 @@ public class Game {
             public void run() {
                 Bukkit.broadcastMessage("debug 1: gameState.name(): " + gameState.name() + ", getTime(): " + getTime());
                 for (Participant participant : plugin.getParticipants()) {
-                    if (participant.getPlayer().isOnline()) {
-                        showKillsTag();
-                        if (gameState.equals(GameState.STARTED)) {
-                            participant.getScoreTagSection().display();
-                            participant.getTopScoresSection().display();
-                        }
-                        participant.getStatusSection().display();
-                        participant.getOnlinePlayerSection().display();
-                        Bukkit.broadcastMessage("debug 2: participant.getPlayer().getName(): " + participant.getPlayer().getName());
+                    showKillsTag();
+                    if (gameState.equals(GameState.STARTED)) {
+                        participant.getScoreTagSection().display();
+                        participant.getTopScoresSection().display();
                     }
+                    participant.getStatusSection().display();
+                    participant.getOnlinePlayerSection().display();
+                    Bukkit.broadcastMessage("debug 2: participant.getPlayer().getName(): " + participant.getPlayer().getName());
                 }
                 if (seconds != 0 || minutes != 0) {
                     seconds--;
