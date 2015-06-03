@@ -14,19 +14,17 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class Listeners implements Listener {
     private ShiftSpawn plugin;
-    private Game game;
 
     public Listeners(ShiftSpawn plugin) {
         this.plugin = plugin;
-        this.game = plugin.getGame();
     }
 
     public boolean tryBeginStarting() {
         boolean wasSuccessful = false;
-        if (Bukkit.getOnlinePlayers().size() >= plugin.getConfig().getInt(ShiftSpawn.MIN_PLAYERS_KEY) && game.getGameState().equals(GameState.WAITING)) {
-            game.setGameState(GameState.STARTING);
+        if (Bukkit.getOnlinePlayers().size() >= plugin.getConfig().getInt(ShiftSpawn.MIN_PLAYERS_KEY) && plugin.getGame().getGameState().equals(GameState.WAITING)) {
+            plugin.getGame().setGameState(GameState.STARTING);
             Bukkit.broadcastMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "Game starting in " + plugin.getConfig().get(ShiftSpawn.TIME_BEFORE_START_KEY));
-            game.setTime(plugin.getConfig().getString(ShiftSpawn.TIME_BEFORE_START_KEY));
+            plugin.getGame().setTime(plugin.getConfig().getString(ShiftSpawn.TIME_BEFORE_START_KEY));
             wasSuccessful = true;
         }
         return wasSuccessful;
@@ -41,7 +39,7 @@ public class Listeners implements Listener {
         plugin.spawn(player);
         String playerName = player.getName();
         event.setJoinMessage(ChatColor.DARK_PURPLE + playerName + " joined the game.");
-        if (game.getGameState().equals(GameState.WAITING)) {
+        if (plugin.getGame().getGameState().equals(GameState.WAITING)) {
             if (!tryBeginStarting()) {
                 event.setJoinMessage(ChatColor.DARK_PURPLE + playerName + " joined. We need "
                         + (plugin.getConfig().getInt(ShiftSpawn.MIN_PLAYERS_KEY) - Bukkit.getOnlinePlayers().size())
@@ -56,12 +54,12 @@ public class Listeners implements Listener {
         Player player = event.getPlayer();
         String playerName = player.getName();
         event.setQuitMessage(ChatColor.DARK_PURPLE + playerName + " left the game.");
-        if (minPlayers < Bukkit.getOnlinePlayers().size() && (game.getGameState().equals(GameState.STARTING) || game.getGameState().equals(GameState.WAITING))) {
+        if (minPlayers < Bukkit.getOnlinePlayers().size() && (plugin.getGame().getGameState().equals(GameState.STARTING) || plugin.getGame().getGameState().equals(GameState.WAITING))) {
             event.setQuitMessage(ChatColor.DARK_PURPLE + playerName + " left the game. We now need "
                     + (minPlayers - Bukkit.getOnlinePlayers().size())
                     + " more players to start. All " + playerName
                     + "'s fault. Blame them because now it'll take longer to start!!");
-            game.setGameState(GameState.WAITING);
+            plugin.getGame().setGameState(GameState.WAITING);
         }
     }
 
