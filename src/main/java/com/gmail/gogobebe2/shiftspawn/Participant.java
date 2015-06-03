@@ -26,10 +26,6 @@ public class Participant {
         this(plugin, PLAYER, spawnID, 0, 0);
     }
 
-    private String getUniqueObjectiveName(String name, String prefix) {
-        return prefix + "_" + new Random().nextInt(9 + 1) + (name.length() >= 12 ? name.substring(0, 132) : name) + new Random().nextInt(9 + 1);
-    }
-
     public Participant(ShiftSpawn plugin, final Player PLAYER, String spawnID, int score, int kills) {
         this.PLAYER = PLAYER;
         this.spawnID = spawnID;
@@ -49,6 +45,10 @@ public class Participant {
         nameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         nameObjective.setDisplayName(ChatColor.DARK_GREEN + "Points");
         this.scoreTagSection = new ScoreTagSection(this, nameObjective, plugin);
+    }
+
+    private String getUniqueObjectiveName(String name, String prefix) {
+        return prefix + "_" + new Random().nextInt(9 + 1) + (name.length() >= 13 ? name.substring(0, 12) : name) + new Random().nextInt(9 + 1);
     }
 
     public int getKills() {
