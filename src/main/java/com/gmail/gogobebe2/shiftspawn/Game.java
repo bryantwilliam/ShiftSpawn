@@ -83,16 +83,6 @@ public class Game {
         this.timerIncrementer = scheduler.scheduleSyncRepeatingTask(plugin, new Runnable() {
             @Override
             public void run() {
-                Bukkit.broadcastMessage("debug 1: gameState.name(): " + gameState.name() + ", getTime(): " + getTime());
-                for (Participant participant : plugin.getParticipants()) {
-                    showKillsTag();
-                    if (gameState.equals(GameState.STARTED)) {
-                        participant.getScoreTagSection().display();
-                        participant.getTopScoresSection().display();
-                    }
-                    participant.getStatusSection().display();
-                    participant.getOnlinePlayerSection().display();
-                }
                 if (seconds != 0 || minutes != 0) {
                     seconds--;
                     if (seconds == -1) {
@@ -102,8 +92,18 @@ public class Game {
                         stopTimer();
                     }
                 }
+
+                for (Participant participant : plugin.getParticipants()) {
+                    showKillsTag();
+                    if (gameState.equals(GameState.STARTED)) {
+                        participant.getScoreTagSection().display();
+                        participant.getTopScoresSection().display();
+                    }
+                    participant.getStatusSection().display();
+                    participant.getOnlinePlayerSection().display();
+                }
             }
-        }, 0L, 20L);
+        }, 0L, 21L);
     }
 
     public void stopTimer() {

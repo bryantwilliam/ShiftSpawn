@@ -72,7 +72,6 @@ public class ShiftSpawn extends JavaPlugin {
         String id;
         if (game.getGameState().equals(GameState.STARTED)) {
             id = getParticipant(PLAYER).getSpawnID();
-            Bukkit.broadcastMessage("debug 2: getParticipant(PLAYER).getSpawnID(); output: " + id + " and spawn id: " + spawnID);
             PLAYER.setHealth(20);
             PLAYER.setFoodLevel(20);
             Inventory inventory = PLAYER.getInventory();
@@ -94,7 +93,6 @@ public class ShiftSpawn extends JavaPlugin {
             PLAYER.updateInventory();
         } else {
             id = "main";
-            Bukkit.broadcastMessage("debug 2: id: " + id + " and spawn id: " + spawnID);
         }
         PLAYER.teleport(loadSpawn(id));
     }
