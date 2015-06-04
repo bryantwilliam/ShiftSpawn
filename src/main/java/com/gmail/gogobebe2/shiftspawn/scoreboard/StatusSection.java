@@ -20,7 +20,7 @@ public class StatusSection extends ScoreboardSection {
         String dots = (getPlugin().getGame().getSeconds() % 2 == 0 ? "." : "");
         switch (getPlugin().getGame().getGameState()) {
             case WAITING:
-                return ChatColor.BLUE + "Waiting.." + dots;
+                return ChatColor.DARK_BLUE + "Waiting.." + dots;
             case STARTING:
                 return ChatColor.AQUA + "Starting in: " + ChatColor.DARK_AQUA + getPlugin().getGame().getTime();
             case STARTED:
