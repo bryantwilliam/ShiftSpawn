@@ -26,6 +26,16 @@ public class Participant {
         this(plugin, PLAYER, spawnID, 0, 0);
     }
 
+    private Objective getObjective(Scoreboard scoreboard, String name) {
+        if (!scoreboard.getObjectives().isEmpty()) {
+            for (Objective objective : scoreboard.getObjectives()) {
+                if (objective.getName().equals(name)) {
+                        return scoreboard.getObjective(name);
+                }
+            }
+        }
+        return scoreboard.registerNewObjective(name, "dummy");
+    }
     public Participant(ShiftSpawn plugin, final Player PLAYER, String spawnID, int score, int kills) {
         this.PLAYER = PLAYER;
         this.spawnID = spawnID;
@@ -33,21 +43,21 @@ public class Participant {
         this.kills = kills;
         Scoreboard scoreboard = PLAYER.getScoreboard();
         String playerName = PLAYER.getName();
-
-        Objective sideObjective = scoreboard.registerNewObjective(getUniqueObjectiveName(playerName, 's'), "dummy");
+        Objective sideObjective = getObjective(scoreboard, getUniqueObjectiveName(playerName, 's'));
         sideObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        sideObjective.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD +  "Shift Scores");
+        sideObjective.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Shift Scores");
         this.topScoresSection = new TopScoresSection(this, sideObjective, plugin);
         this.statusSection = new StatusSection(this, sideObjective, plugin);
         this.onlinePlayerSection = new OnlinePlayerSection(this, sideObjective, plugin);
 
-        Objective nameObjective = scoreboard.registerNewObjective(getUniqueObjectiveName(playerName, 'n'), "dummy");
+        Objective nameObjective = getObjective(scoreboard, getUniqueObjectiveName(playerName, 'n'));
         nameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         nameObjective.setDisplayName(ChatColor.DARK_GREEN + "Points");
         this.scoreTagSection = new ScoreTagSection(this, nameObjective, plugin);
     }
 
     private String getUniqueObjectiveName(String name, char prefix) {
+        // Incase of people with similar name.
         return prefix + "_" + new Random().nextInt(10) + (name.length() >= 13 ? name.substring(0, 12) : name) + new Random().nextInt(10);
     }
 
