@@ -2,6 +2,7 @@ package com.gmail.gogobebe2.shiftspawn;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -85,7 +86,19 @@ public class Listeners implements Listener {
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             Player damager = (Player) event.getDamager();
-            plugin.spawn(player);
+            if (event.getFinalDamage() >= player.getHealth()) {
+                plugin.getParticipant(damager).setKills(plugin.getParticipant(damager).getKills() + 1);
+                plugin.spawn(player);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBlockMinedEvent(BlockDamageEvent event) {
+        if (event.getBlock().getType() == Material.getMaterial(plugin.getConfig().getInt(ShiftSpawn.ALPHA_CORE_ID))) {
+            Participant participant = plugin.getParticipant(event.getPlayer());
+            participant.setScore(participant.getScore() + 1);
+            event.setCancelled(true);
         }
     }
 
