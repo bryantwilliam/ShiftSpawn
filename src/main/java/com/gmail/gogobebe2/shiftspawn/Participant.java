@@ -69,10 +69,6 @@ public class Participant {
     }
 
     public void setKills(int kills) {
-        /*
-          TODO:
-          Use this when a player gets a kill.
-        */
         this.kills = kills;
     }
 
@@ -93,10 +89,6 @@ public class Participant {
     }
 
     public void setScore(int score) {
-        /*
-          TODO:
-          Use this when a player mines alpha core.
-        */
         this.score = score;
     }
     public StatusSection getStatusSection() {
