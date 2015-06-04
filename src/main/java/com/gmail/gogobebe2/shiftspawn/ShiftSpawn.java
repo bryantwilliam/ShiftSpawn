@@ -114,14 +114,17 @@ public class ShiftSpawn extends JavaPlugin {
         if (ids.contains("main")) {
             ids.remove("main");
         }
-        Collections.sort(ids);
-        Iterator<String> iterator = ids.listIterator(ids.indexOf(this.spawnID));
         if (this.spawnID.equals("-1")) {
             this.spawnID = ids.get(new Random().nextInt(ids.size()));
-        } else if (iterator.hasNext()) {
-            this.spawnID = iterator.next();
-        } else {
-            this.spawnID = ids.get(0);
+        }
+        else {
+            Collections.sort(ids);
+            Iterator<String> iterator = ids.listIterator(ids.indexOf(this.spawnID));
+            if (iterator.hasNext()) {
+                this.spawnID = iterator.next();
+            } else {
+                this.spawnID = ids.get(0);
+            }
         }
         return spawnID;
     }
