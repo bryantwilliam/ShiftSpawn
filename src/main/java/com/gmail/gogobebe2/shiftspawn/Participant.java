@@ -42,7 +42,10 @@ public class Participant {
         this.score = score;
         this.kills = kills;
         Scoreboard scoreboard = PLAYER.getScoreboard();
+        scoreboard.clearSlot(DisplaySlot.SIDEBAR);
+        scoreboard.clearSlot(DisplaySlot.BELOW_NAME);
         String playerName = PLAYER.getName();
+
         Objective sideObjective = getObjective(scoreboard, getUniqueObjectiveName(playerName, 's'));
         sideObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
         sideObjective.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Shift Scores");

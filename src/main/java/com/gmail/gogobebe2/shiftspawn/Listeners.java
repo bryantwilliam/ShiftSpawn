@@ -95,10 +95,13 @@ public class Listeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockMinedEvent(BlockDamageEvent event) {
-        if (event.getBlock().getType() == Material.getMaterial(plugin.getConfig().getInt(ShiftSpawn.ALPHA_CORE_ID))) {
-            Participant participant = plugin.getParticipant(event.getPlayer());
-            participant.setScore(participant.getScore() + 1);
-            event.setCancelled(true);
+        if (plugin.getGame().getGameState() == GameState.STARTED) {
+            if (event.getBlock().getType() == Material.getMaterial(plugin.getConfig().getInt(ShiftSpawn.ALPHA_CORE_ID))) {
+                Participant participant = plugin.getParticipant(event.getPlayer());
+                participant.setScore(participant.getScore() + 1);
+                event.getPlayer().sendMessage(ChatColor.GREEN + "+1");
+                event.setCancelled(true);
+            }
         }
     }
 
