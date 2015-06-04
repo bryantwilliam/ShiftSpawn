@@ -7,7 +7,7 @@ import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
 public abstract class ScoreboardSection {
-    private Score heading = null;
+    private Score label = null;
     private Scoreboard scoreboard;
     private Objective objective;
     private Participant participant;
@@ -21,8 +21,8 @@ public abstract class ScoreboardSection {
     }
 
     public void display() {
-        if (isHeadingSet()) {
-            resetHeading();
+        if (isLabelSet()) {
+            resetLabel();
         }
         arrangeSection();
         saveSection();
@@ -30,12 +30,12 @@ public abstract class ScoreboardSection {
 
     public abstract void arrangeSection();
 
-    public boolean isHeadingSet() {
-        return heading != null;
+    public boolean isLabelSet() {
+        return label != null;
     }
 
-    public void resetHeading() {
-        scoreboard.resetScores(heading.getEntry());
+    public void resetLabel() {
+        scoreboard.resetScores(label.getEntry());
     }
 
     public void saveSection() {
@@ -58,8 +58,8 @@ public abstract class ScoreboardSection {
         return plugin;
     }
 
-    public void setHeading(String heading, int index) {
-        this.heading = objective.getScore(heading);
-        this.heading.setScore(index);
+    public void setLabel(String label, int index) {
+        this.label = objective.getScore(label);
+        this.label.setScore(index);
     }
 }

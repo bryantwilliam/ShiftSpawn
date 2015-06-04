@@ -15,6 +15,6 @@ public class OnlinePlayerSection extends ScoreboardSection {
 
     @Override
     public void arrangeSection() {
-        setHeading(ChatColor.AQUA + "" + ChatColor.ITALIC + "Players online: " + ChatColor.DARK_AQUA + Bukkit.getOnlinePlayers().size() + "/" + plugin.getConfig().getInt(ShiftSpawn.MIN_PLAYERS_KEY), 0);
+        setLabel(ChatColor.AQUA + "" + ChatColor.ITALIC + "Players online: " + ChatColor.DARK_AQUA + Bukkit.getOnlinePlayers().size() + "/" + plugin.getConfig().getInt(ShiftSpawn.MIN_PLAYERS_KEY), 0);
     }
 }

@@ -20,6 +20,6 @@ public class ScoreTagSection extends ScoreboardSection {
             name = player.getName().substring(0, 12);
         }
         name = name + "_tag";
-        setHeading(name, getParticipant().getScore());
+        setLabel(name, getParticipant().getScore());
     }
 }

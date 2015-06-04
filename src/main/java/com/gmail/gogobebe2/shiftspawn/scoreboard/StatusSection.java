@@ -13,7 +13,7 @@ public class StatusSection extends ScoreboardSection {
 
     @Override
     public void arrangeSection() {
-        setHeading(getStatus(), 0);
+        setLabel(getStatus(), 0);
     }
 
     private String getStatus() {
