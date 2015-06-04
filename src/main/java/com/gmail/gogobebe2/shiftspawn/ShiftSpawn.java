@@ -72,6 +72,7 @@ public class ShiftSpawn extends JavaPlugin {
         String id;
         if (game.getGameState().equals(GameState.STARTED)) {
             id = getParticipant(PLAYER).getSpawnID();
+            PLAYER.setGameMode(GameMode.SURVIVAL);
             PLAYER.setHealth(20);
             PLAYER.setFoodLevel(20);
             Inventory inventory = PLAYER.getInventory();
@@ -114,13 +115,13 @@ public class ShiftSpawn extends JavaPlugin {
             ids.remove("main");
         }
         Collections.sort(ids);
-        Iterator<String> iterator = ids.iterator();
-        if (spawnID.equals("-1")) {
-            spawnID = ids.get(new Random().nextInt(ids.size()));
+        Iterator<String> iterator = ids.listIterator(ids.indexOf(this.spawnID));
+        if (this.spawnID.equals("-1")) {
+            this.spawnID = ids.get(new Random().nextInt(ids.size()));
         } else if (iterator.hasNext()) {
-            spawnID = iterator.next();
+            this.spawnID = iterator.next();
         } else {
-            spawnID = ids.get(0);
+            this.spawnID = ids.get(0);
         }
         return spawnID;
     }
