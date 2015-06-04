@@ -15,7 +15,7 @@ public class TopScoresSection extends ScoreboardSection {
 
     @Override
     public void arrangeSection() {
-        Player[] onlinePlayers = (Player[]) Bukkit.getOnlinePlayers().toArray();
+        Player[] onlinePlayers = Bukkit.getOnlinePlayers().toArray(new Player[Bukkit.getOnlinePlayers().size()]);
         setLabel(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Everyone's scores:", onlinePlayers.length + 2);
         for (int pIndex = 0; pIndex < onlinePlayers.length; pIndex++) {
             Player player = onlinePlayers[pIndex];
