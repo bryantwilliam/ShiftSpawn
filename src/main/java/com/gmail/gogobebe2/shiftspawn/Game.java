@@ -134,6 +134,7 @@ public class Game {
                 Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Game over!");
                 List<Participant> winners = new ArrayList<>();
                 int best = 0;
+
                 for (Participant participant : plugin.getParticipants()) {
                     if (participant.getScore() > best) {
                         winners.clear();
@@ -165,6 +166,7 @@ public class Game {
                         }
                     }
                 }
+                Bukkit.broadcastMessage(broadcast.toString());
 
                 this.gameState = GameState.RESTARTING;
                 // 1 minute before restart server and use the timer to decide how to use ".." or "...".

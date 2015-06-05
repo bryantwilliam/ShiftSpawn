@@ -86,10 +86,11 @@ public class Listeners implements Listener {
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             Player damager = (Player) event.getDamager();
-            if (event.getFinalDamage() >= player.getHealth()) {
+            if (plugin.getGame().getGameState() == GameState.STARTED && event.getFinalDamage() >= player.getHealth()) {
                 plugin.getParticipant(damager).setKills(plugin.getParticipant(damager).getKills() + 1);
                 plugin.spawn(player);
             }
+
         }
     }
 

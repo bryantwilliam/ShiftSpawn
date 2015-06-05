@@ -44,6 +44,7 @@ public class Participant {
         Scoreboard scoreboard = PLAYER.getScoreboard();
         scoreboard.clearSlot(DisplaySlot.SIDEBAR);
         scoreboard.clearSlot(DisplaySlot.BELOW_NAME);
+        
         String playerName = PLAYER.getName();
 
         Objective sideObjective = getObjective(scoreboard, getUniqueObjectiveName(playerName, 's'));
