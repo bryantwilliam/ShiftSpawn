@@ -80,9 +80,13 @@ public class Game {
     }
 
     public void startTimer() {
-        if (!isTimerRunning()) {
+        if (isTimerRunning()) {
+            return;
+        }
+        else {
             this.isTimerRunning = true;
         }
+
         this.timerIncrementer = scheduler.scheduleSyncRepeatingTask(plugin, new Runnable() {
             @Override
             public void run() {
