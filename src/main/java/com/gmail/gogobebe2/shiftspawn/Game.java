@@ -7,6 +7,9 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Game {
     private int minutes = 0;
     private int seconds = 0;
@@ -130,6 +133,40 @@ public class Game {
                 break;
             case STARTED:
                 Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Game over!");
+                List<Participant> winners = new ArrayList<>();
+                int best = 0;
+                for (Participant participant : plugin.getParticipants()) {
+                    if (participant.getScore() > best) {
+                        winners.clear();
+                        winners.add(participant);
+                    }
+                    else if (participant.getScore() == best) {
+                        winners.add(participant);
+                    }
+                }
+                StringBuilder broadcast = new StringBuilder();
+                for (int i = 0; i < winners.size(); i++) {
+                    Participant winner = winners.get(i);
+                    if (i == 0) {
+                        broadcast.append(ChatColor.AQUA + winner.getPlayer().getName() + " won with a score of " + winner.getScore());
+                        if (winners.size() > 1) {
+                            broadcast.append(". Tied with ");
+                        }
+                    }
+                    else {
+                        broadcast.append(winner.getPlayer().getName() + " with a score of " + winner.getScore());
+                        if (i == winners.size() - 1) {
+                            broadcast.append(".");
+                        }
+                        else if (i == winners.size() - 2) {
+                            broadcast.append(" and ");
+                        }
+                        else {
+                            broadcast.append(", ");
+                        }
+                    }
+                }
+
                 this.gameState = GameState.RESTARTING;
                 // 1 minute before restart server and use the timer to decide how to use ".." or "...".
                 setTime("1:00");

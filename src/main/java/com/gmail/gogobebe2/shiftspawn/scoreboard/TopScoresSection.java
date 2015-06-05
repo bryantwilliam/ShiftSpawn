@@ -28,7 +28,7 @@ public class TopScoresSection extends ScoreboardSection {
         }
         Player[] onlinePlayers = Bukkit.getOnlinePlayers().toArray(new Player[Bukkit.getOnlinePlayers().size()]);
         setLabel(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Scores (" + ChatColor.DARK_GREEN + "score"
-                + ChatColor.LIGHT_PURPLE + "/" + ChatColor.RED + "kills" + ChatColor.LIGHT_PURPLE + "):"
+                + ChatColor.LIGHT_PURPLE + "/" + ChatColor.DARK_RED + "kills" + ChatColor.LIGHT_PURPLE + "):"
                 , onlinePlayers.length + 2);
         for (int pIndex = 0; pIndex < onlinePlayers.length; pIndex++) {
             Player player = onlinePlayers[pIndex];
