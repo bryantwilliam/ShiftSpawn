@@ -90,16 +90,6 @@ public class Game {
         this.timerIncrementer = scheduler.scheduleSyncRepeatingTask(plugin, new Runnable() {
             @Override
             public void run() {
-                if (seconds != 0 || minutes != 0) {
-                    seconds--;
-                    if (seconds == -1) {
-                        minutes--;
-                        seconds = 59;
-                    } else if (seconds == 0 && minutes == 0) {
-                        stopTimer();
-                    }
-                }
-
                 for (Participant participant : plugin.getParticipants()) {
                     showKillsTag();
                     if (gameState.equals(GameState.STARTED)) {
@@ -108,6 +98,16 @@ public class Game {
                     }
                     participant.getStatusSection().display();
                     participant.getOnlinePlayerSection().display();
+                }
+
+                if (seconds != 0 || minutes != 0) {
+                    seconds--;
+                    if (seconds == -1) {
+                        minutes--;
+                        seconds = 59;
+                    } else if (seconds == 0 && minutes == 0) {
+                        stopTimer();
+                    }
                 }
             }
         }, 0L, 21L);
