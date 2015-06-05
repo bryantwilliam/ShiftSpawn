@@ -74,7 +74,7 @@ public class Game {
             if (!foundTeam) {
                 team = scoreboard.registerNewTeam(name);
             }
-            team.setPrefix(ChatColor.YELLOW + "[" + participant.getKills() + "] " + ChatColor.AQUA + ChatColor.BOLD);
+            team.setPrefix(ChatColor.DARK_RED + "[" + participant.getKills() + "] " + ChatColor.AQUA + ChatColor.BOLD);
             team.addPlayer(player);
         }
     }
