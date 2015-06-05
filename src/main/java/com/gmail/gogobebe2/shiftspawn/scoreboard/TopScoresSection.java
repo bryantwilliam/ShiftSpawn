@@ -24,6 +24,7 @@ public class TopScoresSection extends ScoreboardSection {
             for (Score score : scores) {
                 getScoreboard().resetScores(score.getEntry());
             }
+            scores.clear();
         }
         Player[] onlinePlayers = Bukkit.getOnlinePlayers().toArray(new Player[Bukkit.getOnlinePlayers().size()]);
         setLabel(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Everyone's scores " + ChatColor.GOLD + "score"
