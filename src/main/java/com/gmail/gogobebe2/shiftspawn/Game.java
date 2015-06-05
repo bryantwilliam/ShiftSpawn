@@ -80,10 +80,7 @@ public class Game {
     }
 
     public void startTimer() {
-        if (isTimerRunning()) {
-            return;
-        }
-        else {
+        if (!isTimerRunning()) {
             this.isTimerRunning = true;
         }
 
@@ -99,7 +96,6 @@ public class Game {
                     participant.getStatusSection().display();
                     participant.getOnlinePlayerSection().display();
                 }
-
                 if (seconds != 0 || minutes != 0) {
                     seconds--;
                     if (seconds == -1) {
@@ -109,6 +105,8 @@ public class Game {
                         stopTimer();
                     }
                 }
+
+
             }
         }, 0L, 21L);
     }
@@ -124,7 +122,6 @@ public class Game {
             case WAITING:
                 // Just keep looping and use the timer to decide how to use ".." or "..."
                 setMinutes(Integer.MAX_VALUE);
-                startTimer();
                 break;
             case STARTING:
                 Bukkit.broadcastMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Game starting!");
@@ -133,7 +130,6 @@ public class Game {
                     plugin.spawn(player);
                 }
                 setTime(plugin.getConfig().getString(ShiftSpawn.GAME_TIME));
-                startTimer();
                 break;
             case STARTED:
                 Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Game over!");
@@ -174,7 +170,6 @@ public class Game {
                 this.gameState = GameState.RESTARTING;
                 // 1 minute before restart server and use the timer to decide how to use ".." or "...".
                 setTime("1:00");
-                startTimer();
                 break;
             default:
                 Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Error! Ask admin to fix immediately!!!");
