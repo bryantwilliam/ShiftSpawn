@@ -10,6 +10,8 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.util.Random;
+
 public class Participant {
     private final Player PLAYER;
     private int score;
@@ -44,17 +46,22 @@ public class Participant {
         scoreboard.clearSlot(DisplaySlot.BELOW_NAME);
         String playerName = PLAYER.getName();
 
-        Objective sideObjective = getObjective(scoreboard, playerName);
+        Objective sideObjective = getObjective(scoreboard, getUniqueObjectiveName(playerName, 's'));
         sideObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
         sideObjective.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Shift");
         this.topScoresSection = new TopScoresSection(this, sideObjective, plugin);
         this.statusSection = new StatusSection(this, sideObjective, plugin);
         this.onlinePlayerSection = new OnlinePlayerSection(this, sideObjective, plugin);
 
-        Objective nameObjective = getObjective(scoreboard, playerName);
+        Objective nameObjective = getObjective(scoreboard, getUniqueObjectiveName(playerName, 'n'));
         nameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         nameObjective.setDisplayName(ChatColor.DARK_GREEN + "Points");
         this.scoreTagSection = new ScoreTagSection(this, nameObjective, plugin);
+    }
+
+    private String getUniqueObjectiveName(String name, char prefix) {
+        // Incase of people with similar name.
+        return prefix + "_" + new Random().nextInt(10) + (name.length() >= 13 ? name.substring(0, 12) : name) + new Random().nextInt(10);
     }
 
     public int getKills() {
