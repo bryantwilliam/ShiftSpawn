@@ -87,6 +87,7 @@ public class Game {
             @Override
             public void run() {
                 for (Participant participant : plugin.getParticipants()) {
+                    Bukkit.broadcastMessage("Participant " + participant.getPlayer().getName() + " with a score of " + participant.getScore());
                     showKillsTag();
                     if (gameState.equals(GameState.STARTED)) {
                         participant.getScoreTagSection().display();
@@ -136,11 +137,10 @@ public class Game {
                 int best = 0;
 
                 for (Participant participant : plugin.getParticipants()) {
-                    if (participant.getScore() > best) {
-                        winners.clear();
-                        winners.add(participant);
-                    }
-                    else if (participant.getScore() == best) {
+                    if (participant.getScore() >= best) {
+                        if (participant.getScore() > best) {
+                            winners.clear();
+                        }
                         winners.add(participant);
                     }
                 }
@@ -152,16 +152,13 @@ public class Game {
                         if (winners.size() > 1) {
                             broadcast.append(". Tied with ");
                         }
-                    }
-                    else {
+                    } else {
                         broadcast.append(winner.getPlayer().getName() + " with a score of " + winner.getScore());
                         if (i == winners.size() - 1) {
                             broadcast.append(".");
-                        }
-                        else if (i == winners.size() - 2) {
+                        } else if (i == winners.size() - 2) {
                             broadcast.append(" and ");
-                        }
-                        else {
+                        } else {
                             broadcast.append(", ");
                         }
                     }

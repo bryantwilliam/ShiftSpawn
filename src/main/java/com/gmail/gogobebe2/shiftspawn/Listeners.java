@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -65,14 +65,6 @@ public class Listeners implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onBlockDamageEvent(BlockDamageEvent event) {
-        //noinspection deprecation
-        if (event.getBlock().getTypeId() == plugin.getConfig().getInt(ShiftSpawn.ALPHA_CORE_ID)) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         if (event.getTo().getY() < 0 && player.getHealth() > 0) {
@@ -95,7 +87,7 @@ public class Listeners implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onBlockMinedEvent(BlockDamageEvent event) {
+    public void onBlockBreakEvent(BlockBreakEvent event) {
         if (plugin.getGame().getGameState() == GameState.STARTED) {
             if (event.getBlock().getType() == Material.getMaterial(plugin.getConfig().getInt(ShiftSpawn.ALPHA_CORE_ID))) {
                 Participant participant = plugin.getParticipant(event.getPlayer());
