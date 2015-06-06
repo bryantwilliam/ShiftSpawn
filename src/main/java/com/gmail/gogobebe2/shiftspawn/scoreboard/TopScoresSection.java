@@ -2,13 +2,12 @@ package com.gmail.gogobebe2.shiftspawn.scoreboard;
 
 import com.gmail.gogobebe2.shiftspawn.Participant;
 import com.gmail.gogobebe2.shiftspawn.ShiftSpawn;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TopScoresSection extends ScoreboardSection {
@@ -26,16 +25,19 @@ public class TopScoresSection extends ScoreboardSection {
             }
             scores.clear();
         }
-        Player[] onlinePlayers = Bukkit.getOnlinePlayers().toArray(new Player[Bukkit.getOnlinePlayers().size()]);
+        Participant[] participants = getPlugin().getParticipants().toArray(new Participant[getPlugin().getParticipants().size()]);
+        Arrays.sort(participants);
+
         setLabel(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Scores " + ChatColor.DARK_GREEN + "score"
                 + ChatColor.LIGHT_PURPLE + "/" + ChatColor.DARK_RED + "kills" + ChatColor.LIGHT_PURPLE + ":"
-                , onlinePlayers.length + 2);
-        for (int pIndex = 0; pIndex < onlinePlayers.length; pIndex++) {
-            Player player = onlinePlayers[pIndex];
-            Score score = getObjective().getScore(ChatColor.DARK_PURPLE + "- " + player.getName() + ": "
-                    + ChatColor.DARK_GREEN + getPlugin().getParticipant(player).getScore()
+                , participants.length + 2);
+
+        for (int pIndex = 0; pIndex < participants.length; pIndex++) {
+            Participant participant = participants[pIndex];
+            Score score = getObjective().getScore(ChatColor.DARK_PURPLE + "- " + participant.getPlayer().getName() + ": "
+                    + ChatColor.DARK_GREEN + participant.getScore()
                     + ChatColor.DARK_PURPLE + "/"
-                    + ChatColor.DARK_RED + getPlugin().getParticipant(player).getKills());
+                    + ChatColor.DARK_RED + participant.getKills());
             score.setScore(pIndex + 1);
             scores.add(score);
         }
