@@ -64,6 +64,7 @@ public abstract class ScoreboardSection {
         this.label.setScore(index);
     }
 
+    @Deprecated
     public void setLabel(OfflinePlayer label, int index) {
         this.label = objective.getScore(label);
         this.label.setScore(index);
