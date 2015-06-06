@@ -48,22 +48,17 @@ public class Participant implements Comparable<Participant> {
 
         String playerName = PLAYER.getName();
 
-        Objective sideObjective = getObjective(scoreboard, getUniqueObjectiveName(playerName, 's'));
+        Objective sideObjective = getObjective(scoreboard, "s_" + new Random().nextInt(10) + (playerName.length() >= 13 ? playerName.substring(0, 12) : playerName) + new Random().nextInt(10));
         sideObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
         sideObjective.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Shift");
         this.topScoresSection = new TopScoresSection(this, sideObjective, plugin);
         this.statusSection = new StatusSection(this, sideObjective, plugin);
         this.onlinePlayerSection = new OnlinePlayerSection(this, sideObjective, plugin);
 
-        Objective nameObjective = getObjective(scoreboard, getUniqueObjectiveName(playerName, 'n'));
+        Objective nameObjective = getObjective(scoreboard, playerName);
         nameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         nameObjective.setDisplayName(ChatColor.DARK_GREEN + "Points");
         this.scoreTagSection = new ScoreTagSection(this, nameObjective, plugin);
-    }
-
-    private String getUniqueObjectiveName(String name, char prefix) {
-        // Incase of people with similar name.
-        return prefix + "_" + new Random().nextInt(10) + (name.length() >= 13 ? name.substring(0, 12) : name) + new Random().nextInt(10);
     }
 
     public int getKills() {

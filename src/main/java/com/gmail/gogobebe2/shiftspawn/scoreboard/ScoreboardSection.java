@@ -2,6 +2,7 @@ package com.gmail.gogobebe2.shiftspawn.scoreboard;
 
 import com.gmail.gogobebe2.shiftspawn.Participant;
 import com.gmail.gogobebe2.shiftspawn.ShiftSpawn;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
@@ -59,6 +60,11 @@ public abstract class ScoreboardSection {
     }
 
     public void setLabel(String label, int index) {
+        this.label = objective.getScore(label);
+        this.label.setScore(index);
+    }
+
+    public void setLabel(OfflinePlayer label, int index) {
         this.label = objective.getScore(label);
         this.label.setScore(index);
     }
