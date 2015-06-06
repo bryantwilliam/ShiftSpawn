@@ -8,7 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -75,16 +75,13 @@ public class Listeners implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onPlayerDamagedEvent(EntityDamageByEntityEvent event) {
-        if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
-            Player damager = (Player) event.getDamager();
-            if (plugin.getGame().getGameState() == GameState.STARTED && event.getFinalDamage() >= player.getHealth()) {
-                plugin.getParticipant(damager).setKills(plugin.getParticipant(damager).getKills() + 1);
-                plugin.spawn(player);
-            }
-
+    public void onPlayerDeathEvent(PlayerDeathEvent event) {
+        Player killer = event.getEntity().getKiller();
+        if (killer != null) {
+            Participant k = plugin.getParticipant(killer);
+            k.setKills(k.getKills() + 1);
         }
+        plugin.spawn(event.getEntity());
     }
 
     @EventHandler(priority = EventPriority.HIGH)
