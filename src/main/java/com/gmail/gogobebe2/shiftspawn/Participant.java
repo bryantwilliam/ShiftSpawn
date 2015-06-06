@@ -106,6 +106,6 @@ public class Participant implements Comparable<Participant>{
 
     @Override
     public int compareTo(Participant p) {
-        return p.getScore() - this.score;
+        return this.score - p.getScore();
     }
 }
