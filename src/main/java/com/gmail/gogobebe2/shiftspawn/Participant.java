@@ -12,7 +12,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.Random;
 
-public class Participant {
+public class Participant implements Comparable<Participant>{
     private final Player PLAYER;
     private int score;
     private int kills;
@@ -102,5 +102,10 @@ public class Participant {
 
     public OnlinePlayerSection getOnlinePlayerSection() {
         return onlinePlayerSection;
+    }
+
+    @Override
+    public int compareTo(Participant p) {
+        return p.getScore() - this.score;
     }
 }
