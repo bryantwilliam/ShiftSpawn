@@ -12,8 +12,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Scoreboard;
 
 public class Listeners implements Listener {
     private ShiftSpawn plugin;
@@ -36,9 +34,6 @@ public class Listeners implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Scoreboard scoreboard = player.getScoreboard();
-        scoreboard.clearSlot(DisplaySlot.SIDEBAR);
-        scoreboard.clearSlot(DisplaySlot.BELOW_NAME);
 
         if (!plugin.hasParticipantSet(player)) {
             plugin.getParticipants().add(new Participant(plugin, player, plugin.getNextSpawnID()));
