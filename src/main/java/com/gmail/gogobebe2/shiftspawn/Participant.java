@@ -12,7 +12,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.Random;
 
-public class Participant implements Comparable<Participant>{
+public class Participant implements Comparable<Participant> {
     private final Player PLAYER;
     private int score;
     private int kills;
@@ -30,12 +30,13 @@ public class Participant implements Comparable<Participant>{
         if (!scoreboard.getObjectives().isEmpty()) {
             for (Objective objective : scoreboard.getObjectives()) {
                 if (objective.getName().equals(name)) {
-                        return scoreboard.getObjective(name);
+                    return scoreboard.getObjective(name);
                 }
             }
         }
         return scoreboard.registerNewObjective(name, "dummy");
     }
+
     public Participant(ShiftSpawn plugin, final Player PLAYER, String spawnID, int score, int kills) {
         this.PLAYER = PLAYER;
         this.spawnID = spawnID;
@@ -44,7 +45,7 @@ public class Participant implements Comparable<Participant>{
         Scoreboard scoreboard = PLAYER.getScoreboard();
         scoreboard.clearSlot(DisplaySlot.SIDEBAR);
         scoreboard.clearSlot(DisplaySlot.BELOW_NAME);
-        
+
         String playerName = PLAYER.getName();
 
         Objective sideObjective = getObjective(scoreboard, getUniqueObjectiveName(playerName, 's'));
@@ -92,6 +93,7 @@ public class Participant implements Comparable<Participant>{
     public void setScore(int score) {
         this.score = score;
     }
+
     public StatusSection getStatusSection() {
         return statusSection;
     }

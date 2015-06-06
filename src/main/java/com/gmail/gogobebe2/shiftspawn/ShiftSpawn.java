@@ -167,20 +167,22 @@ public class ShiftSpawn extends JavaPlugin {
     }
 
     public boolean hasParticipantSet(Player player) {
-        if (participants.isEmpty()) {
+        Bukkit.broadcastMessage("test 4");
+        try {
+            getParticipant(player);
+            return true;
+        }
+        catch (NullPointerException exc) {
             return false;
         }
-        for (Participant participant : participants) {
-            if (participant.getPlayer().getUniqueId().equals(player.getUniqueId())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public Participant getParticipant(Player player) throws NullPointerException {
+        Bukkit.broadcastMessage("test 1: " + player.getName());
         for (Participant participant : participants) {
+            Bukkit.broadcastMessage("test 2: " + participant.getPlayer().getName() + ", " + participant.getScore());
             if (participant.getPlayer().getUniqueId().equals(player.getUniqueId())) {
+                Bukkit.broadcastMessage("test 3: " + participant.getPlayer().getName() + ", " + player.getName());
                 return participant;
             }
         }

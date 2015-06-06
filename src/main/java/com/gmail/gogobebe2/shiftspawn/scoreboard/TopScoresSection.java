@@ -28,16 +28,19 @@ public class TopScoresSection extends ScoreboardSection {
         Participant[] participants = getPlugin().getParticipants().toArray(new Participant[getPlugin().getParticipants().size()]);
         Arrays.sort(participants);
 
-        setLabel(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Scores " + ChatColor.DARK_GREEN + "score"
-                + ChatColor.LIGHT_PURPLE + "/" + ChatColor.DARK_RED + "kills" + ChatColor.LIGHT_PURPLE + ":"
-                , participants.length + 2);
+        setLabel(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Scores "
+                + ChatColor.DARK_GREEN + ChatColor.ITALIC + "score"
+                + ChatColor.LIGHT_PURPLE + "|"
+                + ChatColor.DARK_RED + ChatColor.ITALIC + "kills"
+                + ChatColor.LIGHT_PURPLE + ":"
+                , participants.length + 1);
 
         for (int pIndex = 0; pIndex < participants.length; pIndex++) {
             Participant participant = participants[pIndex];
             Score score = getObjective().getScore(ChatColor.DARK_PURPLE + "- " + participant.getPlayer().getName() + ": "
-                    + ChatColor.DARK_GREEN + participant.getScore()
-                    + ChatColor.DARK_PURPLE + "/"
-                    + ChatColor.DARK_RED + participant.getKills());
+                    + ChatColor.DARK_GREEN + ChatColor.ITALIC + participant.getScore()
+                    + ChatColor.DARK_PURPLE + "|"
+                    + ChatColor.DARK_RED + ChatColor.ITALIC + participant.getKills());
             score.setScore(pIndex + 1);
             scores.add(score);
         }
