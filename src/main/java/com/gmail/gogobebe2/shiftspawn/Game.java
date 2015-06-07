@@ -7,8 +7,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Game {
     private int minutes = 0;
@@ -133,36 +132,42 @@ public class Game {
                 break;
             case STARTED:
                 Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Game over!");
-                List<Participant> winners = new ArrayList<>();
-                int best = 0;
 
+                List<Participant> participants = plugin.getParticipants();
+                Collections.sort(participants);
+                Set<Participant> winners = new HashSet<>();
+
+                int highscore = 0;
                 for (Participant participant : plugin.getParticipants()) {
-                    if (participant.getScore() >= best) {
-                        if (participant.getScore() > best) {
+                    if (participant.getScore() >= highscore) {
+                        if (participant.getScore() > highscore) {
                             winners.clear();
+                            highscore = participant.getScore();
                         }
                         winners.add(participant);
                     }
-                }
-                StringBuilder broadcast = new StringBuilder();
-                for (int i = 0; i < winners.size(); i++) {
-                    Participant winner = winners.get(i);
-                    if (i == 0) {
-                        broadcast.append(ChatColor.AQUA + winner.getPlayer().getName() + " won with a score of " + winner.getScore());
-                        if (winners.size() > 1) {
-                            broadcast.append(". Tied with ");
-                        }
-                    } else {
-                        broadcast.append(winner.getPlayer().getName() + " with a score of " + winner.getScore());
-                        if (i == winners.size() - 1) {
-                            broadcast.append(".");
-                        } else if (i == winners.size() - 2) {
-                            broadcast.append(" and ");
-                        } else {
-                            broadcast.append(", ");
-                        }
+                    else {
+                        break;
                     }
                 }
+
+                StringBuilder broadcast = new StringBuilder();
+                broadcast.append("winner");
+                if (winners.size() > 1) {
+                    broadcast.append("s");
+                }
+                broadcast.append(": ");
+                for (Iterator<Participant> iterator = winners.iterator(); iterator.hasNext(); ) {
+                    Participant participant = iterator.next();
+                    broadcast.append(participant.getPlayer().getName());
+                    if (!iterator.hasNext()) {
+                        broadcast.append(", ");
+                    }
+                    else {
+                        broadcast.append(".");
+                    }
+                }
+
                 Bukkit.broadcastMessage(broadcast.toString());
 
                 this.gameState = GameState.RESTARTING;

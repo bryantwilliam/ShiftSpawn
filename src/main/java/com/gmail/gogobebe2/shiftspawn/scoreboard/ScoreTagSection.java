@@ -2,7 +2,6 @@ package com.gmail.gogobebe2.shiftspawn.scoreboard;
 
 import com.gmail.gogobebe2.shiftspawn.Participant;
 import com.gmail.gogobebe2.shiftspawn.ShiftSpawn;
-import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.Objective;
 
 public class ScoreTagSection extends ScoreboardSection {
@@ -13,6 +12,5 @@ public class ScoreTagSection extends ScoreboardSection {
     @Override
     public void arrangeSection() {
         setLabel(getParticipant().getPlayer(), getParticipant().getScore());
-        Bukkit.broadcastMessage("test 1:" + getParticipant().getPlayer().getName() + ", " + getParticipant().getScore());
     }
 }
