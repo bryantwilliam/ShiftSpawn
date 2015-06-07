@@ -26,17 +26,19 @@ public class TopScoresSection extends ScoreboardSection {
             }
             scores.clear();
         }
+
+
         Participant[] participants = getPlugin().getParticipants().toArray(new Participant[getPlugin().getParticipants().size()]);
         Arrays.sort(participants);
 
-        setLabel(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Scores:", participants.length + 1);
+        setLabel(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Scores:", participants.length + 2);
 
-        if (subHeading != null) {
-            getScoreboard().resetScores(subHeading.getEntry());
+        if (subHeading == null) {
+            subHeading = getObjective().getScore(getAlignedText(
+                    ChatColor.DARK_GREEN + "                 " + ChatColor.ITALIC + "score",
+                    ChatColor.DARK_RED + "" + ChatColor.ITALIC + "kills", 40));
+            subHeading.setScore(participants.length + 1);
         }
-        subHeading = getObjective().getScore(getAlignedText(
-                ChatColor.DARK_GREEN + "                 " + ChatColor.ITALIC + "score",
-                ChatColor.DARK_RED + "" + ChatColor.ITALIC + "kills", 40));
 
         for (int pIndex = 0; pIndex < participants.length; pIndex++) {
             Participant participant = participants[pIndex];

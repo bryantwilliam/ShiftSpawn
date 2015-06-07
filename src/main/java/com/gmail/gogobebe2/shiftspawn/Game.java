@@ -151,15 +151,15 @@ public class Game {
                 }
 
                 StringBuilder broadcast = new StringBuilder();
-                broadcast.append("winner");
+                broadcast.append(ChatColor.DARK_GREEN + "" + ChatColor.ITALIC + "Winner:");
                 if (winners.size() > 1) {
                     broadcast.append("s");
                 }
                 broadcast.append(": ");
                 for (Iterator<Participant> iterator = winners.iterator(); iterator.hasNext(); ) {
                     Participant participant = iterator.next();
-                    broadcast.append(participant.getPlayer().getName());
-                    if (!iterator.hasNext()) {
+                    broadcast.append(ChatColor.AQUA + "" + ChatColor.BOLD + participant.getPlayer().getName());
+                    if (iterator.hasNext()) {
                         broadcast.append(", ");
                     }
                     else {
