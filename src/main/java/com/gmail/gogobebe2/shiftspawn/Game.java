@@ -151,7 +151,7 @@ public class Game {
                 }
 
                 StringBuilder broadcast = new StringBuilder();
-                broadcast.append(ChatColor.DARK_GREEN + "" + ChatColor.ITALIC + "Winner:");
+                broadcast.append(ChatColor.DARK_GREEN + "" + ChatColor.ITALIC + "Winner");
                 if (winners.size() > 1) {
                     broadcast.append("s");
                 }
