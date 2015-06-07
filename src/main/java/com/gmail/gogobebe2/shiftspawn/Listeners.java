@@ -76,10 +76,12 @@ public class Listeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
-        Player killer = event.getEntity().getKiller();
-        if (killer != null) {
-            Participant k = plugin.getParticipant(killer);
-            k.setKills(k.getKills() + 1);
+        if (plugin.getGame().getGameState() == GameState.STARTED) {
+            Player killer = event.getEntity().getKiller();
+            if (killer != null) {
+                Participant k = plugin.getParticipant(killer);
+                k.setKills(k.getKills() + 1);
+            }
         }
         plugin.spawn(event.getEntity());
     }

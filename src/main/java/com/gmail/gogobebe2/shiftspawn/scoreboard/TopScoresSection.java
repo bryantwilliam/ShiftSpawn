@@ -2,6 +2,7 @@ package com.gmail.gogobebe2.shiftspawn.scoreboard;
 
 import com.gmail.gogobebe2.shiftspawn.Participant;
 import com.gmail.gogobebe2.shiftspawn.ShiftSpawn;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -35,7 +36,7 @@ public class TopScoresSection extends ScoreboardSection {
 
         if (subHeading == null) {
             subHeading = getObjective().getScore(getAlignedText(
-                    ChatColor.DARK_GREEN + "                   " + ChatColor.ITALIC + "score",
+                    ChatColor.DARK_GREEN + StringUtils.repeat(" ", 19) + ChatColor.ITALIC + "score",
                     ChatColor.DARK_RED + "" + ChatColor.ITALIC + "kills", 40));
             subHeading.setScore(participants.length + 1);
         }
@@ -53,12 +54,6 @@ public class TopScoresSection extends ScoreboardSection {
     }
 
     private String getAlignedText(String prefix, String suffix, int charLimit) {
-        StringBuilder text = new StringBuilder();
-        text.append(prefix);
-        for (int i = 0; i < charLimit - prefix.length() - suffix.length(); i++) {
-            text.append(" ");
-        }
-        text.append(suffix);
-        return text.toString();
+        return prefix + StringUtils.repeat(" ", charLimit - prefix.length() - suffix.length()) + suffix;
     }
 }
