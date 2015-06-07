@@ -6,7 +6,7 @@
 
     <groupId>com.gmail.gogobebe2</groupId>
     <artifactId>ShiftSpawn</artifactId>
-    <version>1.6.4-PREALPHA-SNAPSHOT</version>
+    <version>1.6.5-PREALPHA-SNAPSHOT</version>
 
     <build>
         <pluginManagement>
