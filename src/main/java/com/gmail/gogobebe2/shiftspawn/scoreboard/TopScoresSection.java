@@ -46,7 +46,7 @@ public class TopScoresSection extends ScoreboardSection {
 
             String s = ChatColor.DARK_GREEN + "" + ChatColor.BOLD + participant.getScore();
             String p = ChatColor.DARK_PURPLE + " " + participant.getPlayer().getName() + ":";
-            String prefix = getAlignedText(p, s, 19 + s.length() + p.length());
+            String prefix = getAlignedText(p, s, 19);
             String suffix = ChatColor.DARK_RED + "" + ChatColor.BOLD + participant.getKills();
             Score score = getObjective().getScore(getAlignedText(prefix, suffix, 40));
             score.setScore(pIndex + 1);
