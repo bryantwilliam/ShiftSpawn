@@ -86,7 +86,6 @@ public class Game {
             @Override
             public void run() {
                 for (Participant participant : plugin.getParticipants()) {
-                    Bukkit.broadcastMessage("Participant " + participant.getPlayer().getName() + " with a score of " + participant.getScore());
                     showKillsTag();
                     if (gameState.equals(GameState.STARTED)) {
                         participant.getScoreTagSection().display();

@@ -36,7 +36,7 @@ public class TopScoresSection extends ScoreboardSection {
         }
         subHeading = getObjective().getScore(getAlignedText(
                 ChatColor.DARK_GREEN + "                 " + ChatColor.ITALIC + "score",
-                ChatColor.DARK_RED + "" + ChatColor.ITALIC + "kills", 23));
+                ChatColor.DARK_RED + "" + ChatColor.ITALIC + "kills", 40));
 
         for (int pIndex = 0; pIndex < participants.length; pIndex++) {
             Participant participant = participants[pIndex];
