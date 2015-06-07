@@ -44,9 +44,9 @@ public class TopScoresSection extends ScoreboardSection {
         for (int pIndex = 0; pIndex < participants.length; pIndex++) {
             Participant participant = participants[pIndex];
 
-            String s = ChatColor.DARK_GREEN + "" + ChatColor.ITALIC + participant.getScore();
-            String prefix = getAlignedText(ChatColor.DARK_PURPLE + "\u2605 " + participant.getPlayer().getName() + ":", s, 19 + s.length());
-            String suffix = ChatColor.DARK_RED + "" + ChatColor.ITALIC + participant.getKills();
+            String s = ChatColor.DARK_GREEN + "" + ChatColor.BOLD + participant.getScore();
+            String prefix = getAlignedText(ChatColor.DARK_PURPLE + " " + participant.getPlayer().getName() + ":", s, 19 + s.length());
+            String suffix = ChatColor.DARK_RED + "" + ChatColor.BOLD + participant.getKills();
             Score score = getObjective().getScore(getAlignedText(prefix, suffix, 40));
             score.setScore(pIndex + 1);
             scores.add(score);
