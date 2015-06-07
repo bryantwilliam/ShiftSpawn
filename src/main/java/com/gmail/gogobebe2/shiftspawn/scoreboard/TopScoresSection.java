@@ -12,6 +12,7 @@ import java.util.List;
 
 public class TopScoresSection extends ScoreboardSection {
     private List<Score> scores = new ArrayList<>();
+    private Score subHeading = null;
 
     public TopScoresSection(Participant participant, Objective objective, ShiftSpawn plugin) {
         super(participant, objective, plugin);
@@ -28,21 +29,34 @@ public class TopScoresSection extends ScoreboardSection {
         Participant[] participants = getPlugin().getParticipants().toArray(new Participant[getPlugin().getParticipants().size()]);
         Arrays.sort(participants);
 
-        setLabel(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Scores "
-                + ChatColor.DARK_GREEN + ChatColor.ITALIC + "score"
-                + ChatColor.LIGHT_PURPLE + "|"
-                + ChatColor.DARK_RED + ChatColor.ITALIC + "kills"
-                + ChatColor.LIGHT_PURPLE + ":"
-                , participants.length + 1);
+        setLabel(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Scores:", participants.length + 1);
+
+        if (subHeading != null) {
+            getScoreboard().resetScores(subHeading.getEntry());
+        }
+        subHeading = getObjective().getScore(getAlignedText(
+                ChatColor.DARK_GREEN + "                 " + ChatColor.ITALIC + "score",
+                ChatColor.DARK_RED + "" + ChatColor.ITALIC + "kills", 23));
 
         for (int pIndex = 0; pIndex < participants.length; pIndex++) {
             Participant participant = participants[pIndex];
-            Score score = getObjective().getScore(ChatColor.DARK_PURPLE + "- " + participant.getPlayer().getName() + ": "
-                    + ChatColor.DARK_GREEN + ChatColor.ITALIC + participant.getScore()
-                    + ChatColor.DARK_PURPLE + "|"
-                    + ChatColor.DARK_RED + ChatColor.ITALIC + participant.getKills());
+
+            String s = ChatColor.DARK_GREEN + "" + ChatColor.ITALIC + participant.getScore();
+            String prefix = getAlignedText(ChatColor.DARK_PURPLE + "\u9733 " + participant.getPlayer().getName() + ":", s, 17 + s.length());
+            String suffix = ChatColor.DARK_RED + "" + ChatColor.ITALIC + participant.getKills();
+            Score score = getObjective().getScore(getAlignedText(prefix, suffix, 40));
             score.setScore(pIndex + 1);
             scores.add(score);
         }
+    }
+
+    private String getAlignedText(String prefix, String suffix, int charLimit) {
+        StringBuilder text = new StringBuilder();
+        text.append(prefix);
+        for (int i = 0; i < charLimit - prefix.length() - suffix.length(); i++) {
+            text.append(" ");
+        }
+        text.append(suffix);
+        return text.toString();
     }
 }
