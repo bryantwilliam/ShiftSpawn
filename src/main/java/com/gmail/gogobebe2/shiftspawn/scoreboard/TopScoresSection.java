@@ -2,6 +2,7 @@ package com.gmail.gogobebe2.shiftspawn.scoreboard;
 
 import com.gmail.gogobebe2.shiftspawn.Participant;
 import com.gmail.gogobebe2.shiftspawn.ShiftSpawn;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -31,17 +32,17 @@ public class TopScoresSection extends ScoreboardSection {
         Arrays.sort(participants);
 
         setLabel(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Scores: "
-                + ChatColor.DARK_GREEN + "  " + ChatColor.ITALIC + "score" +
-                ChatColor.DARK_RED + "  " + ChatColor.ITALIC + "kills", participants.length + 1);
+                + ChatColor.DARK_GREEN + ChatColor.ITALIC + "score" +
+                ChatColor.DARK_RED + " : " + ChatColor.ITALIC + "kills", participants.length + 1);
 
 
         for (int pIndex = 0; pIndex < participants.length; pIndex++) {
             Participant participant = participants[pIndex];
-
+            String playerName = participant.getPlayer().getName();
             Score score = getObjective().getScore(
-                    ChatColor.DARK_PURPLE + " " + participant.getPlayer().getName() + ":  "
+                    ChatColor.DARK_PURPLE + " " + playerName + ": " + StringUtils.repeat(" ", 16 - playerName.length())
                             + ChatColor.DARK_GREEN + ChatColor.BOLD + participant.getScore()
-                            + "  " + ChatColor.DARK_RED + ChatColor.BOLD + participant.getKills());
+                            + " : " + ChatColor.DARK_RED + ChatColor.BOLD + participant.getKills());
             score.setScore(pIndex + 1);
             scores.add(score);
         }
