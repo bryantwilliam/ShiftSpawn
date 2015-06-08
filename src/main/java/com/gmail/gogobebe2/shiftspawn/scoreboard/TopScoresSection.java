@@ -32,7 +32,7 @@ public class TopScoresSection extends ScoreboardSection {
         Arrays.sort(participants);
 
         String pref = ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Scores:";
-        setLabel(pref + StringUtils.repeat(" ", 17 - pref.length())
+        setLabel(pref + StringUtils.repeat(" ", 16 - pref.length())
                 + ChatColor.DARK_GREEN + ChatColor.ITALIC + "score" + ChatColor.LIGHT_PURPLE + " : "
                 + ChatColor.DARK_RED + ChatColor.ITALIC + "kills", participants.length + 1);
 
