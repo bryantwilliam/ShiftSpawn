@@ -31,20 +31,31 @@ public class TopScoresSection extends ScoreboardSection {
         Participant[] participants = getPlugin().getParticipants().toArray(new Participant[getPlugin().getParticipants().size()]);
         Arrays.sort(participants);
 
-        setLabel(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Scores: "
-                + ChatColor.DARK_GREEN + ChatColor.ITALIC + "score" +
-                ChatColor.DARK_RED + " : " + ChatColor.ITALIC + "kills", participants.length + 1);
+        setLabel(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Scores: " + StringUtils.repeat(" ", 16)
+                + ChatColor.DARK_GREEN + ChatColor.ITALIC + "score" + ChatColor.LIGHT_PURPLE + " : "
+                + ChatColor.DARK_RED + ChatColor.ITALIC + "kills", participants.length + 1);
 
 
         for (int pIndex = 0; pIndex < participants.length; pIndex++) {
             Participant participant = participants[pIndex];
             String playerName = participant.getPlayer().getName();
             Score score = getObjective().getScore(
-                    ChatColor.DARK_PURPLE + " " + playerName + ": " + StringUtils.repeat(" ", 16 - playerName.length())
+                    ChatColor.DARK_PURPLE + " " + playerName + ": " + StringUtils.repeat(" ", 16 - playerName.length() - getDigitsInString(playerName))
                             + ChatColor.DARK_GREEN + ChatColor.BOLD + participant.getScore()
-                            + " : " + ChatColor.DARK_RED + ChatColor.BOLD + participant.getKills());
+                            + ChatColor.DARK_PURPLE + " : "
+                            + ChatColor.DARK_RED + ChatColor.BOLD + participant.getKills());
             score.setScore(pIndex + 1);
             scores.add(score);
         }
+    }
+
+    private int getDigitsInString(String string) {
+        int count = 0;
+        for (int i = 0; i < string.length(); i++) {
+            if (Character.isDigit(string.charAt(i))) {
+                count++;
+            }
+        }
+        return count;
     }
 }
