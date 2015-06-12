@@ -57,7 +57,7 @@ public class Listeners implements Listener {
         String playerName = player.getName();
         if (minPlayers >= Bukkit.getOnlinePlayers().size() && (plugin.getGame().getGameState() == GameState.STARTING || plugin.getGame().getGameState() == GameState.WAITING)) {
             event.setQuitMessage(ChatColor.DARK_PURPLE + playerName + " left the game. We now need "
-                    + (minPlayers - Bukkit.getOnlinePlayers().size())
+                    + (minPlayers - (Bukkit.getOnlinePlayers().size() - 1))
                     + " more players to start. All " + playerName
                     + "'s fault. Blame them because now it'll take longer to start!!");
             plugin.getGame().setGameState(GameState.WAITING);
