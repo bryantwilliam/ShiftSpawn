@@ -11,6 +11,6 @@ public class ScoreTagSection extends ScoreboardSection {
 
     @Override
     public void arrangeSection() {
-        setLabel(getParticipant().getPlayer(), getParticipant().getScore());
+        setLabel(getParticipant().getPlayer().getUniqueId().toString(), getParticipant().getScore());
     }
 }
