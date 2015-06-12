@@ -55,7 +55,7 @@ public class Listeners implements Listener {
         int minPlayers = plugin.getConfig().getInt(ShiftSpawn.MIN_PLAYERS_KEY);
         Player player = event.getPlayer();
         String playerName = player.getName();
-        if (minPlayers > Bukkit.getOnlinePlayers().size() && (plugin.getGame().getGameState() == GameState.STARTING || plugin.getGame().getGameState() == GameState.WAITING)) {
+        if (minPlayers >= Bukkit.getOnlinePlayers().size() && (plugin.getGame().getGameState() == GameState.STARTING || plugin.getGame().getGameState() == GameState.WAITING)) {
             event.setQuitMessage(ChatColor.DARK_PURPLE + playerName + " left the game. We now need "
                     + (minPlayers - Bukkit.getOnlinePlayers().size())
                     + " more players to start. All " + playerName
