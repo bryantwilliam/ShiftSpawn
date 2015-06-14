@@ -4,8 +4,8 @@ import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -69,6 +69,17 @@ public class ShiftSpawn extends JavaPlugin {
         return false;
     }
 
+    private boolean hasItemWithMeta(PlayerInventory inventory, Material material, ItemMeta meta) {
+        if (inventory.contains(material)) {
+            for (ItemStack item : inventory.all(material).values()) {
+                if (item.getItemMeta().equals(meta)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void spawn(final Player PLAYER) {
         PLAYER.spigot().respawn();
         String id;
@@ -77,7 +88,7 @@ public class ShiftSpawn extends JavaPlugin {
             PLAYER.setGameMode(GameMode.SURVIVAL);
             PLAYER.setHealth(20);
             PLAYER.setFoodLevel(20);
-            Inventory inventory = PLAYER.getInventory();
+            PlayerInventory inventory = PLAYER.getInventory();
             inventory.clear();
 
             ItemStack pickaxe = new ItemStack(Material.WOOD_PICKAXE, 1);
@@ -91,8 +102,12 @@ public class ShiftSpawn extends JavaPlugin {
             swordMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Trusty sword");
             sword.setItemMeta(swordMeta);
 
-            inventory.addItem(pickaxe);
-            inventory.addItem(sword);
+            if (!hasItemWithMeta(inventory, Material.WOOD_PICKAXE, pickaxeMeta)) {
+                inventory.addItem(pickaxe);
+            }
+            if (!hasItemWithMeta(inventory, Material.WOOD_SWORD, swordMeta)) {
+                inventory.addItem(sword);
+            }
             PLAYER.updateInventory();
         } else {
             id = "main";
