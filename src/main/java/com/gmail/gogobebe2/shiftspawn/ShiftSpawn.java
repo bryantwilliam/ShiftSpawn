@@ -8,8 +8,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.*;
 
@@ -165,9 +163,8 @@ public class ShiftSpawn extends JavaPlugin {
         getLogger().info("Disabling ShiftSpawn. If you need me to update this plugin, email at gogobebe2@gmail.com");
         if (!Bukkit.getOnlinePlayers().isEmpty()) {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                Scoreboard scoreboard = player.getScoreboard();
-                scoreboard.clearSlot(DisplaySlot.SIDEBAR);
-                scoreboard.clearSlot(DisplaySlot.BELOW_NAME);
+                // Remove their scoreboard.
+                player.setScoreboard(Bukkit.getServer().getScoreboardManager().getNewScoreboard());
                 player.kickPlayer(ChatColor.AQUA + "You have been kicked while game restarts.");
             }
         }
