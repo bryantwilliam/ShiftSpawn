@@ -12,6 +12,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class Listeners implements Listener {
     private ShiftSpawn plugin;
@@ -75,6 +76,9 @@ public class Listeners implements Listener {
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         if (event.getTo().getY() < 0 && player.getHealth() > 0) {
+            for (ItemStack item : player.getInventory()) {
+                player.getWorld().dropItemNaturally(player.getLocation().add(0, 3, 0), item);
+            }
             player.setHealth(0);
             plugin.spawn(player);
         }
