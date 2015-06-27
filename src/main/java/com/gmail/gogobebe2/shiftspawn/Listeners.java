@@ -78,10 +78,14 @@ public class Listeners implements Listener {
         Player player = event.getPlayer();
         if (event.getTo().getY() <= 0 && player.getHealth() > 0) {
             for (ItemStack item : player.getInventory()) {
-                player.getWorld().dropItemNaturally(player.getLocation().add(0, 3, 0), item);
+                if (item != null) {
+                    player.getWorld().dropItemNaturally(player.getLocation().add(0, 3, 0), item);
+                }
             }
             for (ItemStack item : player.getInventory()) {
-                item.setAmount(0);
+                if (item != null) {
+                    item.setAmount(0);
+                }
             }
             player.setHealth(0);
             plugin.spawn(player);

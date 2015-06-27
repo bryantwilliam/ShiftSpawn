@@ -148,14 +148,15 @@ public class ShiftSpawn extends JavaPlugin {
     public void onEnable() {
         getLogger().info("Starting up ShiftSpawn. If you need me to update this plugin, email at gogobebe2@gmail.com");
         saveDefaultConfig();
-        this.game = new Game(this, GameState.WAITING, Integer.MAX_VALUE + ":00");
-        game.startTimer();
         Bukkit.getPluginManager().registerEvents(new Listeners(this), this);
         if (!Bukkit.getOnlinePlayers().isEmpty()) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 player.kickPlayer(ChatColor.AQUA + "You have been kicked while the game gets setup.");
             }
         }
+        this.game = new Game(this, GameState.WAITING, Integer.MAX_VALUE + ":00");
+        game.startTimer();
+
     }
 
     @Override
