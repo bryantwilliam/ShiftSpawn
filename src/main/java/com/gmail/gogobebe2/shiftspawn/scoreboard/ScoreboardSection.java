@@ -23,24 +23,16 @@ public abstract class ScoreboardSection {
 
     public void display() {
         if (isLabelSet()) {
-            resetLabel();
+            scoreboard.resetScores(label.getEntry());
         }
         arrangeSection();
-        saveSection();
+        participant.getPlayer().setScoreboard(scoreboard);
     }
 
     public abstract void arrangeSection();
 
     public boolean isLabelSet() {
         return label != null;
-    }
-
-    public void resetLabel() {
-        scoreboard.resetScores(label.getEntry());
-    }
-
-    public void saveSection() {
-        participant.getPlayer().setScoreboard(scoreboard);
     }
 
     public Scoreboard getScoreboard() {
