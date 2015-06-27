@@ -5,7 +5,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -33,6 +32,7 @@ public class Listeners implements Listener {
         return wasSuccessful;
     }
 
+    @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
@@ -51,6 +51,7 @@ public class Listeners implements Listener {
         }
     }
 
+    @EventHandler
     public void onPlayerLeaveEvent(PlayerQuitEvent event) {
         int minPlayers = plugin.getConfig().getInt(ShiftSpawn.MIN_PLAYERS_KEY);
         Player player = event.getPlayer();
@@ -71,6 +72,7 @@ public class Listeners implements Listener {
         }
     }
 
+    @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         if (event.getTo().getY() <= 0 && player.getHealth() > 0) {
@@ -89,10 +91,12 @@ public class Listeners implements Listener {
         }
     }
 
+    @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
         onDeath(event.getEntity(), event.getEntity().getKiller());
     }
 
+    @EventHandler
     public void onPlayerDamagedEvent(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
             Player player = (Player) event.getDamager();
@@ -111,7 +115,7 @@ public class Listeners implements Listener {
         plugin.spawn(player);
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event) {
         if (plugin.getGame().getGameState() == GameState.STARTED) {
             if (event.getBlock().getType() == Material.getMaterial(plugin.getConfig().getInt(ShiftSpawn.ALPHA_CORE_ID))) {
