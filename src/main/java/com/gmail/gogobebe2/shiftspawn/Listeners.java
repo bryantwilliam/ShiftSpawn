@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -75,9 +76,12 @@ public class Listeners implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (event.getTo().getY() < 0 && player.getHealth() > 0) {
+        if (event.getTo().getY() <= 0 && player.getHealth() > 0) {
             for (ItemStack item : player.getInventory()) {
                 player.getWorld().dropItemNaturally(player.getLocation().add(0, 3, 0), item);
+            }
+            for (ItemStack item : player.getInventory()) {
+                item.setAmount(0);
             }
             player.setHealth(0);
             plugin.spawn(player);
@@ -86,12 +90,26 @@ public class Listeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
-        Player killer = event.getEntity().getKiller();
+        onDeath(event.getEntity(), event.getEntity().getKiller());
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerDamagedEvent(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
+            Player player = (Player) event.getDamager();
+            Player killer = (Player) event.getEntity();
+            if (event.getFinalDamage() >= player.getHealth()) {
+                onDeath(player, killer);
+            }
+        }
+    }
+
+    private void onDeath(Player player, Player killer) {
         if (plugin.getGame().getGameState() == GameState.STARTED && killer != null) {
             Participant k = plugin.getParticipant(killer);
             k.setKills(k.getKills() + 1);
         }
-        plugin.spawn(event.getEntity());
+        plugin.spawn(player);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
