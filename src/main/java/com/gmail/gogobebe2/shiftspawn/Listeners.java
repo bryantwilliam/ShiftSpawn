@@ -33,7 +33,6 @@ public class Listeners implements Listener {
         return wasSuccessful;
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
@@ -52,7 +51,6 @@ public class Listeners implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLeaveEvent(PlayerQuitEvent event) {
         int minPlayers = plugin.getConfig().getInt(ShiftSpawn.MIN_PLAYERS_KEY);
         Player player = event.getPlayer();
@@ -73,7 +71,6 @@ public class Listeners implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         if (event.getTo().getY() <= 0 && player.getHealth() > 0) {
@@ -92,12 +89,10 @@ public class Listeners implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
         onDeath(event.getEntity(), event.getEntity().getKiller());
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDamagedEvent(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
             Player player = (Player) event.getDamager();
