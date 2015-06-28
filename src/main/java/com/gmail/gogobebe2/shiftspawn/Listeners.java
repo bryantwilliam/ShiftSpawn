@@ -84,7 +84,7 @@ public class Listeners implements Listener {
             }
             player.getInventory().clear();
             player.updateInventory();
-            player.setHealth(0);
+            player.setHealth(0.1);
             plugin.spawn(player);
         }
     }
