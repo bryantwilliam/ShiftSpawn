@@ -12,6 +12,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class Listeners implements Listener {
@@ -75,17 +76,14 @@ public class Listeners implements Listener {
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (event.getTo().getY() <= 0 && player.getHealth() > 0) {
+        if (event.getTo().getY() <= 0.1 && player.getHealth() > 0.1) {
             for (ItemStack item : player.getInventory()) {
                 if (item != null) {
-                    player.getWorld().dropItemNaturally(player.getLocation().add(0, 3, 0), item);
+                    player.getWorld().dropItemNaturally(player.getLocation().subtract(0, 3, 0), item);
                 }
             }
-            for (ItemStack item : player.getInventory()) {
-                if (item != null) {
-                    item.setAmount(0);
-                }
-            }
+            player.getInventory().clear();
+            player.updateInventory();
             player.setHealth(0);
             plugin.spawn(player);
         }
@@ -126,4 +124,8 @@ public class Listeners implements Listener {
         }
     }
 
+    @EventHandler
+    public void onRainStart(WeatherChangeEvent event) {
+        event.setCancelled(true);
+    }
 }

@@ -67,10 +67,10 @@ public class ShiftSpawn extends JavaPlugin {
         return false;
     }
 
-    private boolean hasItemWithMeta(PlayerInventory inventory, Material material, ItemMeta meta) {
+    private boolean isSpecialItem(PlayerInventory inventory, Material material, ItemMeta meta) {
         if (inventory.contains(material)) {
             for (ItemStack item : inventory.all(material).values()) {
-                if (item.getItemMeta().equals(meta)) {
+                if (item.getItemMeta().getDisplayName().equals(meta.getDisplayName())) {
                     return true;
                 }
             }
@@ -100,10 +100,10 @@ public class ShiftSpawn extends JavaPlugin {
             swordMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Trusty sword");
             sword.setItemMeta(swordMeta);
 
-            if (!hasItemWithMeta(inventory, Material.WOOD_PICKAXE, pickaxeMeta)) {
+            if (!isSpecialItem(inventory, Material.WOOD_PICKAXE, pickaxeMeta)) {
                 inventory.addItem(pickaxe);
             }
-            if (!hasItemWithMeta(inventory, Material.WOOD_SWORD, swordMeta)) {
+            if (!isSpecialItem(inventory, Material.WOOD_SWORD, swordMeta)) {
                 inventory.addItem(sword);
             }
             PLAYER.updateInventory();
@@ -167,6 +167,14 @@ public class ShiftSpawn extends JavaPlugin {
                 // Remove their scoreboard.
                 player.setScoreboard(Bukkit.getServer().getScoreboardManager().getNewScoreboard());
                 player.kickPlayer(ChatColor.AQUA + "You have been kicked while game restarts.");
+                Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+                    @Override
+                    public void run() {
+                        for (World world : Bukkit.getWorlds()) {
+                            world.setTime(6000);
+                        }
+                    }
+                }, 0L, 1000L);
             }
         }
     }
