@@ -85,7 +85,6 @@ public class ShiftSpawn extends JavaPlugin {
             id = getParticipant(PLAYER).getSpawnID();
             PLAYER.setGameMode(GameMode.SURVIVAL);
             PLAYER.setHealth(20);
-            PLAYER.setFoodLevel(20);
             PlayerInventory inventory = PLAYER.getInventory();
             inventory.clear();
 

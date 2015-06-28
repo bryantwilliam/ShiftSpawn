@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -107,8 +108,8 @@ public class Listeners implements Listener {
 
     private void onDeath(Player player, Player killer) {
         if (plugin.getGame().getGameState() == GameState.STARTED && killer != null) {
-            Participant k = plugin.getParticipant(killer);
-            k.setKills(k.getKills() + 1);
+            Participant p = plugin.getParticipant(killer);
+            p.setKills(p.getKills() + 1);
         }
         plugin.spawn(player);
     }
@@ -128,5 +129,10 @@ public class Listeners implements Listener {
     public void onRainStart(WeatherChangeEvent event) {
         event.getWorld().setWeatherDuration(0);
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPlayerHunger(FoodLevelChangeEvent event) {
+        event.setFoodLevel(20);
     }
 }

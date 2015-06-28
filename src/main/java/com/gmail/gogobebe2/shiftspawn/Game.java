@@ -4,8 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 
 import java.util.*;
 
@@ -47,37 +45,6 @@ public class Game {
         return getMinutes() + ":" + getSeconds();
     }
 
-    private void showKillsTag() {
-        for (Participant participant : plugin.getParticipants()) {
-            Player player = participant.getPlayer();
-            Scoreboard scoreboard = player.getScoreboard();
-
-            String name;
-            if (player.getName().length() <= 11) {
-                name = player.getName();
-            } else {
-                name = player.getName().substring(0, 11);
-            }
-            name = name + "_team";
-            Team team = null;
-            boolean foundTeam = false;
-            if (!scoreboard.getTeams().isEmpty()) {
-                for (Team t : scoreboard.getTeams()) {
-                    if (t.getName().equals(name)) {
-                        team = scoreboard.getTeam(name);
-                        foundTeam = true;
-                        break;
-                    }
-                }
-            }
-            if (!foundTeam) {
-                team = scoreboard.registerNewTeam(name);
-            }
-            team.setPrefix(ChatColor.DARK_RED + "[" + participant.getKills() + "] " + ChatColor.AQUA + ChatColor.BOLD);
-            team.addPlayer(player);
-        }
-    }
-
     public void startTimer() {
         if (!isTimerRunning()) {
             this.isTimerRunning = true;
@@ -86,7 +53,6 @@ public class Game {
             @Override
             public void run() {
                 for (Participant participant : plugin.getParticipants()) {
-                    showKillsTag();
                     if (gameState.equals(GameState.STARTED)) {
                         participant.getScoreTagSection().display();
                         participant.getTopScoresSection().display();

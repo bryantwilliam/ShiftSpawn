@@ -23,25 +23,10 @@ public class Participant implements Comparable<Participant> {
     private OnlinePlayerSection onlinePlayerSection;
 
     public Participant(ShiftSpawn plugin, final Player PLAYER, String spawnID) {
-        this(plugin, PLAYER, spawnID, 0, 0);
-    }
-
-    private Objective getObjective(Scoreboard scoreboard, String name) {
-        if (!scoreboard.getObjectives().isEmpty()) {
-            for (Objective objective : scoreboard.getObjectives()) {
-                if (objective.getName().equals(name)) {
-                    return scoreboard.getObjective(name);
-                }
-            }
-        }
-        return scoreboard.registerNewObjective(name, "dummy");
-    }
-
-    public Participant(ShiftSpawn plugin, final Player PLAYER, String spawnID, int score, int kills) {
         this.PLAYER = PLAYER;
         this.spawnID = spawnID;
-        this.score = score;
-        this.kills = kills;
+        this.score = 0;
+        this.kills = 0;
         Scoreboard scoreboard = PLAYER.getScoreboard();
         scoreboard.clearSlot(DisplaySlot.SIDEBAR);
         scoreboard.clearSlot(DisplaySlot.BELOW_NAME);
@@ -59,6 +44,17 @@ public class Participant implements Comparable<Participant> {
         nameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         nameObjective.setDisplayName(ChatColor.DARK_GREEN + "Points");
         this.scoreTagSection = new ScoreTagSection(this, nameObjective, plugin);
+    }
+
+    private Objective getObjective(Scoreboard scoreboard, String name) {
+        if (!scoreboard.getObjectives().isEmpty()) {
+            for (Objective objective : scoreboard.getObjectives()) {
+                if (objective.getName().equals(name)) {
+                    return scoreboard.getObjective(name);
+                }
+            }
+        }
+        return scoreboard.registerNewObjective(name, "dummy");
     }
 
     private String getUniqueObjectiveName(String name, char prefix) {
