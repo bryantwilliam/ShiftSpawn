@@ -81,12 +81,9 @@ public class ShiftSpawn extends JavaPlugin {
     public void spawn(final Player PLAYER) {
         PLAYER.spigot().respawn();
         String id;
+        PlayerInventory inventory = PLAYER.getInventory();
         if (game.getGameState().equals(GameState.STARTED)) {
             id = getParticipant(PLAYER).getSpawnID();
-            PLAYER.setGameMode(GameMode.SURVIVAL);
-            PLAYER.setHealth(20);
-            PlayerInventory inventory = PLAYER.getInventory();
-            inventory.clear();
 
             ItemStack pickaxe = new ItemStack(Material.WOOD_PICKAXE, 1);
             ItemMeta pickaxeMeta = pickaxe.getItemMeta();
@@ -110,6 +107,9 @@ public class ShiftSpawn extends JavaPlugin {
             id = "main";
         }
         PLAYER.teleport(loadSpawn(id));
+        PLAYER.setHealth(20);
+        PLAYER.setGameMode(GameMode.SURVIVAL);
+        inventory.clear();
     }
 
     public Location loadSpawn(String id) {
