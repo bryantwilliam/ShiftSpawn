@@ -77,7 +77,7 @@ public class Listeners implements Listener {
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (event.getTo().getY() <= 0.1 && player.getHealth() > 0.1) {
+        if (event.getTo().getY() <= 0.1 && player.getHealth() > 0) {
             for (ItemStack item : player.getInventory()) {
                 if (item != null) {
                     player.getWorld().dropItemNaturally(player.getLocation().subtract(0, 3, 0), item);
@@ -85,8 +85,7 @@ public class Listeners implements Listener {
             }
             player.getInventory().clear();
             player.updateInventory();
-            player.setHealth(0.1);
-            plugin.spawn(player);
+            player.setHealth(0);
         }
     }
 
