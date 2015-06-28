@@ -154,6 +154,14 @@ public class ShiftSpawn extends JavaPlugin {
                 player.kickPlayer(ChatColor.AQUA + "You have been kicked while the game gets setup.");
             }
         }
+        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+            @Override
+            public void run() {
+                for (World world : Bukkit.getWorlds()) {
+                    world.setTime(6000);
+                }
+            }
+        }, 0L, 1000L);
         this.game = new Game(this, GameState.WAITING, Integer.MAX_VALUE + ":00");
         game.startTimer();
 
@@ -167,14 +175,6 @@ public class ShiftSpawn extends JavaPlugin {
                 // Remove their scoreboard.
                 player.setScoreboard(Bukkit.getServer().getScoreboardManager().getNewScoreboard());
                 player.kickPlayer(ChatColor.AQUA + "You have been kicked while game restarts.");
-                Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-                    @Override
-                    public void run() {
-                        for (World world : Bukkit.getWorlds()) {
-                            world.setTime(6000);
-                        }
-                    }
-                }, 0L, 1000L);
             }
         }
     }

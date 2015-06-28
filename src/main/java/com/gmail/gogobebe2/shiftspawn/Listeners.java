@@ -126,6 +126,7 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onRainStart(WeatherChangeEvent event) {
+        event.getWorld().setWeatherDuration(0);
         event.setCancelled(true);
     }
 }
