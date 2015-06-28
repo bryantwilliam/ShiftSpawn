@@ -105,12 +105,12 @@ public class ShiftSpawn extends JavaPlugin {
         } else {
             id = "main";
         }
+        PLAYER.setHealth(20);
         PLAYER.setGameMode(GameMode.CREATIVE);
         PLAYER.teleport(loadSpawn(id));
         PLAYER.setGameMode(GameMode.SURVIVAL);
         inventory.clear();
         PLAYER.updateInventory();
-        PLAYER.setHealth(20);
     }
 
     public Location loadSpawn(String id) {
