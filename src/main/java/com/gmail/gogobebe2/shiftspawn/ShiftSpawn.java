@@ -102,7 +102,6 @@ public class ShiftSpawn extends JavaPlugin {
             if (!isSpecialItem(inventory, Material.WOOD_SWORD, swordMeta)) {
                 inventory.addItem(sword);
             }
-            PLAYER.updateInventory();
         } else {
             id = "main";
         }
@@ -110,6 +109,7 @@ public class ShiftSpawn extends JavaPlugin {
         PLAYER.teleport(loadSpawn(id));
         PLAYER.setGameMode(GameMode.SURVIVAL);
         inventory.clear();
+        PLAYER.updateInventory();
         PLAYER.setHealth(20);
     }
 
