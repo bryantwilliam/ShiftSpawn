@@ -58,7 +58,7 @@ public class Listeners implements Listener {
         Player player = event.getPlayer();
         String playerName = player.getName();
         if (plugin.getGame().getGameState() == GameState.STARTED && Bukkit.getOnlinePlayers().size() == 1) {
-            plugin.getGame().setGameState(GameState.RESTARTING);
+            plugin.getGame().setTime("0:10");
             event.setQuitMessage(ChatColor.DARK_RED + playerName + "Left. No more players alive, restarting game...");
         }
         else if (minPlayers >= Bukkit.getOnlinePlayers().size() && (plugin.getGame().getGameState() == GameState.STARTING || plugin.getGame().getGameState() == GameState.WAITING)) {
