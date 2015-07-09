@@ -14,7 +14,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
-import org.bukkit.inventory.ItemStack;
 
 public class Listeners implements Listener {
     private ShiftSpawn plugin;
@@ -77,15 +76,7 @@ public class Listeners implements Listener {
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (event.getTo().getY() <= 0.1 && player.getHealth() > 0) {
-            for (ItemStack item : player.getInventory()) {
-                if (item != null) {
-                    player.getWorld().dropItemNaturally(player.getLocation().subtract(0, 3, 0), item);
-                }
-            }
-            player.getInventory().clear();
-            player.updateInventory();
-            player.setHealth(0);
+        if (event.getTo().getY() <= 0.1) {
             plugin.spawn(player);
         }
     }
