@@ -38,9 +38,12 @@ public class Listeners implements Listener {
         Player player = event.getPlayer();
 
         if (!plugin.hasParticipantSet(player)) {
-            player.kickPlayer(ChatColor.AQUA + "Sorry, the game has already started. Come back later. There's "
-                    + ChatColor.GOLD + plugin.getGame().getTime() + ChatColor.AQUA + " time left.");
-            return;
+            if (plugin.getGame().getGameState() == GameState.STARTED) {
+                player.kickPlayer(ChatColor.AQUA + "Sorry, the game has already started. Come back later. There's "
+                        + ChatColor.GOLD + plugin.getGame().getTime() + ChatColor.AQUA + " time left.");
+                return;
+            }
+            plugin.getParticipants().add(new Participant(plugin, player, plugin.getNextSpawnID()));
         }
         plugin.spawn(player);
         String playerName = player.getName();
