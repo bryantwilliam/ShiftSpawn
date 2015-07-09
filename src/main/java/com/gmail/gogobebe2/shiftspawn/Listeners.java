@@ -38,7 +38,9 @@ public class Listeners implements Listener {
         Player player = event.getPlayer();
 
         if (!plugin.hasParticipantSet(player)) {
-            plugin.getParticipants().add(new Participant(plugin, player, plugin.getNextSpawnID()));
+            player.kickPlayer(ChatColor.AQUA + "Sorry, the game has already started. Come back later. There's "
+                    + ChatColor.GOLD + plugin.getGame().getTime() + ChatColor.AQUA + " time left.");
+            return;
         }
         plugin.spawn(player);
         String playerName = player.getName();
@@ -77,7 +79,7 @@ public class Listeners implements Listener {
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         if (event.getTo().getY() <= 0.1) {
-            plugin.spawn(player);
+            onDeath(player, player.getKiller());
         }
     }
 
@@ -99,8 +101,8 @@ public class Listeners implements Listener {
 
     private void onDeath(Player player, Player killer) {
         if (plugin.getGame().getGameState() == GameState.STARTED && killer != null) {
-            Participant p = plugin.getParticipant(killer);
-            p.setKills(p.getKills() + 1);
+            Participant k = plugin.getParticipant(killer);
+            k.setKills(k.getKills() + 1);
         }
         plugin.spawn(player);
     }

@@ -26,7 +26,8 @@ public class StatusSection extends ScoreboardSection {
             case STARTED:
                 return ChatColor.GOLD + "Time left: " + ChatColor.DARK_GREEN + getPlugin().getGame().getTime();
             case RESTARTING:
-                return ChatColor.RED + "" + ChatColor.BOLD + "Restarting.." + dots;
+                return ChatColor.DARK_RED + getPlugin().getGame().getTime() + ChatColor.RED + ChatColor.BOLD
+                        + " till server restarts.." + dots;
             default:
                 return ChatColor.RED + "Error! ";
         }
