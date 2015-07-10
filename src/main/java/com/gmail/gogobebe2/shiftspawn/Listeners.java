@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
@@ -35,15 +36,23 @@ public class Listeners implements Listener {
     }
 
     @EventHandler
+    public void onPlayerLoginEvent(PlayerLoginEvent event) {
+        Player player = event.getPlayer();
+
+        if (!plugin.hasParticipantSet(player) && plugin.getGame().getGameState() == GameState.STARTED) {
+            event.disallow(PlayerLoginEvent.Result.KICK_FULL, ChatColor.AQUA + "Sorry, the game has already started. Come back later. There's "
+                    + ChatColor.GOLD + plugin.getGame().getTime() + ChatColor.AQUA + " time left.");
+        }
+        else {
+            event.allow();
+        }
+    }
+
+    @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         player.getWorld().playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1.2F);
         if (!plugin.hasParticipantSet(player)) {
-            if (plugin.getGame().getGameState() == GameState.STARTED) {
-                player.kickPlayer(ChatColor.AQUA + "Sorry, the game has already started. Come back later. There's "
-                        + ChatColor.GOLD + plugin.getGame().getTime() + ChatColor.AQUA + " time left.");
-                return;
-            }
             plugin.getParticipants().add(new Participant(plugin, player, plugin.getNextSpawnID()));
         }
         plugin.spawn(player);
