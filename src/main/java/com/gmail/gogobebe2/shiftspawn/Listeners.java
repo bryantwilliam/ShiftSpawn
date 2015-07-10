@@ -3,6 +3,7 @@ package com.gmail.gogobebe2.shiftspawn;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -105,6 +106,7 @@ public class Listeners implements Listener {
     }
 
     private void onDeath(Player player, Player killer) {
+        player.playSound(player.getLocation(), Sound.WITHER_DEATH, 0.9F, 1);
         if (plugin.getGame().getGameState() == GameState.STARTED && killer != null) {
             Participant k = plugin.getParticipant(killer);
             k.setKills(k.getKills() + 1);
@@ -116,8 +118,10 @@ public class Listeners implements Listener {
     public void onBlockBreakEvent(BlockBreakEvent event) {
         if (plugin.getGame().getGameState() == GameState.STARTED) {
             if (event.getBlock().getType() == Material.getMaterial(plugin.getConfig().getInt(ShiftSpawn.ALPHA_CORE_ID))) {
-                Participant participant = plugin.getParticipant(event.getPlayer());
+                Player player = event.getPlayer();
+                Participant participant = plugin.getParticipant(player);
                 participant.setScore(participant.getScore() + 1);
+                player.playSound(player.getLocation(), Sound.BLAZE_DEATH, 1.3F, 1);
                 event.setCancelled(true);
             }
         }
