@@ -83,6 +83,7 @@ public class Listeners implements Listener {
         Player player = event.getPlayer();
         if (event.getTo().getY() <= 0.1) {
             onDeath(player, player.getKiller());
+            event.setCancelled(true);
         }
     }
 
@@ -99,6 +100,7 @@ public class Listeners implements Listener {
             if (event.getFinalDamage() >= player.getHealth()) {
                 onDeath(player, killer);
             }
+            event.setCancelled(true);
         }
     }
 
