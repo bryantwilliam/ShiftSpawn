@@ -82,7 +82,9 @@ public class Game {
         }
         switch (this.gameState) {
             case RESTARTING:
-                Bukkit.getServer().shutdown();
+                // Bukkit.getServer().shutdown(); Doesn't work for his server.
+                // So trying this out:
+                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "stop");
             case WAITING:
                 // Just keep looping and use the timer to decide how to use ".." or "..."
                 setMinutes(Integer.MAX_VALUE);
