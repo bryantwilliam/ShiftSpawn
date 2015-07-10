@@ -40,7 +40,7 @@ public class Listeners implements Listener {
         Player player = event.getPlayer();
 
         if (!plugin.hasParticipantSet(player) && plugin.getGame().getGameState() == GameState.STARTED) {
-            event.disallow(PlayerLoginEvent.Result.KICK_FULL, ChatColor.AQUA + "Sorry, the game has already started. Come back later. There's "
+            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.AQUA + "Sorry, the game has already started. Come back later. There's "
                     + ChatColor.GOLD + plugin.getGame().getTime() + ChatColor.AQUA + " time left.");
         }
         else {
