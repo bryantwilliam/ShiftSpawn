@@ -79,8 +79,8 @@ public class ShiftSpawn extends JavaPlugin {
     }
 
     public void spawn(final Player PLAYER) {
-        PLAYER.spigot().respawn();
         String id;
+        PLAYER.setHealth(20);
         PlayerInventory inventory = PLAYER.getInventory();
         if (game.getGameState().equals(GameState.STARTED)) {
             id = getParticipant(PLAYER).getSpawnID();
@@ -106,7 +106,6 @@ public class ShiftSpawn extends JavaPlugin {
             id = "main";
             inventory.clear();
         }
-        PLAYER.setHealth(20);
         PLAYER.setGameMode(GameMode.CREATIVE);
         PLAYER.teleport(loadSpawn(id));
         PLAYER.setGameMode(GameMode.SURVIVAL);

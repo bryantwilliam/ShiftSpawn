@@ -89,8 +89,8 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
-        onDeath(event.getEntity().getPlayer(), event.getEntity().getKiller());
         event.setKeepInventory(true);
+        onDeath(event.getEntity().getPlayer(), event.getEntity().getKiller());
     }
 
     @EventHandler
