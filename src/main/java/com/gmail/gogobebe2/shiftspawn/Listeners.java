@@ -37,7 +37,7 @@ public class Listeners implements Listener {
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 0.9F, 1.2F);
+        player.getWorld().playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1.2F);
         if (!plugin.hasParticipantSet(player)) {
             if (plugin.getGame().getGameState() == GameState.STARTED) {
                 player.kickPlayer(ChatColor.AQUA + "Sorry, the game has already started. Come back later. There's "
@@ -66,15 +66,13 @@ public class Listeners implements Listener {
         if (plugin.getGame().getGameState() == GameState.STARTED && Bukkit.getOnlinePlayers().size() == 1) {
             plugin.getGame().setTime("0:10");
             event.setQuitMessage(ChatColor.DARK_RED + playerName + "Left. No more players alive, restarting game...");
-        }
-        else if (minPlayers >= Bukkit.getOnlinePlayers().size() && (plugin.getGame().getGameState() == GameState.STARTING || plugin.getGame().getGameState() == GameState.WAITING)) {
+        } else if (minPlayers >= Bukkit.getOnlinePlayers().size() && (plugin.getGame().getGameState() == GameState.STARTING || plugin.getGame().getGameState() == GameState.WAITING)) {
             event.setQuitMessage(ChatColor.DARK_PURPLE + playerName + " left the game. We now need "
                     + (minPlayers - (Bukkit.getOnlinePlayers().size() - 1))
                     + " more players to start. All " + playerName
                     + "'s fault. Blame them because now it'll take longer to start!!");
             plugin.getGame().setGameState(GameState.WAITING);
-        }
-        else {
+        } else {
             event.setQuitMessage(ChatColor.DARK_PURPLE + playerName + " left the game.");
         }
     }
@@ -109,6 +107,7 @@ public class Listeners implements Listener {
         if (plugin.getGame().getGameState() == GameState.STARTED && killer != null) {
             Participant k = plugin.getParticipant(killer);
             k.setKills(k.getKills() + 1);
+            Bukkit.broadcastMessage("Death message - I'll do this shit later.");
             killer.playSound(player.getLocation(), Sound.NOTE_PIANO, 1.4F, 1.6F);
         }
         plugin.spawn(player);
@@ -117,19 +116,20 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event) {
-        if (plugin.getGame().getGameState() == GameState.STARTED) {
-            if (event.getBlock().getType() == Material.getMaterial(plugin.getConfig().getInt(ShiftSpawn.ALPHA_CORE_ID))) {
+        if (event.getBlock().getType() == Material.getMaterial(plugin.getConfig().getInt(ShiftSpawn.ALPHA_CORE_ID))) {
+            if (plugin.getGame().getGameState() == GameState.STARTED) {
                 Player player = event.getPlayer();
                 Participant participant = plugin.getParticipant(player);
                 participant.setScore(participant.getScore() + 1);
                 player.getWorld().playSound(player.getLocation(), Sound.ANVIL_LAND, 1.4F, 0.4F);
-                event.setCancelled(true);
+
             }
+            event.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onWeatherChange(WeatherChangeEvent event){
+    public void onWeatherChange(WeatherChangeEvent event) {
         event.setCancelled(event.toWeatherState());
     }
 
