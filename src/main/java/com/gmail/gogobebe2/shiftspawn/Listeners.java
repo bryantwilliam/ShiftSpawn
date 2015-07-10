@@ -37,7 +37,7 @@ public class Listeners implements Listener {
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-
+        player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 0.9F, 1.2F);
         if (!plugin.hasParticipantSet(player)) {
             if (plugin.getGame().getGameState() == GameState.STARTED) {
                 player.kickPlayer(ChatColor.AQUA + "Sorry, the game has already started. Come back later. There's "
@@ -106,12 +106,12 @@ public class Listeners implements Listener {
     }
 
     private void onDeath(Player player, Player killer) {
-        player.playSound(player.getLocation(), Sound.WITHER_DEATH, 0.9F, 1);
         if (plugin.getGame().getGameState() == GameState.STARTED && killer != null) {
             Participant k = plugin.getParticipant(killer);
             k.setKills(k.getKills() + 1);
         }
         plugin.spawn(player);
+        player.playSound(player.getLocation(), Sound.IRONGOLEM_DEATH, 0.9F, 1);
     }
 
     @EventHandler
