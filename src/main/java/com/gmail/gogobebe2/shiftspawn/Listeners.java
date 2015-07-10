@@ -96,12 +96,11 @@ public class Listeners implements Listener {
     @EventHandler
     public void onPlayerDamagedEvent(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
-            Player player = (Player) event.getDamager();
-            Player killer = (Player) event.getEntity();
+            Player player = (Player) event.getEntity();
             if (event.getFinalDamage() >= player.getHealth()) {
-                onDeath(player, killer);
+                event.setCancelled(true);
+                onDeath(player, (Player) event.getDamager());
             }
-            event.setCancelled(true);
         }
     }
 
