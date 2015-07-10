@@ -1,6 +1,7 @@
 package com.gmail.gogobebe2.shiftspawn;
 
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,6 +20,7 @@ public class ShiftSpawn extends JavaPlugin {
     private Game game;
     private String spawnID = "-1";
     private List<Participant> participants = new ArrayList<>();
+    private ArrayList<Block> alphaCores;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -203,5 +205,9 @@ public class ShiftSpawn extends JavaPlugin {
             }
         }
         throw new NullPointerException(player.getName() + " has not had his participant set yet");
+    }
+
+    public ArrayList<Block> getAlphaCores() {
+        return alphaCores;
     }
 }

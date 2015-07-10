@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -125,13 +126,14 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event) {
-        if (event.getBlock().getType() == Material.getMaterial(plugin.getConfig().getInt(ShiftSpawn.ALPHA_CORE_ID))) {
+        Block block = event.getBlock();
+        if (block.getType() == Material.getMaterial(plugin.getConfig().getInt(ShiftSpawn.ALPHA_CORE_ID))) {
             if (plugin.getGame().getGameState() == GameState.STARTED) {
                 Player player = event.getPlayer();
                 Participant participant = plugin.getParticipant(player);
                 participant.setScore(participant.getScore() + 1);
                 player.getWorld().playSound(player.getLocation(), Sound.ANVIL_LAND, 1.4F, 0.4F);
-
+                plugin.getAlphaCores().add(block);
             }
             event.setCancelled(true);
         }

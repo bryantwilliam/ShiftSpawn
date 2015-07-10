@@ -2,6 +2,8 @@ package com.gmail.gogobebe2.shiftspawn;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -59,6 +61,11 @@ public class Game {
                     }
                     participant.getStatusSection().display();
                     participant.getOnlinePlayerSection().display();
+                }
+                if (!plugin.getAlphaCores().isEmpty()) {
+                    for (Block alphaCore : plugin.getAlphaCores()) {
+                        alphaCore.getWorld().playEffect(alphaCore.getLocation().clone().subtract(0, 1, 0), Effect.LAVADRIP, 5);
+                    }
                 }
                 if (seconds != 0 || minutes != 0) {
                     seconds--;
