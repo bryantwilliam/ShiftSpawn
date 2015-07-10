@@ -10,7 +10,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -80,11 +79,6 @@ public class Listeners implements Listener {
     }
 
     @EventHandler
-    public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
-        event.setCancelled(true);
-    }
-
-    @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         if (event.getTo().getY() <= 0.1) {
@@ -95,7 +89,8 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
-        onDeath(event.getEntity(), event.getEntity().getKiller());
+        onDeath(event.getEntity().getPlayer(), event.getEntity().getKiller());
+        event.setKeepInventory(true);
     }
 
     @EventHandler
