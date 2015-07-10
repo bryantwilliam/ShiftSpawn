@@ -121,7 +121,7 @@ public class Listeners implements Listener {
                 Player player = event.getPlayer();
                 Participant participant = plugin.getParticipant(player);
                 participant.setScore(participant.getScore() + 1);
-                player.getWorld().playSound(player.getLocation(), Sound.ANVIL_LAND, 1.3F, 1);
+                player.getWorld().playSound(player.getLocation(), Sound.ANVIL_LAND, 1.3F, 0.4F);
                 event.setCancelled(true);
             }
         }
