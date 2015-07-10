@@ -109,6 +109,7 @@ public class Listeners implements Listener {
         if (plugin.getGame().getGameState() == GameState.STARTED && killer != null) {
             Participant k = plugin.getParticipant(killer);
             k.setKills(k.getKills() + 1);
+            killer.playSound(player.getLocation(), Sound.NOTE_PIANO, 0.9F, 1);
         }
         plugin.spawn(player);
         player.playSound(player.getLocation(), Sound.IRONGOLEM_DEATH, 0.9F, 1);
@@ -121,7 +122,7 @@ public class Listeners implements Listener {
                 Player player = event.getPlayer();
                 Participant participant = plugin.getParticipant(player);
                 participant.setScore(participant.getScore() + 1);
-                player.getWorld().playSound(player.getLocation(), Sound.ANVIL_LAND, 1.3F, 0.4F);
+                player.getWorld().playSound(player.getLocation(), Sound.ANVIL_LAND, 1.3F, 1.5F);
                 event.setCancelled(true);
             }
         }

@@ -116,6 +116,22 @@ public class Game {
                     }
                 }
 
+                int mostKills = 0;
+                if (winners.size() > 1) {
+                    for (Participant participant : winners) {
+                        if (participant.getKills() >= mostKills) {
+                            if (participant.getKills() > mostKills) {
+                                winners.clear();
+                                mostKills = participant.getKills();
+                            }
+                            winners.add(participant);
+                        }
+                        else {
+                            break;
+                        }
+                    }
+                }
+
                 StringBuilder broadcast = new StringBuilder();
                 broadcast.append(ChatColor.DARK_GREEN + "" + ChatColor.ITALIC + "Winner");
                 if (winners.size() > 1) {
