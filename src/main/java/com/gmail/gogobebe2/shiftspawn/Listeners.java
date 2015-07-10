@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -76,6 +77,11 @@ public class Listeners implements Listener {
         else {
             event.setQuitMessage(ChatColor.DARK_PURPLE + playerName + " left the game.");
         }
+    }
+
+    @EventHandler
+    public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
+        event.setCancelled(true);
     }
 
     @EventHandler
