@@ -26,7 +26,7 @@ public class ShiftSpawn extends JavaPlugin {
     private Game game;
     private String spawnID = "-1";
     private List<Participant> participants = new ArrayList<>();
-    private ArrayList<Block> alphaCores;
+    private ArrayList<Block> alphaCores = new ArrayList<>();
     private TopScoresSection topScoresSection;
     private StatusSection statusSection;
     private OnlinePlayerSection onlinePlayerSection;
