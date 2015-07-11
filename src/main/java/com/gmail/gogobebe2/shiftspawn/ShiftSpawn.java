@@ -235,4 +235,16 @@ public class ShiftSpawn extends JavaPlugin {
     public ArrayList<Block> getAlphaCores() {
         return alphaCores;
     }
+
+    public TopScoresSection getTopScoresSection() {
+        return topScoresSection;
+    }
+
+    public StatusSection getStatusSection() {
+        return statusSection;
+    }
+
+    public OnlinePlayerSection getOnlinePlayerSection() {
+        return onlinePlayerSection;
+    }
 }

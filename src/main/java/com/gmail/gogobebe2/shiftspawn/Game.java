@@ -62,10 +62,10 @@ public class Game {
                     if (gameState.equals(GameState.STARTED)) {
                         showKillsTag(participant);
                         participant.getScoreTagSection().display(participant.getPlayer());
-                        participant.getTopScoresSection().display(participant.getPlayer());
+                        plugin.getTopScoresSection().display(participant.getPlayer());
                     }
-                    participant.getStatusSection().display(participant.getPlayer());
-                    participant.getOnlinePlayerSection().display(participant.getPlayer());
+                    plugin.getStatusSection().display(participant.getPlayer());
+                    plugin.getOnlinePlayerSection().display(participant.getPlayer());
                 }
                 if (!plugin.getAlphaCores().isEmpty()) {
                     for (Block alphaCore : plugin.getAlphaCores()) {
