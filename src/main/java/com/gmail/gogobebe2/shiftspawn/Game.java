@@ -61,7 +61,7 @@ public class Game {
                 for (Participant participant : plugin.getParticipants()) {
                     if (gameState.equals(GameState.STARTED)) {
                         showKillsTag(participant);
-                        participant.getScoreTagSection().display(participant.getPlayer());
+                        plugin.getScoreTagSection().display(participant.getPlayer());
                         plugin.getTopScoresSection().display(participant.getPlayer());
                     }
                     plugin.getStatusSection().display(participant.getPlayer());

@@ -1,6 +1,7 @@
 package com.gmail.gogobebe2.shiftspawn;
 
 import com.gmail.gogobebe2.shiftspawn.scoreboard.OnlinePlayerSection;
+import com.gmail.gogobebe2.shiftspawn.scoreboard.ScoreTagSection;
 import com.gmail.gogobebe2.shiftspawn.scoreboard.StatusSection;
 import com.gmail.gogobebe2.shiftspawn.scoreboard.TopScoresSection;
 import org.bukkit.*;
@@ -30,6 +31,7 @@ public class ShiftSpawn extends JavaPlugin {
     private TopScoresSection topScoresSection;
     private StatusSection statusSection;
     private OnlinePlayerSection onlinePlayerSection;
+    private ScoreTagSection scoreTagSection;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -191,6 +193,11 @@ public class ShiftSpawn extends JavaPlugin {
         this.topScoresSection = new TopScoresSection(Game.getScoreboard(), sideObjective, this);
         this.statusSection = new StatusSection(Game.getScoreboard(), sideObjective, this);
         this.onlinePlayerSection = new OnlinePlayerSection(Game.getScoreboard(), sideObjective, this);
+
+        Objective nameObjective = getObjective(Game.getScoreboard(), "name_obj");
+        nameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+        nameObjective.setDisplayName(ChatColor.DARK_GREEN + "Points");
+        this.scoreTagSection = new ScoreTagSection(Game.getScoreboard(), nameObjective, this);
     }
 
     @Override
@@ -246,5 +253,9 @@ public class ShiftSpawn extends JavaPlugin {
 
     public OnlinePlayerSection getOnlinePlayerSection() {
         return onlinePlayerSection;
+    }
+
+    public ScoreTagSection getScoreTagSection() {
+        return scoreTagSection;
     }
 }

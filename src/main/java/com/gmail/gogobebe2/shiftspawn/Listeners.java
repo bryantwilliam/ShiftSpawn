@@ -54,7 +54,7 @@ public class Listeners implements Listener {
         Player player = event.getPlayer();
         player.getWorld().playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1.2F);
         if (!plugin.hasParticipantSet(player)) {
-            plugin.getParticipants().add(new Participant(plugin, player, plugin.getNextSpawnID()));
+            plugin.getParticipants().add(new Participant(player, plugin.getNextSpawnID()));
         }
         plugin.spawn(player);
         String playerName = player.getName();
