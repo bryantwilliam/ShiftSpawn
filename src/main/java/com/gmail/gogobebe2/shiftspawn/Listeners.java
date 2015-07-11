@@ -18,6 +18,9 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
+import java.util.List;
+import java.util.Random;
+
 public class Listeners implements Listener {
     private ShiftSpawn plugin;
 
@@ -99,6 +102,7 @@ public class Listeners implements Listener {
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
         event.setKeepInventory(true);
+        event.setDeathMessage(null);
         onDeath(event.getEntity().getPlayer(), event.getEntity().getKiller());
     }
 
@@ -117,12 +121,16 @@ public class Listeners implements Listener {
         if (plugin.getGame().getGameState() == GameState.STARTED && killer != null) {
             Participant k = plugin.getParticipant(killer);
             k.setKills(k.getKills() + 1);
-            Bukkit.broadcastMessage("Death message - I'll do this shit later.");
             killer.playSound(player.getLocation(), Sound.NOTE_PIANO, 1.4F, 1.6F);
         }
         plugin.spawn(player);
         player.playSound(player.getLocation(), Sound.IRONGOLEM_DEATH, 0.9F, 1);
+        List<String> deathMessages = plugin.getConfig().getStringList(ShiftSpawn.DEATH_MESSAGES);
+        int index = new Random().nextInt(deathMessages.size());
+        Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + deathMessages.get(index));
+
     }
+
 
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event) {
