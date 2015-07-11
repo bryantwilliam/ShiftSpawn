@@ -1,5 +1,8 @@
 package com.gmail.gogobebe2.shiftspawn;
 
+import com.gmail.gogobebe2.shiftspawn.scoreboard.OnlinePlayerSection;
+import com.gmail.gogobebe2.shiftspawn.scoreboard.StatusSection;
+import com.gmail.gogobebe2.shiftspawn.scoreboard.TopScoresSection;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -9,6 +12,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.*;
 
@@ -21,6 +27,9 @@ public class ShiftSpawn extends JavaPlugin {
     private String spawnID = "-1";
     private List<Participant> participants = new ArrayList<>();
     private ArrayList<Block> alphaCores;
+    private TopScoresSection topScoresSection;
+    private StatusSection statusSection;
+    private OnlinePlayerSection onlinePlayerSection;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -145,6 +154,17 @@ public class ShiftSpawn extends JavaPlugin {
         return this.spawnID;
     }
 
+    public Objective getObjective(Scoreboard scoreboard, String name) {
+        if (!scoreboard.getObjectives().isEmpty()) {
+            for (Objective objective : scoreboard.getObjectives()) {
+                if (objective.getName().equals(name)) {
+                    return scoreboard.getObjective(name);
+                }
+            }
+        }
+        return scoreboard.registerNewObjective(name, "dummy");
+    }
+
     @Override
     public void onEnable() {
         getLogger().info("Starting up ShiftSpawn. If you need me to update this plugin, email at gogobebe2@gmail.com");
@@ -165,7 +185,12 @@ public class ShiftSpawn extends JavaPlugin {
         }, 0L, 1000L);
         this.game = new Game(this, GameState.WAITING, Integer.MAX_VALUE + ":00");
         game.startTimer();
-
+        Objective sideObjective = getObjective(Game.getScoreboard(), "side_obj");
+        sideObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        sideObjective.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Shift");
+        this.topScoresSection = new TopScoresSection(Game.getScoreboard(), sideObjective, this);
+        this.statusSection = new StatusSection(Game.getScoreboard(), sideObjective, this);
+        this.onlinePlayerSection = new OnlinePlayerSection(Game.getScoreboard(), sideObjective, this);
     }
 
     @Override

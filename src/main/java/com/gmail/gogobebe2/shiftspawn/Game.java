@@ -6,10 +6,13 @@ import org.bukkit.Effect;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import java.util.*;
 
 public class Game {
+    private static Scoreboard scoreboard;
     private int minutes = 0;
     private int seconds = 0;
     private boolean isTimerRunning = false;
@@ -22,6 +25,7 @@ public class Game {
         this.plugin = plugin;
         this.gameState = gameState;
         setTime(timeFormat);
+        scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
     }
 
     public void setTime(String timeFormat) {
@@ -56,11 +60,12 @@ public class Game {
             public void run() {
                 for (Participant participant : plugin.getParticipants()) {
                     if (gameState.equals(GameState.STARTED)) {
-                        participant.getScoreTagSection().display();
-                        participant.getTopScoresSection().display();
+                        showKillsTag(participant);
+                        participant.getScoreTagSection().display(participant.getPlayer());
+                        participant.getTopScoresSection().display(participant.getPlayer());
                     }
-                    participant.getStatusSection().display();
-                    participant.getOnlinePlayerSection().display();
+                    participant.getStatusSection().display(participant.getPlayer());
+                    participant.getOnlinePlayerSection().display(participant.getPlayer());
                 }
                 if (!plugin.getAlphaCores().isEmpty()) {
                     for (Block alphaCore : plugin.getAlphaCores()) {
@@ -80,6 +85,34 @@ public class Game {
 
             }
         }, 0L, 21L);
+    }
+
+    private void showKillsTag(Participant participant) {
+            Player player = participant.getPlayer();
+
+            String name;
+            if (player.getName().length() <= 11) {
+                name = player.getName();
+            } else {
+                name = player.getName().substring(0, 11);
+            }
+            name = name + "_team";
+            Team team = null;
+            boolean foundTeam = false;
+            if (player.getScoreboard().getTeams().isEmpty()) {
+                for (Team t : player.getScoreboard().getTeams()) {
+                    if (t.getName().equals(name)) {
+                        team = player.getScoreboard().getTeam(name);
+                        foundTeam = true;
+                        break;
+                    }
+                }
+            }
+            if (!foundTeam) {
+                team = player.getScoreboard().registerNewTeam(name);
+            }
+            team.setPrefix(ChatColor.DARK_RED + "[" + participant.getKills() + "] " + ChatColor.AQUA + ChatColor.BOLD);
+            team.addPlayer(player);
     }
 
     public void stopTimer() {
@@ -198,5 +231,9 @@ public class Game {
 
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
+    }
+
+    public static Scoreboard getScoreboard() {
+        return scoreboard;
     }
 }
