@@ -117,17 +117,49 @@ public class Listeners implements Listener {
         }
     }
 
+    private String getRandomDeathMessage(Player player, Player killer) {
+        List<String> deathMessages = plugin.getConfig().getStringList(ShiftSpawn.DEATH_MESSAGES);
+        int index = new Random().nextInt(deathMessages.size());
+        String deathMessage = deathMessages.get(index);
+
+        String playerVariable = "[PLAYER]";
+        String killerVariable = "[KILLER]";
+        if (deathMessage.contains(killerVariable)) {
+            if (killer == null) {
+                boolean NoKillerMessage = true;
+                for (String message : deathMessages) {
+                    if (deathMessage.contains(killerVariable)) {
+                        NoKillerMessage = false;
+                    }
+                }
+                if (NoKillerMessage) {
+                    return player.getName() + " died.";
+                }
+                else {
+                    getRandomDeathMessage(player, killer);
+                }
+            }
+            else {
+                deathMessage = deathMessage.replaceAll(killerVariable, killer.getName());
+            }
+        }
+        if (deathMessage.contains(playerVariable)) {
+            deathMessage = deathMessage.replaceAll(playerVariable, player.getName());
+        }
+
+        return deathMessage;
+    }
+
     private void onDeath(Player player, Player killer) {
         if (plugin.getGame().getGameState() == GameState.STARTED && killer != null) {
             Participant k = plugin.getParticipant(killer);
             k.setKills(k.getKills() + 1);
-            killer.playSound(player.getLocation(), Sound.NOTE_PIANO, 1.4F, 1.6F);
+            killer.playSound(killer.getLocation(), Sound.NOTE_PIANO, 1.4F, 1.6F);
         }
         plugin.spawn(player);
         player.playSound(player.getLocation(), Sound.IRONGOLEM_DEATH, 0.9F, 1);
-        List<String> deathMessages = plugin.getConfig().getStringList(ShiftSpawn.DEATH_MESSAGES);
-        int index = new Random().nextInt(deathMessages.size());
-        Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + deathMessages.get(index));
+
+        Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + getRandomDeathMessage(player, killer));
 
     }
 

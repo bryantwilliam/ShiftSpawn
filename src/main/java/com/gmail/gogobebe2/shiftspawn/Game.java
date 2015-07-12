@@ -99,17 +99,17 @@ public class Game {
             name = name + "_team";
             Team team = null;
             boolean foundTeam = false;
-            if (player.getScoreboard().getTeams().isEmpty()) {
-                for (Team t : player.getScoreboard().getTeams()) {
+            if (!scoreboard.getTeams().isEmpty()) {
+                for (Team t : scoreboard.getTeams()) {
                     if (t.getName().equals(name)) {
-                        team = player.getScoreboard().getTeam(name);
+                        team = scoreboard.getTeam(name);
                         foundTeam = true;
                         break;
                     }
                 }
             }
             if (!foundTeam) {
-                team = player.getScoreboard().registerNewTeam(name);
+                team = scoreboard.registerNewTeam(name);
             }
             team.setPrefix(ChatColor.DARK_RED + "[" + participant.getKills() + "] " + ChatColor.AQUA + ChatColor.BOLD);
             team.addPlayer(player);
