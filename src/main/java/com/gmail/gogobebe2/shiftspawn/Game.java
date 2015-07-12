@@ -153,23 +153,19 @@ public class Game {
                         }
                         winners.add(participant);
                     }
-                    else {
-                        break;
-                    }
                 }
 
                 int mostKills = 0;
+
+                Set<Participant> tempWinners = new HashSet<>();
                 if (winners.size() > 1) {
                     for (Participant participant : winners) {
                         if (participant.getKills() >= mostKills) {
                             if (participant.getKills() > mostKills) {
-                                winners.clear();
+                                tempWinners.clear();
                                 mostKills = participant.getKills();
                             }
-                            winners.add(participant);
-                        }
-                        else {
-                            break;
+                            tempWinners.add(participant);
                         }
                     }
                 }

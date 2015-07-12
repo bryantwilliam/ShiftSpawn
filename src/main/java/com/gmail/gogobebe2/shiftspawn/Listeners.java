@@ -122,22 +122,17 @@ public class Listeners implements Listener {
         int index = new Random().nextInt(deathMessages.size());
         String deathMessage = deathMessages.get(index);
 
-        String playerVariable = "[PLAYER]";
-        String killerVariable = "[KILLER]";
+        String playerVariable = "PLAYER";
+        String killerVariable = "KILLER";
         if (deathMessage.contains(killerVariable)) {
             if (killer == null) {
                 boolean NoKillerMessage = true;
                 for (String message : deathMessages) {
-                    if (deathMessage.contains(killerVariable)) {
+                    if (message.contains(killerVariable)) {
                         NoKillerMessage = false;
                     }
                 }
-                if (NoKillerMessage) {
-                    return player.getName() + " died.";
-                }
-                else {
-                    getRandomDeathMessage(player, killer);
-                }
+                return NoKillerMessage ? player.getName() + " died." : getRandomDeathMessage(player, killer);
             }
             else {
                 deathMessage = deathMessage.replaceAll(killerVariable, killer.getName());
