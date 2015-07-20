@@ -12,12 +12,12 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
@@ -69,6 +69,28 @@ public class Listeners implements Listener {
                         + " more players to start.");
             }
         }
+    }
+
+    @EventHandler
+    public void onKickEvent(PlayerKickEvent event) {
+        event.setCancelled(true);
+        Player player = event.getPlayer();
+        player.sendMessage(event.getReason());
+        teleportServer(player, ShiftSpawn.SERVER_NAME);
+    }
+
+    private void teleportServer(Player player, String server) {
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(b);
+        try {
+            out.writeUTF("Connect");
+            out.writeUTF(server);
+        }
+        catch (IOException ex) {
+            player.sendMessage(ChatColor.RED + "Error! Can not connect to " + server + " server.");
+        }
+
+        player.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
     }
 
     @EventHandler

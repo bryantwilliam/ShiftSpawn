@@ -24,6 +24,7 @@ public class ShiftSpawn extends JavaPlugin {
     public final static String TIME_BEFORE_START_KEY = "Time before games starts";
     public final static String GAME_TIME = "Game time";
     public final static String DEATH_MESSAGES = "Death Messages";
+    public final static String SERVER_NAME = "Server Name";
     public final static String ALPHA_CORE_ID = "Alpha Core Block ID";
     private Game game;
     private String spawnID = "-1";
