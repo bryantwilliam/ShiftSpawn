@@ -1,10 +1,13 @@
+# BungeeCord support
+Enable BungeeCord kick to server support: true
+Server to kick to: lobby
 # time in minutes below...
 Minimum players before game starts: 2
 Time before games starts: '1:00'
 Game time: '15:00'
-Alpha Core Block ID: 153
-Server Name: lobby
-Death Messages:
+Alpha Core block ID: 153
+# The more messages, the more laggy it may be. (This is only after maybe thousands of possible messages, but just keep that in mind).
+Death messages:
 - "This faggot named PLAYER died by the master supreme god KILLER"
 - "PLAYER you fucken gumpy shit. You died again."
 - "Christ PLAYER, stop fucking dieing. God."

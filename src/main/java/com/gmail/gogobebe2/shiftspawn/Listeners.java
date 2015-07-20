@@ -73,10 +73,12 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onKickEvent(PlayerKickEvent event) {
-        event.setCancelled(true);
-        Player player = event.getPlayer();
-        player.sendMessage(event.getReason());
-        teleportServer(player, ShiftSpawn.SERVER_NAME);
+        if (plugin.getConfig().getBoolean(ShiftSpawn.BUNGEECORD_SUPPORT)) {
+            event.setCancelled(true);
+            Player player = event.getPlayer();
+            player.sendMessage(event.getReason());
+            teleportServer(player, plugin.getConfig().getString(ShiftSpawn.SERVER_NAME));
+        }
     }
 
     private void teleportServer(Player player, String server) {
@@ -154,7 +156,7 @@ public class Listeners implements Listener {
                         NoKillerMessage = false;
                     }
                 }
-                return NoKillerMessage ? player.getName() + " died." : getRandomDeathMessage(player, killer);
+                return NoKillerMessage ? player.getName() + " died." : getRandomDeathMessage(player, null);
             }
             else {
                 deathMessage = deathMessage.replaceAll(killerVariable, killer.getName());
