@@ -208,8 +208,8 @@ public class ShiftSpawn extends JavaPlugin {
     }
 
     public void kickPlayer(Player player, String reason) {
-        teleportServer(player, /*plugin.getConfig().getString(ShiftSpawn.SERVER_NAME)*/"lobby");
         player.sendMessage(reason);
+        teleportServer(player, /*plugin.getConfig().getString(ShiftSpawn.SERVER_NAME)*/"lobby");
     }
 
     private void teleportServer(Player player, String server) {
