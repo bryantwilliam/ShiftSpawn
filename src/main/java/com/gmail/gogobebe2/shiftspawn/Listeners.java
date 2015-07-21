@@ -73,7 +73,8 @@ public class Listeners implements Listener {
         Player player = event.getPlayer();
         player.sendMessage(event.getReason());
 //            teleportServer(player, plugin.getConfig().getString(ShiftSpawn.SERVER_NAME));
-        player.performCommand("hub");
+        // player.performCommand("hub"); // Doesn't work!!
+        player.chat("/hub");
     }
 
 /*    private void teleportServer(Player player, String server) {
