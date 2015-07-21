@@ -30,12 +30,11 @@ public class ShiftSpawn extends JavaPlugin {
     private ScoreTagSection scoreTagSection;
 
     // Settings from config.yml:
-    public final static String BUNGEECORD_SUPPORT = "Enable BungeeCord kick to server support";
+    public final static String BUNGEECORD_SUPPORT = "Enable BungeeCord kick to players to hub with /hub";
     public final static String MIN_PLAYERS_KEY = "Minimum players before game starts";
     public final static String TIME_BEFORE_START_KEY = "Time before games starts";
     public final static String GAME_TIME = "Game time";
     public final static String DEATH_MESSAGES = "Death messages";
-    public final static String SERVER_NAME = "Server to kick to";
     public final static String ALPHA_CORE_ID = "Alpha Core block ID";
 
     @Override
