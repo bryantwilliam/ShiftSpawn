@@ -43,8 +43,7 @@ public class Listeners implements Listener {
         if (!plugin.hasParticipantSet(player) && plugin.getGame().getGameState() == GameState.STARTED) {
             event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.AQUA + "Sorry, the game has already started. Come back later. There's "
                     + ChatColor.GOLD + plugin.getGame().getTime() + ChatColor.AQUA + " time left.");
-        }
-        else {
+        } else {
             event.allow();
         }
     }
@@ -70,13 +69,11 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onKickEvent(PlayerKickEvent event) {
-        if (plugin.getConfig().getBoolean(ShiftSpawn.BUNGEECORD_SUPPORT)) {
-            event.setCancelled(true);
-            Player player = event.getPlayer();
-            player.sendMessage(event.getReason());
+        event.setCancelled(plugin.getConfig().getBoolean(ShiftSpawn.BUNGEECORD_SUPPORT));
+        Player player = event.getPlayer();
+        player.sendMessage(event.getReason());
 //            teleportServer(player, plugin.getConfig().getString(ShiftSpawn.SERVER_NAME));
-            player.performCommand("hub");
-        }
+        player.performCommand("hub");
     }
 
 /*    private void teleportServer(Player player, String server) {
@@ -155,8 +152,7 @@ public class Listeners implements Listener {
                     }
                 }
                 return NoKillerMessage ? player.getName() + " died." : getRandomDeathMessage(player, null);
-            }
-            else {
+            } else {
                 deathMessage = deathMessage.replaceAll(killerVariable, killer.getName());
             }
         }
