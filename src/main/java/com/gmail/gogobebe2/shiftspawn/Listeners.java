@@ -159,7 +159,6 @@ public class Listeners implements Listener {
         player.playSound(player.getLocation(), Sound.IRONGOLEM_DEATH, 0.9F, 1);
 
         Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + getRandomDeathMessage(player, killer));
-
     }
 
 

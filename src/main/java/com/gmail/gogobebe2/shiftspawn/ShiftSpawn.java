@@ -17,9 +17,6 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.*;
 
 public class ShiftSpawn extends JavaPlugin {
@@ -213,7 +210,7 @@ public class ShiftSpawn extends JavaPlugin {
     }
 
     protected void teleportServer(Player player, String server) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
+/*        ByteArrayOutputStream b = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(b);
         try {
             out.writeUTF("Connect");
@@ -223,7 +220,8 @@ public class ShiftSpawn extends JavaPlugin {
             player.sendMessage(ChatColor.RED + "Error! Can not connect to " + server + " server.");
         }
 
-        player.sendPluginMessage(this, "BungeeCord", b.toByteArray());
+        player.sendPluginMessage(this, "BungeeCord", b.toByteArray());*/
+        player.performCommand("hub");
     }
 
     @Override
