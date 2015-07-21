@@ -1,5 +1,7 @@
 package com.gmail.gogobebe2.shiftspawn;
 
+import com.gmail.gogobebe2.shiftspawn.eventapi.PlayerShiftKillEvent;
+import com.gmail.gogobebe2.shiftspawn.eventapi.PlayerShiftScoreEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -24,11 +26,11 @@ import java.util.Random;
 public class Listeners implements Listener {
     private ShiftSpawn plugin;
 
-    public Listeners(ShiftSpawn plugin) {
+    protected Listeners(ShiftSpawn plugin) {
         this.plugin = plugin;
     }
 
-    public boolean tryBeginStarting() {
+    protected boolean tryBeginStarting() {
         boolean wasSuccessful = false;
         if (Bukkit.getOnlinePlayers().size() >= plugin.getConfig().getInt(ShiftSpawn.MIN_PLAYERS_KEY) && plugin.getGame().getGameState().equals(GameState.WAITING)) {
             plugin.getGame().setGameState(GameState.STARTING);
@@ -76,8 +78,8 @@ public class Listeners implements Listener {
         Player player = event.getPlayer();
         String playerName = player.getName();
         if (plugin.getGame().getGameState() == GameState.STARTED && Bukkit.getOnlinePlayers().size() == 1) {
+            event.setQuitMessage(ChatColor.DARK_RED + "No more players alive, congratulations" + playerName + ", you win by default...");
             plugin.getGame().setTime("0:10");
-            event.setQuitMessage(ChatColor.DARK_RED + playerName + "Left. No more players alive, restarting game...");
         } else if (minPlayers >= Bukkit.getOnlinePlayers().size() && (plugin.getGame().getGameState() == GameState.STARTING || plugin.getGame().getGameState() == GameState.WAITING)) {
             event.setQuitMessage(ChatColor.DARK_PURPLE + playerName + " left the game. We now need "
                     + (minPlayers - (Bukkit.getOnlinePlayers().size() - 1))
@@ -145,9 +147,13 @@ public class Listeners implements Listener {
 
     private void onDeath(Player player, Player killer) {
         if (plugin.getGame().getGameState() == GameState.STARTED && killer != null) {
-            Participant k = plugin.getParticipant(killer);
-            k.setKills(k.getKills() + 1);
-            killer.playSound(killer.getLocation(), Sound.NOTE_PIANO, 1.4F, 1.6F);
+            PlayerShiftKillEvent playerShiftKillEvent = new PlayerShiftKillEvent(player);
+            Bukkit.getServer().getPluginManager().callEvent(playerShiftKillEvent);
+            if (!playerShiftKillEvent.isCancelled()) {
+                Participant k = plugin.getParticipant(player);
+                k.setKills(k.getKills() + 1);
+                killer.playSound(killer.getLocation(), Sound.NOTE_PIANO, 1.4F, 1.6F);
+            }
         }
         plugin.spawn(player);
         player.playSound(player.getLocation(), Sound.IRONGOLEM_DEATH, 0.9F, 1);
@@ -163,11 +169,15 @@ public class Listeners implements Listener {
         if (block.getType() == Material.getMaterial(plugin.getConfig().getInt(ShiftSpawn.ALPHA_CORE_ID))) {
             if (plugin.getGame().getGameState() == GameState.STARTED) {
                 Player player = event.getPlayer();
-                Participant participant = plugin.getParticipant(player);
-                participant.setScore(participant.getScore() + 1);
-                player.getWorld().playSound(player.getLocation(), Sound.ANVIL_LAND, 1.4F, 0.4F);
-                plugin.getAlphaCores().add(block);
+                PlayerShiftScoreEvent playerShiftScoreEvent = new PlayerShiftScoreEvent(player);
+                Bukkit.getServer().getPluginManager().callEvent(playerShiftScoreEvent);
+                if (!playerShiftScoreEvent.isCancelled()) {
+                    Participant participant = plugin.getParticipant(player);
+                    participant.setScore(participant.getScore() + 1);
+                    player.getWorld().playSound(player.getLocation(), Sound.ANVIL_LAND, 1.4F, 0.4F);
+                }
             }
+            plugin.getAlphaCores().add(block);
             event.setCancelled(true);
         }
     }

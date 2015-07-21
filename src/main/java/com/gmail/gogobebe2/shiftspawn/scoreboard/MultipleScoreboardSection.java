@@ -28,18 +28,18 @@ public abstract class MultipleScoreboardSection extends ScoreboardSection {
         super.display(player);
     }
 
-    public List<Score> getScores() {
+    protected List<Score> getScores() {
         return scores;
     }
 
-    public void addScore(String label, int index) {
+    protected void addScore(String label, int index) {
         Score score = getObjective().getScore(label);
         score.setScore(index);
         scores.add(score);
     }
 
     @Deprecated
-    public void addScore(OfflinePlayer label, int index) {
+    protected void addScore(OfflinePlayer label, int index) {
         Score score = getObjective().getScore(label);
         score.setScore(index);
         scores.add(score);

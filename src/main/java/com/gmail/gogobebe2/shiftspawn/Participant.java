@@ -9,7 +9,7 @@ public class Participant implements Comparable<Participant> {
     private int kills;
     private String spawnID;
 
-    public Participant(final Player PLAYER, String spawnID) {
+    protected Participant(final Player PLAYER, String spawnID) {
         this.PLAYER = PLAYER;
         this.spawnID = spawnID;
         this.score = 0;
@@ -34,11 +34,11 @@ public class Participant implements Comparable<Participant> {
         return PLAYER;
     }
 
-    public String getSpawnID() {
+    protected String getSpawnID() {
         return spawnID;
     }
 
-    public void setScore(int score) {
+    protected void setScore(int score) {
         this.score = score;
     }
 

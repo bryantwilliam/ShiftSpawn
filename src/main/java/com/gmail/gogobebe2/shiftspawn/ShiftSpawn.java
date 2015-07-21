@@ -33,12 +33,12 @@ public class ShiftSpawn extends JavaPlugin {
     private ScoreTagSection scoreTagSection;
 
     // Settings from config.yml:
-    public final static String BUNGEECORD_SUPPORT = "Enable BungeeCord kick to players to hub with /hub";
-    public final static String MIN_PLAYERS_KEY = "Minimum players before game starts";
-    public final static String TIME_BEFORE_START_KEY = "Time before games starts";
-    public final static String GAME_TIME = "Game time";
-    public final static String DEATH_MESSAGES = "Death messages";
-    public final static String ALPHA_CORE_ID = "Alpha Core block ID";
+    protected final static String BUNGEECORD_SUPPORT = "Enable BungeeCord kick to players to hub with /hub";
+    protected final static String MIN_PLAYERS_KEY = "Minimum players before game starts";
+    protected final static String TIME_BEFORE_START_KEY = "Time before games starts";
+    protected final static String GAME_TIME = "Game time";
+    protected final static String DEATH_MESSAGES = "Death messages";
+    protected final static String ALPHA_CORE_ID = "Alpha Core block ID";
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -98,7 +98,7 @@ public class ShiftSpawn extends JavaPlugin {
         return false;
     }
 
-    public void spawn(final Player PLAYER) {
+    protected void spawn(final Player PLAYER) {
         String id;
         PLAYER.setHealth(20);
         PlayerInventory inventory = PLAYER.getInventory();
@@ -132,7 +132,7 @@ public class ShiftSpawn extends JavaPlugin {
         PLAYER.updateInventory();
     }
 
-    public Location loadSpawn(String id) {
+    protected Location loadSpawn(String id) {
         final World WORLD = Bukkit.getWorld(getConfig().getString("Spawns." + id + ".World"));
         final double X = getConfig().getDouble("Spawns." + id + ".X");
         final double Y = getConfig().getDouble("Spawns." + id + ".Y");
@@ -142,7 +142,7 @@ public class ShiftSpawn extends JavaPlugin {
         return new Location(WORLD, X, Y, Z, YAW, PITCH);
     }
 
-    public String getNextSpawnID() {
+    protected String getNextSpawnID() {
         List<String> ids = new ArrayList<>();
         ids.addAll(getConfig().getConfigurationSection("Spawns").getKeys(false));
         if (ids.contains("main")) {
@@ -163,7 +163,7 @@ public class ShiftSpawn extends JavaPlugin {
         return this.spawnID;
     }
 
-    public Objective getObjective(Scoreboard scoreboard, String name) {
+    protected Objective getObjective(Scoreboard scoreboard, String name) {
         if (!scoreboard.getObjectives().isEmpty()) {
             for (Objective objective : scoreboard.getObjectives()) {
                 if (objective.getName().equals(name)) {
@@ -207,12 +207,12 @@ public class ShiftSpawn extends JavaPlugin {
         this.scoreTagSection = new ScoreTagSection(Game.getScoreboard(), nameObjective, this);
     }
 
-    public void kickPlayer(Player player, String reason) {
+    protected void kickPlayer(Player player, String reason) {
         player.sendMessage(reason);
         teleportServer(player, /*plugin.getConfig().getString(ShiftSpawn.SERVER_NAME)*/"lobby");
     }
 
-    private void teleportServer(Player player, String server) {
+    protected void teleportServer(Player player, String server) {
         ByteArrayOutputStream b = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(b);
         try {
@@ -246,7 +246,7 @@ public class ShiftSpawn extends JavaPlugin {
         return this.participants;
     }
 
-    public boolean hasParticipantSet(Player player) {
+    protected boolean hasParticipantSet(Player player) {
         try {
             getParticipant(player);
             return true;
@@ -265,23 +265,23 @@ public class ShiftSpawn extends JavaPlugin {
         throw new NullPointerException(player.getName() + " has not had his participant set yet");
     }
 
-    public ArrayList<Block> getAlphaCores() {
+    protected ArrayList<Block> getAlphaCores() {
         return alphaCores;
     }
 
-    public TopScoresSection getTopScoresSection() {
+    protected TopScoresSection getTopScoresSection() {
         return topScoresSection;
     }
 
-    public StatusSection getStatusSection() {
+    protected StatusSection getStatusSection() {
         return statusSection;
     }
 
-    public OnlinePlayerSection getOnlinePlayerSection() {
+    protected OnlinePlayerSection getOnlinePlayerSection() {
         return onlinePlayerSection;
     }
 
-    public ScoreTagSection getScoreTagSection() {
+    protected ScoreTagSection getScoreTagSection() {
         return scoreTagSection;
     }
 }

@@ -22,17 +22,17 @@ public abstract class ScoreboardSection {
         player.setScoreboard(scoreboard);
     }
 
-    public abstract void arrangeSection();
+    protected abstract void arrangeSection();
 
-    public Scoreboard getScoreboard() {
+    protected Scoreboard getScoreboard() {
         return scoreboard;
     }
 
-    public Objective getObjective() {
+    protected Objective getObjective() {
         return objective;
     }
 
-    public ShiftSpawn getPlugin() {
+    protected ShiftSpawn getPlugin() {
         return plugin;
     }
 }

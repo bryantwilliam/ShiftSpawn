@@ -22,17 +22,17 @@ public abstract class SingleScoreboardSection extends ScoreboardSection {
         super.display(player);
     }
 
-    public boolean isLabelSet() {
+    protected boolean isLabelSet() {
         return label != null;
     }
 
-    public void setLabel(String label, int index) {
+    protected void setLabel(String label, int index) {
         this.label = getObjective().getScore(label);
         this.label.setScore(index);
     }
 
     @Deprecated
-    public void setLabel(OfflinePlayer label, int index) {
+    protected void setLabel(OfflinePlayer label, int index) {
         this.label = getObjective().getScore(label);
         this.label.setScore(index);
     }

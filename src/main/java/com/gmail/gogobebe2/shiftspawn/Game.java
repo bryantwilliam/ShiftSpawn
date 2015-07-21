@@ -1,5 +1,6 @@
 package com.gmail.gogobebe2.shiftspawn;
 
+import com.gmail.gogobebe2.shiftspawn.eventapi.PlayerShiftWinEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -21,14 +22,14 @@ public class Game {
     private int timerIncrementer;
     private GameState gameState;
 
-    public Game(ShiftSpawn plugin, GameState gameState, String timeFormat) {
+    protected Game(ShiftSpawn plugin, GameState gameState, String timeFormat) {
         this.plugin = plugin;
         this.gameState = gameState;
         setTime(timeFormat);
         scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
     }
 
-    public void setTime(String timeFormat) {
+    protected void setTime(String timeFormat) {
         String[] times = timeFormat.split(":");
         if (times[0].equalsIgnoreCase("")) {
             setMinutes(0);
@@ -51,7 +52,7 @@ public class Game {
         return getMinutes() + ":" + getSeconds();
     }
 
-    public void startTimer() {
+    protected void startTimer() {
         if (!isTimerRunning()) {
             this.isTimerRunning = true;
         }
@@ -115,7 +116,7 @@ public class Game {
             team.addPlayer(player);
     }
 
-    public void stopTimer() {
+    protected void stopTimer() {
         if (isTimerRunning) {
             scheduler.cancelTask(this.timerIncrementer);
             this.isTimerRunning = false;
@@ -170,6 +171,15 @@ public class Game {
                     }
                 }
 
+                for (Iterator<Participant> iterator = winners.iterator(); iterator.hasNext();) {
+                    Participant winner = iterator.next();
+                    PlayerShiftWinEvent playerShiftWinEvent = new PlayerShiftWinEvent(winner.getPlayer());
+                    Bukkit.getServer().getPluginManager().callEvent(playerShiftWinEvent);
+                    if (playerShiftWinEvent.isCancelled()) {
+                        iterator.remove();
+                    }
+                }
+
                 StringBuilder broadcast = new StringBuilder();
                 broadcast.append(ChatColor.DARK_GREEN + "" + ChatColor.ITALIC + "Winner");
                 if (winners.size() > 1) {
@@ -178,6 +188,7 @@ public class Game {
                 broadcast.append(": ");
                 for (Iterator<Participant> iterator = winners.iterator(); iterator.hasNext(); ) {
                     Participant participant = iterator.next();
+
                     broadcast.append(ChatColor.AQUA + "" + ChatColor.BOLD + participant.getPlayer().getName());
                     if (iterator.hasNext()) {
                         broadcast.append(", ");
@@ -201,11 +212,11 @@ public class Game {
         startTimer();
     }
 
-    public int getMinutes() {
+    protected int getMinutes() {
         return this.minutes;
     }
 
-    public void setMinutes(int minutes) {
+    protected void setMinutes(int minutes) {
         this.minutes = minutes;
     }
 
@@ -213,11 +224,11 @@ public class Game {
         return this.seconds;
     }
 
-    public void setSeconds(int seconds) {
+    protected void setSeconds(int seconds) {
         this.seconds = seconds;
     }
 
-    public boolean isTimerRunning() {
+    protected boolean isTimerRunning() {
         return this.isTimerRunning;
     }
 
@@ -225,11 +236,11 @@ public class Game {
         return gameState;
     }
 
-    public void setGameState(GameState gameState) {
+    protected void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
 
-    public static Scoreboard getScoreboard() {
+    protected static Scoreboard getScoreboard() {
         return scoreboard;
     }
 }
