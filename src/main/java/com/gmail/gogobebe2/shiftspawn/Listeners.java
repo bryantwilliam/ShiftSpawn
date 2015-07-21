@@ -15,6 +15,9 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
@@ -69,15 +72,14 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onKickEvent(PlayerKickEvent event) {
-        event.setCancelled(plugin.getConfig().getBoolean(ShiftSpawn.BUNGEECORD_SUPPORT));
+        event.setCancelled(/*plugin.getConfig().getBoolean(ShiftSpawn.BUNGEECORD_SUPPORT)*/true);
         Player player = event.getPlayer();
         player.sendMessage(event.getReason());
-//            teleportServer(player, plugin.getConfig().getString(ShiftSpawn.SERVER_NAME));
-        // player.performCommand("hub"); // Doesn't work!!
-        player.chat("/hub");
+        teleportServer(player, /*plugin.getConfig().getString(ShiftSpawn.SERVER_NAME)*/"hub");
+        teleportServer(player, /*plugin.getConfig().getString(ShiftSpawn.SERVER_NAME)*/"lobby");
     }
 
-/*    private void teleportServer(Player player, String server) {
+    private void teleportServer(Player player, String server) {
         ByteArrayOutputStream b = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(b);
         try {
@@ -89,7 +91,7 @@ public class Listeners implements Listener {
         }
 
         player.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
-    }*/
+    }
 
     @EventHandler
     public void onPlayerLeaveEvent(PlayerQuitEvent event) {
