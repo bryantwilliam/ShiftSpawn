@@ -220,8 +220,12 @@ public class ShiftSpawn extends JavaPlugin {
             player.sendMessage(ChatColor.RED + "Error! Can not connect to " + server + " server.");
         }
 
-        player.sendPluginMessage(this, "BungeeCord", b.toByteArray());*/
-        player.performCommand("hub");
+        player.sendPluginMessage(this, "BungeeCord", b.toByteArray());
+
+        // player.performCommand("hub"); - doesn't work
+*/
+    player.chat("/hub");
+
     }
 
     @Override
