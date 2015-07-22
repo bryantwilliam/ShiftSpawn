@@ -204,40 +204,9 @@ public class ShiftSpawn extends JavaPlugin {
         this.scoreTagSection = new ScoreTagSection(Game.getScoreboard(), nameObjective, this);
     }
 
-    protected void kickPlayer(Player player, String reason) {
-        player.sendMessage(reason);
-        teleportServer(player, /*plugin.getConfig().getString(ShiftSpawn.SERVER_NAME)*/"lobby");
-    }
-
-    protected void teleportServer(Player player, String server) {
-/*        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(b);
-        try {
-            out.writeUTF("Connect");
-            out.writeUTF(server);
-        }
-        catch (IOException ex) {
-            player.sendMessage(ChatColor.RED + "Error! Can not connect to " + server + " server.");
-        }
-
-        player.sendPluginMessage(this, "BungeeCord", b.toByteArray());
-
-        // player.performCommand("hub"); - doesn't work
-*/
-    player.chat("/hub");
-
-    }
-
     @Override
     public void onDisable() {
         getLogger().info("Disabling ShiftSpawn. If you need me to update this plugin, email at gogobebe2@gmail.com");
-        if (!Bukkit.getOnlinePlayers().isEmpty()) {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                // Remove their scoreboard.
-                player.setScoreboard(Bukkit.getServer().getScoreboardManager().getNewScoreboard());
-                kickPlayer(player, ChatColor.AQUA + "You have been kicked while game restarts.");
-            }
-        }
     }
 
     public Game getGame() {

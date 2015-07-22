@@ -89,31 +89,31 @@ public class Game {
     }
 
     private void showKillsTag(Participant participant) {
-            Player player = participant.getPlayer();
+        Player player = participant.getPlayer();
 
-            String name;
-            if (player.getName().length() <= 11) {
-                name = player.getName();
-            } else {
-                name = player.getName().substring(0, 11);
-            }
-            name = name + "_team";
-            Team team = null;
-            boolean foundTeam = false;
-            if (!scoreboard.getTeams().isEmpty()) {
-                for (Team t : scoreboard.getTeams()) {
-                    if (t.getName().equals(name)) {
-                        team = scoreboard.getTeam(name);
-                        foundTeam = true;
-                        break;
-                    }
+        String name;
+        if (player.getName().length() <= 11) {
+            name = player.getName();
+        } else {
+            name = player.getName().substring(0, 11);
+        }
+        name = name + "_team";
+        Team team = null;
+        boolean foundTeam = false;
+        if (!scoreboard.getTeams().isEmpty()) {
+            for (Team t : scoreboard.getTeams()) {
+                if (t.getName().equals(name)) {
+                    team = scoreboard.getTeam(name);
+                    foundTeam = true;
+                    break;
                 }
             }
-            if (!foundTeam) {
-                team = scoreboard.registerNewTeam(name);
-            }
-            team.setPrefix(ChatColor.DARK_RED + "[" + participant.getKills() + "] " + ChatColor.AQUA + ChatColor.BOLD);
-            team.addPlayer(player);
+        }
+        if (!foundTeam) {
+            team = scoreboard.registerNewTeam(name);
+        }
+        team.setPrefix(ChatColor.DARK_RED + "[" + participant.getKills() + "] " + ChatColor.AQUA + ChatColor.BOLD);
+        team.addPlayer(player);
     }
 
     protected void stopTimer() {
@@ -123,9 +123,17 @@ public class Game {
         }
         switch (this.gameState) {
             case RESTARTING:
+                if (!Bukkit.getOnlinePlayers().isEmpty()) {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        // Remove their scoreboard.
+                        player.setScoreboard(Bukkit.getServer().getScoreboardManager().getNewScoreboard());
+                        player.kickPlayer(ChatColor.AQUA + "You have been kicked while game restarts.");
+                    }
+                }
                 // Bukkit.getServer().shutdown(); Doesn't work for his server.
                 // So trying this out:
                 plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "stop");
+
             case WAITING:
                 // Just keep looping and use the timer to decide how to use ".." or "..."
                 setMinutes(Integer.MAX_VALUE);
@@ -171,7 +179,7 @@ public class Game {
                     }
                 }
 
-                for (Iterator<Participant> iterator = winners.iterator(); iterator.hasNext();) {
+                for (Iterator<Participant> iterator = winners.iterator(); iterator.hasNext(); ) {
                     Participant winner = iterator.next();
                     PlayerShiftWinEvent playerShiftWinEvent = new PlayerShiftWinEvent(winner.getPlayer());
                     Bukkit.getServer().getPluginManager().callEvent(playerShiftWinEvent);
@@ -192,8 +200,7 @@ public class Game {
                     broadcast.append(ChatColor.AQUA + "" + ChatColor.BOLD + participant.getPlayer().getName());
                     if (iterator.hasNext()) {
                         broadcast.append(", ");
-                    }
-                    else {
+                    } else {
                         broadcast.append(".");
                     }
                 }
