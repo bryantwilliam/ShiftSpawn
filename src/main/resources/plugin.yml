@@ -1,7 +1,7 @@
 name: ShiftSpawn
 version: 1.8.3-ALPHA-SNAPSHOT
 main: com.gmail.gogobebe2.shiftspawn.ShiftSpawn
-description: Recognises order in which players join server and be able to set spawnpoints for them when the game begins.
+description: The main plugin of the Shift minigame. Handles spawns, game logic, death events and more.
 author: William Bryant (gogobebe2)
 website: gogobebe2@gmail.com
 commands:
