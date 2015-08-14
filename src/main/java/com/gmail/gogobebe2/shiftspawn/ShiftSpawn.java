@@ -30,7 +30,6 @@ public class ShiftSpawn extends JavaPlugin {
     private ScoreTagSection scoreTagSection;
 
     // Settings from config.yml:
-    protected final static String BUNGEECORD_SUPPORT = "Enable BungeeCord kick to players to hub with /hub";
     protected final static String MIN_PLAYERS_KEY = "Minimum players before game starts";
     protected final static String TIME_BEFORE_START_KEY = "Time before games starts";
     protected final static String GAME_TIME = "Game time";

@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -109,7 +110,14 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onPlayerDamagedEvent(EntityDamageByEntityEvent event) {
-        if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
+        Player damager = null;
+        if (event.getDamager() instanceof Player) {
+            damager = (Player) event.getDamager();
+        }
+        else if (event.getDamager() instanceof Arrow) {
+            damager = (Player) ((Arrow) event.getDamager()).getShooter();
+        }
+        if (damager != null && event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             if (event.getFinalDamage() >= player.getHealth()) {
                 event.setCancelled(true);

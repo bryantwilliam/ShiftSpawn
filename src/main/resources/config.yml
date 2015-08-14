@@ -1,5 +1,3 @@
-# BungeeCord support
-Enable BungeeCord kick to players to hub with /hub: true
 # time in minutes below...
 Minimum players before game starts: 2
 Time before games starts: '1:00'
