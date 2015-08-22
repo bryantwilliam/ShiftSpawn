@@ -110,22 +110,22 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onPlayerDamagedEvent(EntityDamageByEntityEvent event) {
-        Player damager = null;
-        if (event.getDamager() instanceof Player) {
-            damager = (Player) event.getDamager();
-        } else if (event.getDamager() instanceof Arrow) {
-            damager = (Player) ((Arrow) event.getDamager()).getShooter();
-        }
-        if (damager != null && event.getEntity() instanceof Player) {
+        if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            if (plugin.getGame().getGameState() != GameState.WAITING && plugin.getGame().getGameState() != GameState.RESTARTING) {
-                if (event.getFinalDamage() >= player.getHealth()) {
-                    event.setCancelled(true);
-                    onDeath(player, (Player) event.getDamager());
-                }
-            } else {
+            Player damager = null;
+            if (event.getDamager() instanceof Player) {
+                damager = (Player) event.getDamager();
+            } else if (event.getDamager() instanceof Arrow) {
+                damager = (Player) ((Arrow) event.getDamager()).getShooter();
+            }
+            if (plugin.getGame().getGameState() == GameState.WAITING || plugin.getGame().getGameState() == GameState.RESTARTING) {
                 event.setCancelled(true);
-                player.sendMessage(ChatColor.AQUA + "Silly billy, the game hasn't started yet!");
+                assert damager != null;
+                damager.sendMessage(ChatColor.AQUA + "Silly billy, the game hasn't started yet!");
+
+            } else if (event.getFinalDamage() >= player.getHealth()) {
+                event.setCancelled(true);
+                onDeath(player, (Player) event.getDamager());
             }
         }
     }
