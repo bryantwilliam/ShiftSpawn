@@ -7,7 +7,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -110,21 +109,12 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onPlayerDamagedEvent(EntityDamageByEntityEvent event) {
-        if (event.getEntity() instanceof Player) {
+        if (plugin.getGame().getGameState() == GameState.WAITING || plugin.getGame().getGameState() == GameState.RESTARTING) {
+            event.setCancelled(true);
+            event.getDamager().sendMessage(ChatColor.AQUA + "Silly billy, the game hasn't started yet!");
+        } else if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            Player damager = null;
-            if (event.getDamager() instanceof Player) {
-                damager = (Player) event.getDamager();
-            } else if (event.getDamager() instanceof Arrow && ((Arrow) event.getDamager()).getShooter() instanceof Player) {
-                damager = (Player) ((Arrow) event.getDamager()).getShooter();
-            }
-            if (plugin.getGame().getGameState() == GameState.WAITING || plugin.getGame().getGameState() == GameState.RESTARTING) {
-                event.setCancelled(true);
-                if (damager != null) {
-                    damager.sendMessage(ChatColor.AQUA + "Silly billy, the game hasn't started yet!");
-                }
-
-            } else if (event.getFinalDamage() >= player.getHealth()) {
+            if (event.getFinalDamage() >= player.getHealth()) {
                 event.setCancelled(true);
                 onDeath(player, (Player) event.getDamager());
             }
