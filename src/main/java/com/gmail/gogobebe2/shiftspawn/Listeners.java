@@ -109,15 +109,17 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onPlayerDamagedEvent(EntityDamageByEntityEvent event) {
-        if (plugin.getGame().getGameState() == GameState.WAITING || plugin.getGame().getGameState() == GameState.RESTARTING) {
+        if (plugin.getGame().getGameState() == GameState.STARTED) {
+            if (event.getEntity() instanceof Player) {
+                Player player = (Player) event.getEntity();
+                if (event.getFinalDamage() >= player.getHealth()) {
+                    event.setCancelled(true);
+                    onDeath(player, (Player) event.getDamager());
+                }
+            }
+        } else {
             event.setCancelled(true);
             event.getDamager().sendMessage(ChatColor.AQUA + "Silly billy, the game hasn't started yet!");
-        } else if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
-            if (event.getFinalDamage() >= player.getHealth()) {
-                event.setCancelled(true);
-                onDeath(player, (Player) event.getDamager());
-            }
         }
     }
 
