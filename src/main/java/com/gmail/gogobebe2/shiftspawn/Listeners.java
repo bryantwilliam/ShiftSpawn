@@ -101,7 +101,7 @@ public class Listeners implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
         event.setKeepInventory(true);
         event.setDeathMessage(null);
