@@ -124,7 +124,13 @@ public class Listeners implements Listener {
     }
 
     private String getRandomDeathMessage(Player player, Player killer) {
-        List<String> deathMessages = plugin.getConfig().getStringList(ShiftSpawn.DEATH_MESSAGES);
+        if (!plugin.getConfig().isSet(ShiftSpawn.DEATH_MESSAGES)) {
+            return null;
+        }
+        List<String>  deathMessages = plugin.getConfig().getStringList(ShiftSpawn.DEATH_MESSAGES);
+        if (deathMessages.size() == 0) {
+            return null;
+        }
         int index = new Random().nextInt(deathMessages.size());
         String deathMessage = deathMessages.get(index);
 
@@ -146,7 +152,6 @@ public class Listeners implements Listener {
         if (deathMessage.contains(playerVariable)) {
             deathMessage = deathMessage.replaceAll(playerVariable, player.getName());
         }
-
         return deathMessage;
     }
 
@@ -163,7 +168,10 @@ public class Listeners implements Listener {
         plugin.spawn(player);
         player.playSound(player.getLocation(), Sound.IRONGOLEM_DEATH, 0.9F, 1);
 
-        Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + getRandomDeathMessage(player, killer));
+        String randomDeathMessage = getRandomDeathMessage(player, killer);
+        if (randomDeathMessage != null) {
+            Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + randomDeathMessage);
+        }
     }
 
 
