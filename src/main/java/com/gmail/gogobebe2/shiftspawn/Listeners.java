@@ -9,6 +9,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -100,14 +101,14 @@ public class Listeners implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
         event.setKeepInventory(true);
         event.setDeathMessage(null);
         onDeath(event.getEntity().getPlayer(), event.getEntity().getKiller());
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDamagedEvent(EntityDamageByEntityEvent event) {
         if (plugin.getGame().getGameState() == GameState.STARTED) {
             if (event.getEntity() instanceof Player) {
