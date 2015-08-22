@@ -113,15 +113,19 @@ public class Listeners implements Listener {
         Player damager = null;
         if (event.getDamager() instanceof Player) {
             damager = (Player) event.getDamager();
-        }
-        else if (event.getDamager() instanceof Arrow) {
+        } else if (event.getDamager() instanceof Arrow) {
             damager = (Player) ((Arrow) event.getDamager()).getShooter();
         }
         if (damager != null && event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            if (event.getFinalDamage() >= player.getHealth()) {
+            if (plugin.getGame().getGameState() != GameState.WAITING && plugin.getGame().getGameState() != GameState.RESTARTING) {
+                if (event.getFinalDamage() >= player.getHealth()) {
+                    event.setCancelled(true);
+                    onDeath(player, (Player) event.getDamager());
+                }
+            } else {
                 event.setCancelled(true);
-                onDeath(player, (Player) event.getDamager());
+                player.sendMessage(ChatColor.AQUA + "Silly billy, the game hasn't started yet!");
             }
         }
     }
