@@ -101,14 +101,14 @@ public class Listeners implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
         event.setKeepInventory(true);
         event.setDeathMessage(null);
         onDeath(event.getEntity().getPlayer(), event.getEntity().getKiller());
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerDamagedEvent(EntityDamageByEntityEvent event) {
         if (plugin.getGame().getGameState() == GameState.STARTED) {
             if (event.getEntity() instanceof Player) {
