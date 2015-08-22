@@ -158,7 +158,7 @@ public class Listeners implements Listener {
             PlayerShiftKillEvent playerShiftKillEvent = new PlayerShiftKillEvent(player);
             Bukkit.getServer().getPluginManager().callEvent(playerShiftKillEvent);
             if (!playerShiftKillEvent.isCancelled()) {
-                Participant k = plugin.getParticipant(player);
+                Participant k = plugin.getParticipant(killer);
                 k.setKills(k.getKills() + 1);
                 killer.playSound(killer.getLocation(), Sound.NOTE_PIANO, 1.4F, 1.6F);
             }
