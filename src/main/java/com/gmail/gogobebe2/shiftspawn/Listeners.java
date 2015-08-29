@@ -106,7 +106,7 @@ public class Listeners implements Listener {
         event.setKeepInventory(true);
         event.setKeepLevel(true);
         event.setDeathMessage(null);
-        onDeath(event.getEntity().getPlayer(), event.getEntity().getKiller());
+        onDeath(event.getEntity(), event.getEntity().getKiller());
     }
 
     private void onDeath(Player player, Player killer) {
@@ -117,6 +117,7 @@ public class Listeners implements Listener {
                 Participant k = plugin.getParticipant(killer);
                 k.setKills(k.getKills() + 1);
                 killer.playSound(killer.getLocation(), Sound.NOTE_PIANO, 1.4F, 1.6F);
+                killer.giveExpLevels(1);
             }
         }
         plugin.spawn(player);
