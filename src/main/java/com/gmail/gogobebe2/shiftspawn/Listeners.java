@@ -109,9 +109,10 @@ public class Listeners implements Listener {
         onDeath(event.getEntity(), event.getEntity().getKiller());
     }
 
+    // use shiftkill here
     private void onDeath(Player player, Player killer) {
         if (killer != null) {
-            PlayerShiftKillEvent playerShiftKillEvent = new PlayerShiftKillEvent(player);
+            PlayerShiftKillEvent playerShiftKillEvent = new PlayerShiftKillEvent(player, killer);
             Bukkit.getServer().getPluginManager().callEvent(playerShiftKillEvent);
             if (!playerShiftKillEvent.isCancelled()) {
                 Participant k = plugin.getParticipant(killer);
