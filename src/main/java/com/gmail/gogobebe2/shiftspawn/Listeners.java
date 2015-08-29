@@ -110,7 +110,7 @@ public class Listeners implements Listener {
     }
 
     private void onDeath(Player player, Player killer) {
-        if (plugin.getGame().getGameState() == GameState.STARTED && killer != null) {
+        if (killer != null) {
             PlayerShiftKillEvent playerShiftKillEvent = new PlayerShiftKillEvent(player);
             Bukkit.getServer().getPluginManager().callEvent(playerShiftKillEvent);
             if (!playerShiftKillEvent.isCancelled()) {
