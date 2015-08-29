@@ -104,21 +104,33 @@ public class Listeners implements Listener {
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
         event.setKeepInventory(true);
+        event.setKeepLevel(true);
         event.setDeathMessage(null);
         onDeath(event.getEntity().getPlayer(), event.getEntity().getKiller());
     }
 
+    private void onDeath(Player player, Player killer) {
+        if (plugin.getGame().getGameState() == GameState.STARTED && killer != null) {
+            PlayerShiftKillEvent playerShiftKillEvent = new PlayerShiftKillEvent(player);
+            Bukkit.getServer().getPluginManager().callEvent(playerShiftKillEvent);
+            if (!playerShiftKillEvent.isCancelled()) {
+                Participant k = plugin.getParticipant(killer);
+                k.setKills(k.getKills() + 1);
+                killer.playSound(killer.getLocation(), Sound.NOTE_PIANO, 1.4F, 1.6F);
+            }
+        }
+        plugin.spawn(player);
+        player.playSound(player.getLocation(), Sound.IRONGOLEM_DEATH, 0.9F, 1);
+
+        String randomDeathMessage = getRandomDeathMessage(player, killer);
+        if (randomDeathMessage != null) {
+            Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + randomDeathMessage);
+        }
+    }
+
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerDamagedEvent(EntityDamageByEntityEvent event) {
-        if (plugin.getGame().getGameState() == GameState.STARTED) {
-            if (event.getEntity() instanceof Player) {
-                Player player = (Player) event.getEntity();
-                if (event.getFinalDamage() >= player.getHealth()) {
-                    event.setCancelled(true);
-                    onDeath(player, (Player) event.getDamager());
-                }
-            }
-        } else {
+        if (plugin.getGame().getGameState() != GameState.STARTED) {
             event.setCancelled(true);
             event.getDamager().sendMessage(ChatColor.AQUA + "Silly billy, the game hasn't started yet!");
         }
@@ -128,7 +140,7 @@ public class Listeners implements Listener {
         if (!plugin.getConfig().isSet(ShiftSpawn.DEATH_MESSAGES)) {
             return null;
         }
-        List<String>  deathMessages = plugin.getConfig().getStringList(ShiftSpawn.DEATH_MESSAGES);
+        List<String> deathMessages = plugin.getConfig().getStringList(ShiftSpawn.DEATH_MESSAGES);
         if (deathMessages.size() == 0) {
             return null;
         }
@@ -154,25 +166,6 @@ public class Listeners implements Listener {
             deathMessage = deathMessage.replaceAll(playerVariable, player.getName());
         }
         return deathMessage;
-    }
-
-    private void onDeath(Player player, Player killer) {
-        if (plugin.getGame().getGameState() == GameState.STARTED && killer != null) {
-            PlayerShiftKillEvent playerShiftKillEvent = new PlayerShiftKillEvent(player);
-            Bukkit.getServer().getPluginManager().callEvent(playerShiftKillEvent);
-            if (!playerShiftKillEvent.isCancelled()) {
-                Participant k = plugin.getParticipant(killer);
-                k.setKills(k.getKills() + 1);
-                killer.playSound(killer.getLocation(), Sound.NOTE_PIANO, 1.4F, 1.6F);
-            }
-        }
-        plugin.spawn(player);
-        player.playSound(player.getLocation(), Sound.IRONGOLEM_DEATH, 0.9F, 1);
-
-        String randomDeathMessage = getRandomDeathMessage(player, killer);
-        if (randomDeathMessage != null) {
-            Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + randomDeathMessage);
-        }
     }
 
 
