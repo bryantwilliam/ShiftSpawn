@@ -120,7 +120,6 @@ public class ShiftSpawn extends JavaPlugin {
             }
         } else {
             id = "main";
-            inventory.clear();
         }
         PLAYER.setGameMode(GameMode.CREATIVE);
         PLAYER.teleport(loadSpawn(id));
