@@ -1,6 +1,6 @@
 package com.gmail.gogobebe2.shiftspawn;
 
-import com.gmail.gogobebe2.shiftspawn.eventapi.PlayerShiftKillEvent;
+import com.gmail.gogobebe2.shiftspawn.eventapi.PlayerShiftKilledEvent;
 import com.gmail.gogobebe2.shiftspawn.eventapi.PlayerShiftScoreEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -112,9 +112,9 @@ public class Listeners implements Listener {
     // use shiftkill here
     private void onDeath(Player player, Player killer) {
         if (killer != null) {
-            PlayerShiftKillEvent playerShiftKillEvent = new PlayerShiftKillEvent(player, killer);
-            Bukkit.getServer().getPluginManager().callEvent(playerShiftKillEvent);
-            if (!playerShiftKillEvent.isCancelled()) {
+            PlayerShiftKilledEvent playerShiftKilledEvent = new PlayerShiftKilledEvent(player, killer);
+            Bukkit.getServer().getPluginManager().callEvent(playerShiftKilledEvent);
+            if (!playerShiftKilledEvent.isCancelled()) {
                 Participant k = plugin.getParticipant(killer);
                 k.setKills(k.getKills() + 1);
                 killer.playSound(killer.getLocation(), Sound.NOTE_PIANO, 1.4F, 1.6F);
