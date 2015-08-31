@@ -134,7 +134,7 @@ public class Listeners implements Listener {
     public void onPlayerDamagedEvent(EntityDamageByEntityEvent event) {
         if (plugin.getGame().getGameState() != GameState.STARTED) {
             event.setCancelled(true);
-            event.getDamager().sendMessage(ChatColor.AQUA + "Silly billy, the game hasn't started yet!");
+            event.getDamager().sendMessage(ChatColor.AQUA + "You can't hurt anyone, the game hasn't started yet!");
         }
     }
 
