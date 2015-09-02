@@ -83,10 +83,11 @@ public class ShiftSpawn extends JavaPlugin {
         return false;
     }
 
-    private boolean isSpecialItem(PlayerInventory inventory, Material material, ItemMeta meta) {
+    private boolean isSpecialItem(PlayerInventory inventory, ItemStack itemStack) {
+        Material material = itemStack.getType();
         if (inventory.contains(material)) {
             for (ItemStack item : inventory.all(material).values()) {
-                if (item.getItemMeta().getDisplayName().equals(meta.getDisplayName())) {
+                if (item.getItemMeta().getDisplayName().equals(itemStack.getItemMeta().getDisplayName())) {
                     return true;
                 }
             }
@@ -112,10 +113,10 @@ public class ShiftSpawn extends JavaPlugin {
             swordMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Trusty sword");
             sword.setItemMeta(swordMeta);
 
-            if (!isSpecialItem(inventory, Material.WOOD_PICKAXE, pickaxeMeta)) {
+            if (!isSpecialItem(inventory, pickaxe)) {
                 inventory.addItem(pickaxe);
             }
-            if (!isSpecialItem(inventory, Material.WOOD_SWORD, swordMeta)) {
+            if (!isSpecialItem(inventory, sword)) {
                 inventory.addItem(sword);
             }
         } else {
