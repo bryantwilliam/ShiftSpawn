@@ -101,10 +101,10 @@ public class ShiftSpawn extends JavaPlugin {
         if (game.getGameState().equals(GameState.STARTED)) {
             id = getParticipant(PLAYER).getSpawnID();
 
-            ItemStack pickaxe = new ItemStack(Material.WOOD_PICKAXE, 1);
+            ItemStack pickaxe = new ItemStack(Material.STONE_PICKAXE, 1);
             ItemMeta pickaxeMeta = pickaxe.getItemMeta();
             pickaxeMeta.setDisplayName(ChatColor.AQUA + "Chipped pickaxe");
-            pickaxe.setDurability((short) 8);
+            pickaxe.setDurability((short) 25);
             pickaxe.setItemMeta(pickaxeMeta);
 
             ItemStack sword = new ItemStack(Material.WOOD_SWORD, 1);
