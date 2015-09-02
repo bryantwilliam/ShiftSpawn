@@ -173,8 +173,9 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event) {
-        Block block = event.getBlock();
-        if (block.getType() == Material.getMaterial(plugin.getConfig().getInt(ShiftSpawn.ALPHA_CORE_ID))) {
+        final Block block = event.getBlock();
+        final Material alphaCoreMaterial = Material.getMaterial(plugin.getConfig().getInt(ShiftSpawn.ALPHA_CORE_ID));
+        if (block.getType() == alphaCoreMaterial) {
             if (plugin.getGame().getGameState() == GameState.STARTED) {
                 Player player = event.getPlayer();
                 PlayerShiftScoreEvent playerShiftScoreEvent = new PlayerShiftScoreEvent(player);
@@ -182,11 +183,17 @@ public class Listeners implements Listener {
                 if (!playerShiftScoreEvent.isCancelled()) {
                     Participant participant = plugin.getParticipant(player);
                     participant.setScore(participant.getScore() + 1);
-                    player.getWorld().playSound(player.getLocation(), Sound.ANVIL_LAND, 1.4F, 0.4F);
+                    player.getWorld().playSound(player.getLocation(), Sound.ANVIL_LAND, 1.2F, 0.4F);
                 }
             }
             plugin.getAlphaCores().add(block);
-            event.setCancelled(true);
+            block.setType(Material.BEDROCK);
+            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    block.setType(alphaCoreMaterial);
+                }
+            }, 1);
         }
     }
 
