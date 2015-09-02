@@ -1,6 +1,6 @@
 package com.gmail.gogobebe2.shiftspawn;
 
-import com.gmail.gogobebe2.shiftspawn.eventapi.PlayerShiftWinEvent;
+import com.gmail.gogobebe2.shiftspawn.api.events.PlayerShiftWinEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;

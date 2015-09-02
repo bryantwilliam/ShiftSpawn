@@ -1,7 +1,7 @@
 package com.gmail.gogobebe2.shiftspawn;
 
-import com.gmail.gogobebe2.shiftspawn.eventapi.PlayerShiftKilledEvent;
-import com.gmail.gogobebe2.shiftspawn.eventapi.PlayerShiftScoreEvent;
+import com.gmail.gogobebe2.shiftspawn.api.events.PlayerShiftKilledEvent;
+import com.gmail.gogobebe2.shiftspawn.api.events.PlayerShiftScoreEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -187,13 +187,7 @@ public class Listeners implements Listener {
                 }
             }
             plugin.getAlphaCores().add(block);
-            block.setType(Material.BEDROCK);
-            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    block.setType(alphaCoreMaterial);
-                }
-            }, 1);
+            event.setCancelled(true);
         }
     }
 

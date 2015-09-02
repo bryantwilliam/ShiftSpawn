@@ -1,4 +1,4 @@
-package com.gmail.gogobebe2.shiftspawn.eventapi;
+package com.gmail.gogobebe2.shiftspawn.api.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
