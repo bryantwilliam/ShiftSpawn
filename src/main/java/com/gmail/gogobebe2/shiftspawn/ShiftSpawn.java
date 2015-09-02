@@ -97,6 +97,7 @@ public class ShiftSpawn extends JavaPlugin {
 
     protected void spawn(final Player PLAYER) {
         String id;
+        PLAYER.setFireTicks(0);
         PLAYER.setHealth(20);
         PlayerInventory inventory = PLAYER.getInventory();
         if (game.getGameState().equals(GameState.STARTED)) {
