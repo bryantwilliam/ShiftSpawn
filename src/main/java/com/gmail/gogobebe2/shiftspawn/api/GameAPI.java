@@ -3,7 +3,8 @@ package com.gmail.gogobebe2.shiftspawn.api;
 import com.gmail.gogobebe2.shiftspawn.GameState;
 import com.gmail.gogobebe2.shiftspawn.ShiftSpawn;
 
-public class GameAPI {
+@SuppressWarnings("unused") // It's an API so is not locally used.
+public final class GameAPI {
     public static GameState getGameState() {
         return ShiftSpawn.getInstance().getGame().getGameState();
     }
