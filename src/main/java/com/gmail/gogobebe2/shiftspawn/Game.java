@@ -217,7 +217,7 @@ public class Game {
         startTimer();
     }
 
-    protected int getMinutes() {
+    public int getMinutes() {
         return this.minutes;
     }
 
