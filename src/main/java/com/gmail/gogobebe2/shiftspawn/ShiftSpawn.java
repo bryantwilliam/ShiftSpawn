@@ -20,6 +20,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import java.util.*;
 
 public class ShiftSpawn extends JavaPlugin {
+    protected static ShiftSpawn instance;
     private Game game;
     private String spawnID = "-1";
     private List<Participant> participants = new ArrayList<>();
@@ -35,6 +36,10 @@ public class ShiftSpawn extends JavaPlugin {
     protected final static String GAME_TIME = "Game time";
     protected final static String DEATH_MESSAGES = "Death messages";
     protected final static String ALPHA_CORE_ID = "Alpha Core block ID";
+
+    public static ShiftSpawn getInstance() {
+        return instance;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -173,6 +178,7 @@ public class ShiftSpawn extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        instance = this;
         getLogger().info("Starting up ShiftSpawn. If you need me to update this plugin, email at gogobebe2@gmail.com");
         saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(new Listeners(this), this);
