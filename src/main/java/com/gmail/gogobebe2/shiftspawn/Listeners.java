@@ -71,6 +71,7 @@ public class Listeners implements Listener {
                         + " more players to start.");
             }
         }
+        else if (plugin.getGame().getMinutes() <= 5);
     }
 
     @EventHandler
