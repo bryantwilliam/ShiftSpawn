@@ -140,6 +140,7 @@ public class Game {
                 Bukkit.broadcastMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Game starting!");
                 Bukkit.broadcastMessage(ChatColor.DARK_GREEN + "" + ChatColor.BOLD
                         + "Other players will have up to 5 minutes to join.");
+
                 this.gameState = GameState.STARTED;
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     plugin.spawn(player);
