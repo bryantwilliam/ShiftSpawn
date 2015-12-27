@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 import java.util.Random;
@@ -59,6 +60,7 @@ public class Listeners implements Listener {
         if (!plugin.hasParticipantSet(player)) {
             // Clearing players inventory to fix weird bug:
             player.getInventory().clear();
+            player.getInventory().setArmorContents(new ItemStack[4]);
             player.setExp(0);
             player.setHealth(20);
             player.setFoodLevel(20);
