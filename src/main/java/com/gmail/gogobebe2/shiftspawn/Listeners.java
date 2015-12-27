@@ -2,10 +2,7 @@ package com.gmail.gogobebe2.shiftspawn;
 
 import com.gmail.gogobebe2.shiftspawn.api.events.PlayerShiftKilledEvent;
 import com.gmail.gogobebe2.shiftspawn.api.events.PlayerShiftScoreEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -59,6 +56,13 @@ public class Listeners implements Listener {
         Player player = event.getPlayer();
         player.getWorld().playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1.2F);
         if (!plugin.hasParticipantSet(player)) {
+            // Clearing players inventory to fix weird bug:
+            player.getInventory().clear();
+            player.setExp(0);
+            player.setHealth(20);
+            player.setFoodLevel(20);
+            player.setFireTicks(0);
+            player.setGameMode(GameMode.SURVIVAL);
             plugin.getParticipants().add(new Participant(player, plugin.getNextSpawnID()));
         }
         plugin.spawn(player);
