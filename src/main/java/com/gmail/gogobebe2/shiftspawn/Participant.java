@@ -1,7 +1,10 @@
 package com.gmail.gogobebe2.shiftspawn;
 
+import com.gmail.gogobebe2.shiftstats.ShiftStats;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
+
+import java.sql.SQLException;
 
 public class Participant implements Comparable<Participant> {
     private final Player PLAYER;
@@ -22,8 +25,13 @@ public class Participant implements Comparable<Participant> {
         return kills;
     }
 
-    public void setKills(int kills) {
-        this.kills = kills;
+    public void addKills(int kills) {
+        this.kills += kills;
+        try {
+            ShiftStats.getAPI().addKills(PLAYER.getUniqueId(), kills);
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getScore() {
@@ -38,8 +46,13 @@ public class Participant implements Comparable<Participant> {
         return spawnID;
     }
 
-    protected void setScore(int score) {
-        this.score = score;
+    protected void addPoints(int points) {
+        this.score += points;
+        try {
+            ShiftStats.getAPI().addPoints(PLAYER.getUniqueId(), points);
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

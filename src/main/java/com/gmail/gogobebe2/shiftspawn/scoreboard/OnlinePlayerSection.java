@@ -7,10 +7,8 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
 public class OnlinePlayerSection extends SingleScoreboardSection {
-    private ShiftSpawn plugin;
     public OnlinePlayerSection(Scoreboard scoreboard, Objective objective, ShiftSpawn plugin) {
         super(scoreboard, objective, plugin);
-        this.plugin = plugin;
     }
 
     @Override

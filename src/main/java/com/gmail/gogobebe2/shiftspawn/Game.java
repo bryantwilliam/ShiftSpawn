@@ -1,6 +1,7 @@
 package com.gmail.gogobebe2.shiftspawn;
 
 import com.gmail.gogobebe2.shiftspawn.api.events.PlayerShiftWinEvent;
+import com.gmail.gogobebe2.shiftstats.ShiftStats;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -10,6 +11,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import java.sql.SQLException;
 import java.util.*;
 
 public class Game {
@@ -197,12 +199,36 @@ public class Game {
                 broadcast.append(": ");
                 for (Iterator<Participant> iterator = winners.iterator(); iterator.hasNext(); ) {
                     Participant participant = iterator.next();
+                    Player player = participant.getPlayer();
 
-                    broadcast.append(ChatColor.AQUA + "" + ChatColor.BOLD + participant.getPlayer().getName());
+                    broadcast.append(ChatColor.AQUA + "" + ChatColor.BOLD + player.getName());
+                    try {
+                        ShiftStats.getAPI().addWins(player.getUniqueId(), 1);
+                    } catch (SQLException | ClassNotFoundException e) {
+                        e.printStackTrace();
+                        player.sendMessage(ChatColor.RED + "Error, can't save win to SQL database!");
+                    }
                     if (iterator.hasNext()) {
                         broadcast.append(", ");
                     } else {
                         broadcast.append(".");
+                    }
+                }
+                for (Participant participant : participants) {
+                    Player player = participant.getPlayer();
+                    UUID uuid = player.getUniqueId();
+                    boolean won = false;
+                    for (Participant winner : winners) {
+                        if (winner.getPlayer().getUniqueId().equals(uuid)) {
+                            won = true;
+                            break;
+                        }
+                    }
+                    if (!won) try {
+                        ShiftStats.getAPI().addLosses(uuid, 1);
+                    } catch (SQLException | ClassNotFoundException e) {
+                        e.printStackTrace();
+                        player.sendMessage(ChatColor.RED + "Error, can't save win to SQL database!");
                     }
                 }
 

@@ -2,6 +2,7 @@ package com.gmail.gogobebe2.shiftspawn;
 
 import com.gmail.gogobebe2.shiftspawn.api.events.PlayerShiftKilledEvent;
 import com.gmail.gogobebe2.shiftspawn.api.events.PlayerShiftScoreEvent;
+import com.gmail.gogobebe2.shiftstats.ShiftStats;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -19,6 +20,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Random;
 
@@ -60,6 +62,7 @@ public class Listeners implements Listener {
         if (!plugin.hasParticipantSet(player)) {
             // Clearing players inventory to fix weird bug:
             player.getInventory().clear();
+
             player.getInventory().setArmorContents(new ItemStack[4]);
             player.setExp(0);
             player.setHealth(20);
@@ -117,14 +120,13 @@ public class Listeners implements Listener {
         onDeath(event.getEntity(), event.getEntity().getKiller());
     }
 
-    // use shiftkill here
     private void onDeath(Player player, Player killer) {
         if (killer != null) {
             PlayerShiftKilledEvent playerShiftKilledEvent = new PlayerShiftKilledEvent(player, killer);
             Bukkit.getServer().getPluginManager().callEvent(playerShiftKilledEvent);
             if (!playerShiftKilledEvent.isCancelled()) {
                 Participant k = plugin.getParticipant(killer);
-                k.setKills(k.getKills() + 1);
+                k.addKills(1);
                 killer.playSound(killer.getLocation(), Sound.NOTE_PIANO, 1.4F, 1.6F);
                 killer.giveExpLevels(1);
             }
@@ -135,6 +137,11 @@ public class Listeners implements Listener {
         String randomDeathMessage = getRandomDeathMessage(player, killer);
         if (randomDeathMessage != null) {
             Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + randomDeathMessage);
+        }
+        try {
+            ShiftStats.getAPI().addDeaths(player.getUniqueId(), 1);
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -181,22 +188,39 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event) {
-        final Block block = event.getBlock();
+        Block block = event.getBlock();
+        Material blockType = block.getType();
+        Player player = event.getPlayer();
         final Material alphaCoreMaterial = Material.getMaterial(plugin.getConfig().getInt(ShiftSpawn.ALPHA_CORE_ID));
-        if (block.getType() == alphaCoreMaterial) {
+        if (blockType == alphaCoreMaterial) {
             if (plugin.getGame().getGameState() == GameState.STARTED) {
-                Player player = event.getPlayer();
                 PlayerShiftScoreEvent playerShiftScoreEvent = new PlayerShiftScoreEvent(player);
                 Bukkit.getServer().getPluginManager().callEvent(playerShiftScoreEvent);
                 if (!playerShiftScoreEvent.isCancelled()) {
                     Participant participant = plugin.getParticipant(player);
-                    participant.setScore(participant.getScore() + 1);
+                    participant.addPoints(1);
                     player.getWorld().playSound(player.getLocation(), Sound.ANVIL_LAND, 1.2F, 0.4F);
                 }
             }
             plugin.getAlphaCores().add(block);
             event.setCancelled(true);
         }
+        Material[] oreTypes = new Material[]{Material.DIAMOND_ORE, Material.COAL_ORE, Material.EMERALD_ORE,
+                Material.GLOWING_REDSTONE_ORE, Material.GOLD_ORE, Material.IRON_ORE, Material.LAPIS_ORE,
+                Material.REDSTONE_ORE, Material.DIAMOND_BLOCK, Material.COAL_BLOCK,
+                Material.EMERALD_BLOCK, Material.GLOWING_REDSTONE_ORE, Material.GOLD_BLOCK, Material.IRON_BLOCK,
+                Material.LAPIS_BLOCK, Material.REDSTONE_BLOCK};
+
+        for (Material oreType : oreTypes) {
+            if (oreType == blockType) {
+                try {
+                    ShiftStats.getAPI().addOresMined(player.getUniqueId(), 1);
+                } catch (SQLException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
     }
 
     @EventHandler
