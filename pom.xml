@@ -41,7 +41,7 @@
             <artifactId>ShiftStats</artifactId>
             <version>LATEST</version>
             <scope>system</scope>
-            <systemPath>/home/william/IdeaProjects/ShiftStats/target/ShiftStats-1.5.4-DEVELOPMENT-SNAPSHOT.jar</systemPath>
+            <systemPath>/home/william/IdeaProjects/ShiftStats/target/ShiftStats-1.5.5-DEVELOPMENT-SNAPSHOT.jar</systemPath>
         </dependency>
     </dependencies>
 
