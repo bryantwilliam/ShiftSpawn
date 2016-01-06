@@ -25,7 +25,7 @@
     <orderEntry type="module-library">
       <library name="Maven: com.gmail.gogobebe2:ShiftStats:LATEST">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../ShiftStats/target/ShiftStats-1.5.5-DEVELOPMENT-SNAPSHOT.jar!/" />
+          <root url="jar://$MODULE_DIR$/../ShiftStats/target/ShiftStats-1.5.6-DEVELOPMENT-SNAPSHOT.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

@@ -6,7 +6,7 @@
 
     <groupId>com.gmail.gogobebe2</groupId>
     <artifactId>ShiftSpawn</artifactId>
-    <version>1.4.8-BETA-SNAPSHOT</version>
+    <version>1.4.9-BETA-SNAPSHOT</version>
 
     <build>
         <pluginManagement>
@@ -41,7 +41,7 @@
             <artifactId>ShiftStats</artifactId>
             <version>LATEST</version>
             <scope>system</scope>
-            <systemPath>/home/william/IdeaProjects/ShiftStats/target/ShiftStats-1.5.5-DEVELOPMENT-SNAPSHOT.jar</systemPath>
+            <systemPath>/home/william/IdeaProjects/ShiftStats/target/ShiftStats-1.5.6-DEVELOPMENT-SNAPSHOT.jar</systemPath>
         </dependency>
     </dependencies>
 
