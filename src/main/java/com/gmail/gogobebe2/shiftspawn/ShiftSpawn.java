@@ -114,7 +114,6 @@ public class ShiftSpawn extends JavaPlugin {
             pickaxe.setDurability((short) 60);
             pickaxe.setItemMeta(pickaxeMeta);
 
-
             if (!hasSpecialItem(inventory, pickaxe)) {
                 inventory.addItem(pickaxe);
             }
