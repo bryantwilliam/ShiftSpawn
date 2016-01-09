@@ -2,7 +2,6 @@ package com.gmail.gogobebe2.shiftspawn.scoreboard;
 
 import com.gmail.gogobebe2.shiftspawn.ShiftSpawn;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
@@ -15,11 +14,8 @@ public abstract class SingleScoreboardSection extends ScoreboardSection {
     }
 
     @Override
-    public void display(Player player) {
-        if (isLabelSet()) {
-            getScoreboard().resetScores(label.getEntry());
-        }
-        super.display(player);
+    public void display() {
+        if (isLabelSet()) getScoreboard().resetScores(label.getEntry());
     }
 
     protected boolean isLabelSet() {

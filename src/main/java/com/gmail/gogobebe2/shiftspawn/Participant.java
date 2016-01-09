@@ -19,6 +19,7 @@ public class Participant implements Comparable<Participant> {
         this.kills = 0;
         PLAYER.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
         PLAYER.getScoreboard().clearSlot(DisplaySlot.BELOW_NAME);
+        PLAYER.setScoreboard(Game.getScoreboard());
     }
 
     public int getKills() {

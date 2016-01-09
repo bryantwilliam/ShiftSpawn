@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class Game {
-    private static Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();;
+    private static Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
     private int minutes = 0;
     private int seconds = 0;
     private boolean isTimerRunning = false;
@@ -63,11 +63,11 @@ public class Game {
                 for (Participant participant : plugin.getParticipants()) {
                     if (gameState.equals(GameState.STARTED)) {
                         showKillsTag(participant);
-                        plugin.getScoreTagSection().display(participant.getPlayer());
-                        plugin.getTopScoresSection().display(participant.getPlayer());
+                        plugin.getScoreTagSection().display();
+                        plugin.getTopScoresSection().display();
                     }
-                    plugin.getStatusSection().display(participant.getPlayer());
-                    plugin.getOnlinePlayerSection().display(participant.getPlayer());
+                    plugin.getStatusSection().display();
+                    plugin.getOnlinePlayerSection().display();
                 }
                 if (!plugin.getAlphaCores().isEmpty()) {
                     for (Block alphaCore : plugin.getAlphaCores()) {
@@ -273,7 +273,7 @@ public class Game {
         this.gameState = gameState;
     }
 
-    protected static Scoreboard getScoreboard() {
+    public static Scoreboard getScoreboard() {
         return scoreboard;
     }
 }

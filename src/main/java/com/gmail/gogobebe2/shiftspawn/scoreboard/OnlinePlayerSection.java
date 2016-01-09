@@ -12,7 +12,7 @@ public class OnlinePlayerSection extends SingleScoreboardSection {
     }
 
     @Override
-    public void arrangeSection() {
+    public void display() {
         setLabel(ChatColor.AQUA + "" + ChatColor.ITALIC + "Players online: " + ChatColor.DARK_AQUA + Bukkit.getOnlinePlayers().size() + "/" + Bukkit.getMaxPlayers(), 0);
     }
 }
