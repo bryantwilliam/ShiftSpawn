@@ -60,15 +60,13 @@ public class Game {
         this.timerIncrementer = scheduler.scheduleSyncRepeatingTask(plugin, new Runnable() {
             @Override
             public void run() {
-                for (Participant participant : plugin.getParticipants()) {
-                    if (gameState.equals(GameState.STARTED)) {
-                        showKillsTag(participant);
-                        plugin.getScoreTagSection().display();
-                        plugin.getTopScoresSection().display();
-                    }
-                    plugin.getStatusSection().display();
-                    plugin.getOnlinePlayerSection().display();
+                if (gameState.equals(GameState.STARTED)) {
+                    for (Participant participant : plugin.getParticipants()) showKillsTag(participant);
+                    plugin.getScoreTagSection().display();
+                    plugin.getTopScoresSection().display();
                 }
+                plugin.getStatusSection().display();
+                plugin.getOnlinePlayerSection().display();
                 if (!plugin.getAlphaCores().isEmpty()) {
                     for (Block alphaCore : plugin.getAlphaCores()) {
                         alphaCore.getWorld().playEffect(alphaCore.getLocation().clone().subtract(0, 1, 0), Effect.LAVADRIP, 5);
