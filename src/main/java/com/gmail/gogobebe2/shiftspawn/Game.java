@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class Game {
-    private static Scoreboard scoreboard;
+    private static Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();;
     private int minutes = 0;
     private int seconds = 0;
     private boolean isTimerRunning = false;
@@ -28,7 +28,6 @@ public class Game {
         this.plugin = plugin;
         this.gameState = gameState;
         setTime(timeFormat);
-        scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
     }
 
     protected void setTime(String timeFormat) {

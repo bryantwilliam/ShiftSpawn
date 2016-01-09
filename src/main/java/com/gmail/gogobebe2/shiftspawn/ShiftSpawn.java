@@ -88,7 +88,7 @@ public class ShiftSpawn extends JavaPlugin {
         return false;
     }
 
-    private boolean isSpecialItem(PlayerInventory inventory, ItemStack itemStack) {
+    private boolean hasSpecialItem(PlayerInventory inventory, ItemStack itemStack) {
         Material material = itemStack.getType();
         if (inventory.contains(material)) {
             for (ItemStack item : inventory.all(material).values()) {
@@ -108,22 +108,15 @@ public class ShiftSpawn extends JavaPlugin {
         if (game.getGameState().equals(GameState.STARTED)) {
             id = getParticipant(PLAYER).getSpawnID();
 
-            ItemStack pickaxe = new ItemStack(Material.STONE_PICKAXE, 1);
+            ItemStack pickaxe = new ItemStack(Material.WOOD_PICKAXE, 1);
             ItemMeta pickaxeMeta = pickaxe.getItemMeta();
             pickaxeMeta.setDisplayName(ChatColor.AQUA + "Chipped pickaxe");
             pickaxe.setDurability((short) 60);
             pickaxe.setItemMeta(pickaxeMeta);
 
-            ItemStack sword = new ItemStack(Material.WOOD_SWORD, 1);
-            ItemMeta swordMeta = sword.getItemMeta();
-            swordMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Trusty sword");
-            sword.setItemMeta(swordMeta);
 
-            if (!isSpecialItem(inventory, pickaxe)) {
+            if (!hasSpecialItem(inventory, pickaxe)) {
                 inventory.addItem(pickaxe);
-            }
-            if (!isSpecialItem(inventory, sword)) {
-                inventory.addItem(sword);
             }
         } else {
             id = "main";
