@@ -12,8 +12,7 @@ public class ScoreTagSection extends MultipleScoreboardSection {
 
     @Override
     public void display() {
-        for (Participant participant : getPlugin().getParticipants()) {
-            addScore(participant.getPlayer(), participant.getScore());
-        }
+        super.display();
+        for (Participant participant : getPlugin().getParticipants()) addScore(participant.getPlayer(), participant.getScore());
     }
 }

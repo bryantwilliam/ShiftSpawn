@@ -26,10 +26,6 @@ public abstract class MultipleScoreboardSection extends ScoreboardSection {
         }
     }
 
-    protected List<Score> getScores() {
-        return scores;
-    }
-
     protected void addScore(String label, int index) {
         Score score = getObjective().getScore(label);
         score.setScore(index);

@@ -13,6 +13,7 @@ public class StatusSection extends SingleScoreboardSection {
 
     @Override
     public void display() {
+        super.display();
         setLabel(getStatus(), 0);
     }
 

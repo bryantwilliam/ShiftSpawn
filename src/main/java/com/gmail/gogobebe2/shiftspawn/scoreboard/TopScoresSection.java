@@ -17,6 +17,7 @@ public class TopScoresSection extends MultipleScoreboardSection {
 
     @Override
     public void display() {
+        super.display();
         Participant[] participants =
                 getPlugin().getParticipants().toArray(new Participant[getPlugin().getParticipants().size()]);
         Arrays.sort(participants);
