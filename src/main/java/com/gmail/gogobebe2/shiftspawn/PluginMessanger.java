@@ -4,14 +4,15 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
 public class PluginMessanger {
-    private static PluginMessanger instance = null;
+    private static final String CHANNEL_NAME = "XPCraftHub";
+
+    private static PluginMessanger INSTANCE = new PluginMessanger();
 
     private PluginMessanger() {
     }
 
     protected static PluginMessanger getPluginMessanger() {
-        if (instance == null) instance = new PluginMessanger();
-        return instance;
+        return INSTANCE;
     }
 
     protected void sendAll() {

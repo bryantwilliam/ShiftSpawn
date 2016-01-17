@@ -27,7 +27,6 @@ import java.util.Random;
 
 public class Listeners implements Listener {
     private ShiftSpawn plugin;
-    private static final String CHANNEL_NAME = "XPCraftHub";
 
     protected Listeners(ShiftSpawn plugin) {
         this.plugin = plugin;
@@ -236,16 +235,16 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onPlayerShiftKilled(PlayerShiftKilledEvent event) {
-
+        // TODO: Give player xp.
     }
 
     @EventHandler
     public void onPlayerShiftScore(PlayerShiftScoreEvent event) {
-
+        // TODO: Give player xp.
     }
 
     @EventHandler
     public void onPlayerShiftWinEvent(PlayerShiftWinEvent event) {
-
+        // TODO: Give player xp.
     }
 }
