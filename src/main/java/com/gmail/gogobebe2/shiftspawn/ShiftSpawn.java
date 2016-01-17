@@ -92,7 +92,7 @@ public class ShiftSpawn extends JavaPlugin {
         Material material = itemStack.getType();
         if (inventory.contains(material)) {
             for (ItemStack item : inventory.all(material).values()) {
-                if (item.getItemMeta().getDisplayName().equals(itemStack.getItemMeta().getDisplayName())) {
+                if (item != null && item.getType() != Material.AIR && item.getItemMeta().getDisplayName().equals(itemStack.getItemMeta().getDisplayName())) {
                     return true;
                 }
             }
