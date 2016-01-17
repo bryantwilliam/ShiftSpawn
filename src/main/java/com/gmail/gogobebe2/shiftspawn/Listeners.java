@@ -2,6 +2,7 @@ package com.gmail.gogobebe2.shiftspawn;
 
 import com.gmail.gogobebe2.shiftspawn.api.events.PlayerShiftKilledEvent;
 import com.gmail.gogobebe2.shiftspawn.api.events.PlayerShiftScoreEvent;
+import com.gmail.gogobebe2.shiftspawn.api.events.PlayerShiftWinEvent;
 import com.gmail.gogobebe2.shiftstats.ShiftStats;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -26,6 +27,7 @@ import java.util.Random;
 
 public class Listeners implements Listener {
     private ShiftSpawn plugin;
+    private static final String CHANNEL_NAME = "XPCraftHub";
 
     protected Listeners(ShiftSpawn plugin) {
         this.plugin = plugin;
@@ -230,5 +232,20 @@ public class Listeners implements Listener {
     @EventHandler
     public void onPlayerHunger(FoodLevelChangeEvent event) {
         event.setFoodLevel(20);
+    }
+
+    @EventHandler
+    public void onPlayerShiftKilled(PlayerShiftKilledEvent event) {
+
+    }
+
+    @EventHandler
+    public void onPlayerShiftScore(PlayerShiftScoreEvent event) {
+
+    }
+
+    @EventHandler
+    public void onPlayerShiftWinEvent(PlayerShiftWinEvent event) {
+
     }
 }
