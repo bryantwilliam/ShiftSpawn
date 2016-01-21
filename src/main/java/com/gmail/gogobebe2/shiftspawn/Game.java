@@ -2,14 +2,17 @@ package com.gmail.gogobebe2.shiftspawn;
 
 import com.gmail.gogobebe2.shiftspawn.api.events.PlayerShiftWinEvent;
 import com.gmail.gogobebe2.shiftstats.ShiftStats;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+import org.bukkit.ChatColor;
+import redis.clients.jedis.Jedis;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -28,6 +31,10 @@ public class Game {
         this.plugin = plugin;
         this.gameState = gameState;
         setTime(timeFormat);
+        try (Jedis jedis = ShiftSpawn.jedisPool.getResource()) {
+            jedis.hset("shift", plugin.getConfig().getString("server-id"), String.valueOf(gameState.getCode()));
+            // JEDIS auto-closes and returns to the pool.
+        }
     }
 
     protected void setTime(String timeFormat) {
@@ -121,10 +128,15 @@ public class Game {
         switch (this.gameState) {
             case RESTARTING:
                 if (!Bukkit.getOnlinePlayers().isEmpty()) {
+                    ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                    out.writeUTF("Connect");
+                    out.writeUTF("Lobby");
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         // Remove their scoreboard.
                         player.setScoreboard(Bukkit.getServer().getScoreboardManager().getNewScoreboard());
-                        player.kickPlayer(ChatColor.AQUA + "You have been kicked while game restarts.");
+//                        player.kickPlayer(ChatColor.AQUA + "You have been kicked while game restarts.");
+
+                        player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
                     }
                 }
                 // Bukkit.getServer().shutdown(); Doesn't work for his server.
@@ -145,6 +157,10 @@ public class Game {
                     plugin.spawn(player);
                 }
                 setTime(plugin.getConfig().getString(ShiftSpawn.GAME_TIME));
+                try (Jedis jedis = ShiftSpawn.jedisPool.getResource()) {
+                    jedis.hset("shift", plugin.getConfig().getString("server-id"), String.valueOf(gameState.getCode()));
+                    // JEDIS auto-closes and returns to the pool.
+                }
                 break;
             case STARTED:
                 Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Game over!");
@@ -234,8 +250,17 @@ public class Game {
                 this.gameState = GameState.RESTARTING;
                 // 1 minute before restart server and use the timer to decide how to use ".." or "...".
                 setTime("1:00");
+                try (Jedis jedis = ShiftSpawn.jedisPool.getResource()) {
+                    jedis.hset("shift", plugin.getConfig().getString("server-id"), String.valueOf(gameState.getCode()));
+                    // JEDIS auto-closes and returns to the pool.
+                }
                 break;
             default:
+                this.gameState = GameState.ERROR;
+                try (Jedis jedis = ShiftSpawn.jedisPool.getResource()) {
+                    jedis.hset("shift", plugin.getConfig().getString("server-id"), String.valueOf(gameState.getCode()));
+                    // JEDIS auto-closes and returns to the pool.
+                }
                 Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Error! Ask admin to fix immediately!!!");
                 plugin.getLogger().severe("Internal error! No Game State set!?!?!? Ask willy to fix. Email him at: gogobebe2@gmail.com");
                 return;

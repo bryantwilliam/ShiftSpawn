@@ -16,6 +16,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 import java.util.*;
 
@@ -36,6 +38,11 @@ public class ShiftSpawn extends JavaPlugin {
     protected final static String GAME_TIME = "Game time";
     protected final static String DEATH_MESSAGES = "Death messages";
     protected final static String ALPHA_CORE_ID = "Alpha Core block ID";
+    /*
+    * GAME STATUS UPDATER
+     */
+
+    public static JedisPool jedisPool;
 
     public static ShiftSpawn getInstance() {
         return instance;
@@ -174,7 +181,12 @@ public class ShiftSpawn extends JavaPlugin {
         getLogger().info("Starting up ShiftSpawn. If you need me to update this plugin, email at gogobebe2@gmail.com");
         saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(new Listeners(this), this);
+        /*
+        * INITIALIZE THE JEDIS POOL FOR THREAD-SAFE POOLING.
+         */
+        jedisPool = new JedisPool(new JedisPoolConfig(), getConfig().getString("redis.host"), getConfig().getInt("redis.port"), 10*1000, getConfig().getString("redis.auth"));
         if (!Bukkit.getOnlinePlayers().isEmpty()) {
+            // TODO Should probably use send to hub instead...
             for (Player player : Bukkit.getOnlinePlayers()) {
                 player.kickPlayer(ChatColor.AQUA + "You have been kicked while the game gets setup.");
             }
@@ -205,6 +217,7 @@ public class ShiftSpawn extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("Disabling ShiftSpawn. If you need me to update this plugin, email at gogobebe2@gmail.com");
+        jedisPool.close();
     }
 
     public Game getGame() {
