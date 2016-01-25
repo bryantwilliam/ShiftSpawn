@@ -134,7 +134,7 @@ public class Game {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         // Remove their scoreboard.
                         player.setScoreboard(Bukkit.getServer().getScoreboardManager().getNewScoreboard());
-//                        player.kickPlayer(ChatColor.AQUA + "You have been kicked while game restarts.");
+                        player.kickPlayer(ChatColor.AQUA + "You have been kicked while game restarts.");
 
                         player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
                     }

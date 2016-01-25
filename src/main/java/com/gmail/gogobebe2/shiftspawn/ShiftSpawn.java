@@ -180,13 +180,11 @@ public class ShiftSpawn extends JavaPlugin {
         instance = this;
         getLogger().info("Starting up ShiftSpawn. If you need me to update this plugin, email at gogobebe2@gmail.com");
         saveDefaultConfig();
-        Bukkit.getPluginManager().registerEvents(new Listeners(this), this);
         /*
         * INITIALIZE THE JEDIS POOL FOR THREAD-SAFE POOLING.
          */
         jedisPool = new JedisPool(new JedisPoolConfig(), getConfig().getString("redis.host"), getConfig().getInt("redis.port"), 10*1000, getConfig().getString("redis.auth"));
         if (!Bukkit.getOnlinePlayers().isEmpty()) {
-            // TODO Should probably use send to hub instead...
             for (Player player : Bukkit.getOnlinePlayers()) {
                 player.kickPlayer(ChatColor.AQUA + "You have been kicked while the game gets setup.");
             }
@@ -212,6 +210,8 @@ public class ShiftSpawn extends JavaPlugin {
         nameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         nameObjective.setDisplayName(ChatColor.DARK_GREEN + "Points");
         this.scoreTagSection = new ScoreTagSection(Game.getScoreboard(), nameObjective, this);
+
+        Bukkit.getPluginManager().registerEvents(new Listeners(this), this);
     }
 
     @Override
