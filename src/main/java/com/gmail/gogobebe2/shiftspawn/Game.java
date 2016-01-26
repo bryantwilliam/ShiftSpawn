@@ -32,7 +32,7 @@ public class Game {
         this.gameState = gameState;
         setTime(timeFormat);
         try (Jedis jedis = ShiftSpawn.jedisPool.getResource()) {
-            jedis.hset("shift", plugin.getConfig().getString("server-id"), String.valueOf(gameState.getCode()));
+            jedis.publish("shift", plugin.getConfig().getString("server-id") + ":" + gameState.getCode());
             // JEDIS auto-closes and returns to the pool.
         }
     }
@@ -158,7 +158,7 @@ public class Game {
                 }
                 setTime(plugin.getConfig().getString(ShiftSpawn.GAME_TIME));
                 try (Jedis jedis = ShiftSpawn.jedisPool.getResource()) {
-                    jedis.hset("shift", plugin.getConfig().getString("server-id"), String.valueOf(gameState.getCode()));
+                    jedis.publish("shift", plugin.getConfig().getString("server-id") + ":" + gameState.getCode());
                     // JEDIS auto-closes and returns to the pool.
                 }
                 break;
@@ -251,14 +251,14 @@ public class Game {
                 // 1 minute before restart server and use the timer to decide how to use ".." or "...".
                 setTime("1:00");
                 try (Jedis jedis = ShiftSpawn.jedisPool.getResource()) {
-                    jedis.hset("shift", plugin.getConfig().getString("server-id"), String.valueOf(gameState.getCode()));
+                    jedis.publish("shift", plugin.getConfig().getString("server-id") + ":" + gameState.getCode());
                     // JEDIS auto-closes and returns to the pool.
                 }
                 break;
             default:
                 this.gameState = GameState.ERROR;
                 try (Jedis jedis = ShiftSpawn.jedisPool.getResource()) {
-                    jedis.hset("shift", plugin.getConfig().getString("server-id"), String.valueOf(gameState.getCode()));
+                    jedis.publish("shift", plugin.getConfig().getString("server-id") + ":" + gameState.getCode());
                     // JEDIS auto-closes and returns to the pool.
                 }
                 Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Error! Ask admin to fix immediately!!!");
