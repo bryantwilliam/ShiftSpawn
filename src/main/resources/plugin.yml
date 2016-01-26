@@ -1,5 +1,5 @@
 name: ShiftSpawn
-version: 1.4.18-BETA-SNAPSHOT
+version: 1.4.19-BETA-SNAPSHOT
 main: com.gmail.gogobebe2.shiftspawn.ShiftSpawn
 description: The main plugin of the Shift minigame. Handles spawns, game logic, death events and more.
 author: William Bryant (gogobebe2)
