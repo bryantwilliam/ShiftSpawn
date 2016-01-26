@@ -167,35 +167,35 @@ public class Game {
 
                 List<Participant> participants = plugin.getParticipants();
                 Collections.sort(participants);
-                Set<Participant> winners = new HashSet<>();
+                Set<Participant> topScorers = new HashSet<>();
 
-                int highscore = 0;
+                int highestScore = 0;
                 for (Participant participant : plugin.getParticipants()) {
-                    if (participant.getScore() >= highscore) {
-                        if (participant.getScore() > highscore) {
-                            winners.clear();
-                            highscore = participant.getScore();
+                    if (participant.getScore() >= highestScore) {
+                        if (participant.getScore() > highestScore) {
+                            topScorers.clear();
+                            highestScore = participant.getScore();
                         }
-                        winners.add(participant);
+                        topScorers.add(participant);
                     }
                 }
 
-                int mostKills = 0;
+                int highestKills = 0;
 
-                Set<Participant> tempWinners = new HashSet<>();
-                if (winners.size() > 1) {
-                    for (Participant participant : winners) {
-                        if (participant.getKills() >= mostKills) {
-                            if (participant.getKills() > mostKills) {
-                                tempWinners.clear();
-                                mostKills = participant.getKills();
-                            }
-                            tempWinners.add(participant);
+                Set<Participant> topKillersFromTopScorers = new HashSet<>();
+
+                for (Participant participant : topScorers) {
+                    if (participant.getKills() >= highestKills) {
+                        if (participant.getKills() > highestKills) {
+                            topKillersFromTopScorers.clear();
+                            highestKills = participant.getKills();
                         }
+                        topKillersFromTopScorers.add(participant);
                     }
                 }
 
-                for (Iterator<Participant> iterator = winners.iterator(); iterator.hasNext(); ) {
+                // For events:
+                for (Iterator<Participant> iterator = topKillersFromTopScorers.iterator(); iterator.hasNext(); ) {
                     Participant winner = iterator.next();
                     PlayerShiftWinEvent playerShiftWinEvent = new PlayerShiftWinEvent(winner.getPlayer());
                     Bukkit.getServer().getPluginManager().callEvent(playerShiftWinEvent);
@@ -206,11 +206,11 @@ public class Game {
 
                 StringBuilder broadcast = new StringBuilder();
                 broadcast.append(ChatColor.DARK_GREEN + "" + ChatColor.ITALIC + "Winner");
-                if (winners.size() > 1) {
+                if (topKillersFromTopScorers.size() > 1) {
                     broadcast.append("s");
                 }
                 broadcast.append(": ");
-                for (Iterator<Participant> iterator = winners.iterator(); iterator.hasNext(); ) {
+                for (Iterator<Participant> iterator = topKillersFromTopScorers.iterator(); iterator.hasNext(); ) {
                     Participant participant = iterator.next();
                     Player player = participant.getPlayer();
 
@@ -227,11 +227,13 @@ public class Game {
                         broadcast.append(".");
                     }
                 }
+
+                // Add losses to people who didn't win.
                 for (Participant participant : participants) {
                     Player player = participant.getPlayer();
                     UUID uuid = player.getUniqueId();
                     boolean won = false;
-                    for (Participant winner : winners) {
+                    for (Participant winner : topKillersFromTopScorers) {
                         if (winner.getPlayer().getUniqueId().equals(uuid)) {
                             won = true;
                             break;
