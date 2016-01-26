@@ -64,9 +64,7 @@
         <dependency>
             <groupId>com.gmail.gogobebe2</groupId>
             <artifactId>ShiftStats</artifactId>
-            <version>LATEST</version>
-            <scope>system</scope>
-            <systemPath>/home/william/IdeaProjects/ShiftStats/target/ShiftStats-1.5.6-DEVELOPMENT-SNAPSHOT.jar</systemPath>
+            <version>1.5.6-DEVELOPMENT-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>redis.clients</groupId>
