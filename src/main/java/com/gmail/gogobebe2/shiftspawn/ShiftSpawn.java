@@ -9,9 +9,6 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -95,42 +92,15 @@ public class ShiftSpawn extends JavaPlugin {
         return false;
     }
 
-    private boolean hasSpecialItem(PlayerInventory inventory, ItemStack itemStack) {
-        Material material = itemStack.getType();
-        if (inventory.contains(material)) {
-            for (ItemStack item : inventory.all(material).values()) {
-                if (item != null && item.getType() != Material.AIR && item.getItemMeta().getDisplayName().equals(itemStack.getItemMeta().getDisplayName())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     protected void spawn(final Player PLAYER) {
         String id;
         PLAYER.setFireTicks(0);
         PLAYER.setHealth(20);
-        PlayerInventory inventory = PLAYER.getInventory();
-        if (game.getGameState().equals(GameState.STARTED)) {
-            id = getParticipant(PLAYER).getSpawnID();
-
-            ItemStack pickaxe = new ItemStack(Material.WOOD_PICKAXE, 1);
-            ItemMeta pickaxeMeta = pickaxe.getItemMeta();
-            pickaxeMeta.setDisplayName(ChatColor.AQUA + "Chipped pickaxe");
-            pickaxe.setDurability((short) 58);
-            pickaxe.setItemMeta(pickaxeMeta);
-
-            if (!hasSpecialItem(inventory, pickaxe)) {
-                inventory.addItem(pickaxe);
-            }
-        } else {
-            id = "main";
-        }
+        if (game.getGameState().equals(GameState.STARTED)) id = getParticipant(PLAYER).getSpawnID();
+        else id = "main";
         PLAYER.setGameMode(GameMode.CREATIVE);
         PLAYER.teleport(loadSpawn(id));
         PLAYER.setGameMode(GameMode.SURVIVAL);
-        PLAYER.updateInventory();
     }
 
     protected Location loadSpawn(String id) {
