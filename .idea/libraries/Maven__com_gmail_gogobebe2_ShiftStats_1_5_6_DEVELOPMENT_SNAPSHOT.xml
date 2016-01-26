@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.gmail.gogobebe2:ShiftStats:1.5.6-DEVELOPMENT-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/gmail/gogobebe2/ShiftStats/1.5.6-DEVELOPMENT-SNAPSHOT/ShiftStats-1.5.6-DEVELOPMENT-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/gmail/gogobebe2/ShiftStats/1.5.6-DEVELOPMENT-SNAPSHOT/ShiftStats-1.5.6-DEVELOPMENT-SNAPSHOT-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/gmail/gogobebe2/ShiftStats/1.5.6-DEVELOPMENT-SNAPSHOT/ShiftStats-1.5.6-DEVELOPMENT-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
