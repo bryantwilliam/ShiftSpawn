@@ -236,16 +236,21 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onPlayerShiftKilled(PlayerShiftKilledEvent event) {
-        PlayerInfo.getPlayerInfo(event.getKiller()).addXP(2);
+        giveXP(2, event.getKiller());
     }
 
     @EventHandler
     public void onPlayerShiftScore(PlayerShiftScoreEvent event) {
-        PlayerInfo.getPlayerInfo(event.getPlayer()).addXP(1);
+        giveXP(1, event.getPlayer());
     }
 
     @EventHandler
     public void onPlayerShiftWinEvent(PlayerShiftWinEvent event) {
-        PlayerInfo.getPlayerInfo(event.getPlayer()).addXP(50);
+        giveXP(50, event.getPlayer());
+    }
+
+    private void giveXP(int xp, Player player) {
+        PlayerInfo.getPlayerInfo(player).addXP(xp);
+        player.sendMessage(ChatColor.GREEN + "You just earned " + xp + " xp!");
     }
 }

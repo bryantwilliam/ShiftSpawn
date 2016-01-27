@@ -141,7 +141,7 @@ public class Game {
 
                         out = ByteStreams.newDataOutput();
                         out.writeUTF("Connect");
-                        out.writeUTF("Hub");
+                        out.writeUTF("Lobby");
                         player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
                     }
                 }
