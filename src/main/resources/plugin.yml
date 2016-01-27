@@ -11,5 +11,6 @@ commands:
 permissions:
   shiftspawn.*:
     default: op
+
 depend: [XCore]
 softdepend: [BungeeCord]
