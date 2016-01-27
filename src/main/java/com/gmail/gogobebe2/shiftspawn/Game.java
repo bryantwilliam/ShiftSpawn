@@ -128,14 +128,20 @@ public class Game {
         switch (this.gameState) {
             case RESTARTING:
                 if (!Bukkit.getOnlinePlayers().isEmpty()) {
-                    ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                    out.writeUTF("Connect");
-                    out.writeUTF("Lobby");
+                    plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
+                    ByteArrayDataOutput out;
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         // Remove their scoreboard.
                         player.setScoreboard(Bukkit.getServer().getScoreboardManager().getNewScoreboard());
-                        player.kickPlayer(ChatColor.AQUA + "You have been kicked while game restarts.");
 
+                        // test to see if the MoveMeNow plugin works with this
+                        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "kick "
+                                + player.getName() + " " + ChatColor.AQUA + "You have been kicked while game restarts.");
+                        player.kickPlayer(ChatColor.AQUA + "You have been kicked while server restarts.");
+
+                        out = ByteStreams.newDataOutput();
+                        out.writeUTF("Connect");
+                        out.writeUTF("Hub");
                         player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
                     }
                 }

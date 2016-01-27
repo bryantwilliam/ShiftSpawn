@@ -1,5 +1,6 @@
 package com.gmail.gogobebe2.shiftspawn;
 
+import co.insou.xcore.utils.PlayerInfo;
 import com.gmail.gogobebe2.shiftspawn.api.events.PlayerShiftKilledEvent;
 import com.gmail.gogobebe2.shiftspawn.api.events.PlayerShiftScoreEvent;
 import com.gmail.gogobebe2.shiftspawn.api.events.PlayerShiftWinEvent;
@@ -235,16 +236,16 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onPlayerShiftKilled(PlayerShiftKilledEvent event) {
-        // TODO: Give player xp.
+        PlayerInfo.getPlayerInfo(event.getPlayer()).addXP(1);
     }
 
     @EventHandler
     public void onPlayerShiftScore(PlayerShiftScoreEvent event) {
-        // TODO: Give player xp.
+        PlayerInfo.getPlayerInfo(event.getPlayer()).addXP(1);
     }
 
     @EventHandler
     public void onPlayerShiftWinEvent(PlayerShiftWinEvent event) {
-        // TODO: Give player xp.
+        PlayerInfo.getPlayerInfo(event.getPlayer()).addXP(1);
     }
 }
