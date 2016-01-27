@@ -236,7 +236,7 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onPlayerShiftKilled(PlayerShiftKilledEvent event) {
-        PlayerInfo.getPlayerInfo(event.getPlayer()).addXP(1);
+        PlayerInfo.getPlayerInfo(event.getKiller()).addXP(2);
     }
 
     @EventHandler
@@ -246,6 +246,6 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onPlayerShiftWinEvent(PlayerShiftWinEvent event) {
-        PlayerInfo.getPlayerInfo(event.getPlayer()).addXP(1);
+        PlayerInfo.getPlayerInfo(event.getPlayer()).addXP(50);
     }
 }
