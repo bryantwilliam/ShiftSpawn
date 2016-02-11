@@ -23,13 +23,22 @@
                         </goals>
                         <configuration>
                             <relocations>
-                                <relocation>
-                                    <pattern>redis.clients</pattern>
+                            	<relocation>
+                            	    <pattern>redis.clients</pattern>
                                     <shadedPattern>com.gmail.gogobebe2.shaded.redis.clients</shadedPattern>
+                            	</relocation>
+                                <relocation>
                                     <pattern>org.apache.commons</pattern>
                                     <shadedPattern>com.gmail.gogobebe2.shaded.org.apache.commons</shadedPattern>
                                 </relocation>
                             </relocations>
+                        	<artifactSet>
+                        		<includes>
+                        			<include>commons-lang:commons-lang:jar:*</include>
+                        		    <include>redis.clients:jedis:jar:*</include>
+            						<include>org.apache.commons:commons-pool2:jar:*</include>
+                        		</includes>
+                        	</artifactSet>
                         </configuration>
                     </execution>
                 </executions>
