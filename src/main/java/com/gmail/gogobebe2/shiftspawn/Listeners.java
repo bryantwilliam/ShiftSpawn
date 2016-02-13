@@ -250,7 +250,9 @@ public class Listeners implements Listener {
     }
 
     private void giveXP(int xp, Player player) {
-        int amount = PlayerInfo.getPlayerInfo(player).addXP(xp);
-        player.sendMessage(ChatColor.GREEN + "You just earned " + amount + " xp!");
+        PlayerInfo playerInfo =  PlayerInfo.getPlayerInfo(player);
+        int initialAmount = playerInfo.getXP();
+        PlayerInfo.getPlayerInfo(player).addXP(xp);
+        player.sendMessage(ChatColor.GREEN + "You just earned " + (playerInfo.getXP() - initialAmount) + " xp!");
     }
 }
