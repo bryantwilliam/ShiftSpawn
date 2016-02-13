@@ -36,7 +36,7 @@
     <orderEntry type="module-library">
       <library name="Maven: com.gmail.gogobebe2:xcore-with-dependencies:LATEST">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../ShiftKits/src/libs/xcore-1.0-jar-with-dependencies.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/libs/xcore_14.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
