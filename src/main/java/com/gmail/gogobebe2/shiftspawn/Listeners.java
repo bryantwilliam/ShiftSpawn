@@ -11,14 +11,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -45,7 +43,7 @@ public class Listeners implements Listener {
     }
 
     @EventHandler
-    public void onPlayerLoginEvent(PlayerLoginEvent event) {
+    private void onPlayerLoginEvent(PlayerLoginEvent event) {
         Player player = event.getPlayer();
         if (!plugin.hasParticipantSet(player) && plugin.getGame().getGameState() == GameState.STARTED
                 && plugin.getGame().getMinutes() < Integer.parseInt(plugin.getConfig().getString(ShiftSpawn.GAME_TIME).split(":")[0]) - 5) {
@@ -57,7 +55,7 @@ public class Listeners implements Listener {
     }
 
     @EventHandler
-    public void onPlayerJoinEvent(PlayerJoinEvent event) {
+    private void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         player.getWorld().playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1.2F);
         if (!plugin.hasParticipantSet(player)) {
@@ -86,7 +84,7 @@ public class Listeners implements Listener {
     }
 
     @EventHandler
-    public void onPlayerLeaveEvent(PlayerQuitEvent event) {
+    private void onPlayerLeaveEvent(PlayerQuitEvent event) {
         int minPlayers = plugin.getConfig().getInt(ShiftSpawn.MIN_PLAYERS_KEY);
         Player player = event.getPlayer();
         String playerName = player.getName();
@@ -105,7 +103,7 @@ public class Listeners implements Listener {
     }
 
     @EventHandler
-    public void onPlayerMoveEvent(PlayerMoveEvent event) {
+    private void onPlayerMoveEvent(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         if (event.getTo().getY() <= 0.1) {
             onDeath(player, player.getKiller());
@@ -114,7 +112,7 @@ public class Listeners implements Listener {
     }
 
     @EventHandler
-    public void onPlayerDeathEvent(PlayerDeathEvent event) {
+    private void onPlayerDeathEvent(PlayerDeathEvent event) {
         event.setKeepInventory(true);
         event.setKeepLevel(true);
         event.setDeathMessage(null);
@@ -147,7 +145,7 @@ public class Listeners implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOW)
-    public void onPlayerDamagedEvent(EntityDamageByEntityEvent event) {
+    private void onPlayerDamagedEvent(EntityDamageByEntityEvent event) {
         if (plugin.getGame().getGameState() != GameState.STARTED) {
             event.setCancelled(true);
             event.getDamager().sendMessage(ChatColor.AQUA + "You can't hurt anyone, the game hasn't started yet!");
@@ -188,7 +186,7 @@ public class Listeners implements Listener {
 
 
     @EventHandler
-    public void onBlockBreakEvent(BlockBreakEvent event) {
+    private void onBlockBreakEvent(BlockBreakEvent event) {
         Block block = event.getBlock();
         Material blockType = block.getType();
         Player player = event.getPlayer();
@@ -222,6 +220,16 @@ public class Listeners implements Listener {
             }
         }
 
+    }
+
+    @EventHandler
+    private void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+            if (event.getClickedBlock().getType() == Material.ENCHANTMENT_TABLE) {
+                event.getPlayer().performCommand("enchant");
+                event.setCancelled(true);
+            }
+        }
     }
 
     @EventHandler
