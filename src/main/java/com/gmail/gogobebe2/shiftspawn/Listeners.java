@@ -68,7 +68,7 @@ public class Listeners implements Listener {
             player.setFoodLevel(20);
             player.setFireTicks(0);
             player.setGameMode(GameMode.SURVIVAL);
-            plugin.getParticipants().add(new Participant(player, plugin.getNextSpawnID()));
+            plugin.getParticipants().add(new Participant(player.getUniqueId(), plugin.getNextSpawnID()));
         }
         plugin.spawn(player);
         String playerName = player.getName();
@@ -80,7 +80,6 @@ public class Listeners implements Listener {
                         + " more players to start.");
             }
         }
-
     }
 
     @EventHandler

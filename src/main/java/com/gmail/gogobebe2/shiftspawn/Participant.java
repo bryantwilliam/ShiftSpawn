@@ -1,25 +1,28 @@
 package com.gmail.gogobebe2.shiftspawn;
 
 import com.gmail.gogobebe2.shiftstats.ShiftStats;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class Participant implements Comparable<Participant> {
-    private final Player PLAYER;
+    private final UUID uuid;
     private int score;
     private int kills;
     private String spawnID;
 
-    protected Participant(final Player PLAYER, String spawnID) {
-        this.PLAYER = PLAYER;
+    protected Participant(final UUID uuid, String spawnID) {
+        this.uuid = uuid;
         this.spawnID = spawnID;
         this.score = 0;
         this.kills = 0;
-        PLAYER.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
-        PLAYER.getScoreboard().clearSlot(DisplaySlot.BELOW_NAME);
-        PLAYER.setScoreboard(Game.getScoreboard());
+        Player player = getPlayer();
+        player.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
+        player.getScoreboard().clearSlot(DisplaySlot.BELOW_NAME);
+        player.setScoreboard(Game.getScoreboard());
     }
 
     public int getKills() {
@@ -29,7 +32,7 @@ public class Participant implements Comparable<Participant> {
     public void addKills(int kills) {
         this.kills += kills;
         try {
-            ShiftStats.getAPI().addKills(PLAYER.getUniqueId(), kills);
+            ShiftStats.getAPI().addKills(uuid, kills);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -40,7 +43,7 @@ public class Participant implements Comparable<Participant> {
     }
 
     public Player getPlayer() {
-        return PLAYER;
+        return Bukkit.getPlayer(uuid);
     }
 
     protected String getSpawnID() {
@@ -50,7 +53,7 @@ public class Participant implements Comparable<Participant> {
     protected void addPoints(int points) {
         this.score += points;
         try {
-            ShiftStats.getAPI().addPoints(PLAYER.getUniqueId(), points);
+            ShiftStats.getAPI().addPoints(uuid, points);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }

@@ -182,6 +182,8 @@ public class ShiftSpawn extends JavaPlugin {
         this.scoreTagSection = new ScoreTagSection(Game.getScoreboard(), nameObjective, this);
 
         Bukkit.getPluginManager().registerEvents(new Listeners(this), this);
+
+        Tutorial.setUpTutorials();
     }
 
     @Override
