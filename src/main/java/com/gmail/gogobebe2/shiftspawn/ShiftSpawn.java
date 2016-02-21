@@ -104,7 +104,7 @@ public class ShiftSpawn extends JavaPlugin {
         PLAYER.setGameMode(GameMode.SURVIVAL);
     }
 
-    protected Location loadSpawn(String id) {
+    public Location loadSpawn(String id) {
         final World WORLD = Bukkit.getWorld(getConfig().getString("Spawns." + id + ".World"));
         final double X = getConfig().getDouble("Spawns." + id + ".X");
         final double Y = getConfig().getDouble("Spawns." + id + ".Y");

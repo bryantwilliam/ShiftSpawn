@@ -13,6 +13,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,10 +24,12 @@ import java.util.Set;
 public class Tutorial {
     private static final ItemStack TUTORIAL_BUTTON;
     private static Set<Tutorial> tutorialSet = new HashSet<>();
+    private static BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
 
     private boolean hasBeenGivenTutorialButton = false;
     private Participant participant;
     private TutorialStage stage;
+    private int taskID = -1;
 
     static {
         TUTORIAL_BUTTON = new ItemStack(Material.SKULL_ITEM, 1);
@@ -35,7 +39,7 @@ public class Tutorial {
         skullMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Tutorial");
 
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.DARK_PURPLE + "Left click to enter the tutorial, right click to leave it.");
+        lore.add(ChatColor.DARK_PURPLE + "Left click to enter the tutorial or to skip a stage in the tutorial; Right click to leave it.");
 
         skullMeta.setLore(lore);
         TUTORIAL_BUTTON.setItemMeta(skullMeta);
@@ -62,12 +66,21 @@ public class Tutorial {
                 itemStack.setAmount(1);
 
                 if (itemStack.equals(TUTORIAL_BUTTON)) {
-                    Player player = event.getPlayer();
-                    Tutorial tutorial = getTutorial(event.getPlayer());
+                    final Player player = event.getPlayer();
+                    final Tutorial tutorial = getTutorial(event.getPlayer());
                     if (tutorial != null) {
                         Action action = event.getAction();
-                        if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) tutorial.goToNextStage(player);
-                        else if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
+                        if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
+                            final long INTERVAL = 20 * 5;
+                            if (tutorial.taskID != -1) scheduler.cancelTask(tutorial.taskID);
+                            tutorial.taskID = scheduler.scheduleSyncRepeatingTask(ShiftSpawn.getInstance(), new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    tutorial.goToNextStage(player);
+                                }
+                            }, INTERVAL, INTERVAL);
+                            tutorial.goToNextStage(player);
+                        } else if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
                             tutorial.stage = TutorialStage.NOT_IN_TUTORIAL;
                             tutorial.stage.doStage(player);
                         }
@@ -94,6 +107,7 @@ public class Tutorial {
     private Tutorial(Participant participant) {
         this.participant = participant;
         if (participant.getPlayer().isOnline()) giveTutorialButton();
+
     }
 
     private void giveTutorialButton() {

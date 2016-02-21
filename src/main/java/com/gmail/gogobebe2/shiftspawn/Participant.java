@@ -46,7 +46,7 @@ public class Participant implements Comparable<Participant> {
         return Bukkit.getPlayer(uuid);
     }
 
-    protected String getSpawnID() {
+    public String getSpawnID() {
         return spawnID;
     }
 

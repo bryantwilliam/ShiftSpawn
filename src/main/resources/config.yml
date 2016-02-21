@@ -15,3 +15,39 @@ Death messages:
 - "PLAYER you fucken gumpy shit. You died again."
 - "Christ PLAYER, stop fucking dieing. God."
 Spawns:
+  tutorial_islandSpawnPoint:
+    X: 1
+    Y: 1
+    Z: 1
+    Pitch: 1
+    Yaw: 1
+  tutorial_staticPlatform:
+    X: 1
+    Y: 1
+    Z: 1
+    Pitch: 1
+    Yaw: 1
+  tutorial_alphacore:
+    X: 1
+    Y: 1
+    Z: 1
+    Pitch: 1
+    Yaw: 1
+  tutorial_enchantmentTable:
+    X: 1
+    Y: 1
+    Z: 1
+    Pitch: 1
+    Yaw: 1
+  tutorial_villagerSpawnPoint:
+    X: 1
+    Y: 1
+    Z: 1
+    Pitch: 1
+    Yaw: 1
+  tutorial_mainSpawnPoint:
+    X: 1
+    Y: 1
+    Z: 1
+    Pitch: 1
+    Yaw: 1
