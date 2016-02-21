@@ -4,6 +4,7 @@ import com.gmail.gogobebe2.shiftspawn.scoreboard.OnlinePlayerSection;
 import com.gmail.gogobebe2.shiftspawn.scoreboard.ScoreTagSection;
 import com.gmail.gogobebe2.shiftspawn.scoreboard.StatusSection;
 import com.gmail.gogobebe2.shiftspawn.scoreboard.TopScoresSection;
+import com.gmail.gogobebe2.shiftspawn.tutorial.Tutorial;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;

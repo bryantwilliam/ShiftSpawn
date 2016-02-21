@@ -1,5 +1,7 @@
-package com.gmail.gogobebe2.shiftspawn;
+package com.gmail.gogobebe2.shiftspawn.tutorial;
 
+import com.gmail.gogobebe2.shiftspawn.Participant;
+import com.gmail.gogobebe2.shiftspawn.ShiftSpawn;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -23,32 +25,7 @@ public class Tutorial {
 
     private boolean hasBeenGivenTutorialButton = false;
     private Participant participant;
-
-    private enum TutorialStage {
-        SELECT_KIT((short) 1),
-        MINING((short) 2),
-        PLATFORMS((short) 3),
-        ALPHA_CORE((short) 4),
-        WIN((short) 5),
-        ENCHANTMENT_TABLE((short) 6),
-        VILLAGER((short) 7),
-        END((short) 8);
-
-        private short stageNumber;
-
-        TutorialStage(short stageNumber) {
-            this.stageNumber = stageNumber;
-        }
-
-        public int getStageNumber() {
-            return this.stageNumber;
-        }
-
-        public GameState getByStageNumber(short i) {
-            for (GameState gs : GameState.values()) if (gs.getCode() == i) return gs;
-            return null;
-        }
-    }
+    private TutorialStage stage;
 
     static {
         TUTORIAL_BUTTON = new ItemStack(Material.SKULL_ITEM, 1);
@@ -77,7 +54,7 @@ public class Tutorial {
         tutorialSet.add(new Tutorial(participant));
     }
 
-    protected static void setUpTutorials() {
+    public static void setUpTutorials() {
         Bukkit.getPluginManager().registerEvents(new Listener() {
             @EventHandler
             private void onPlayerInteract(PlayerInteractEvent event) {
@@ -85,11 +62,17 @@ public class Tutorial {
                 itemStack.setAmount(1);
 
                 if (itemStack.equals(TUTORIAL_BUTTON)) {
-                    Action action = event.getAction();
-                    if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
-                        // Enter.
-                    } else if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
-                        // Leave tutorial.
+                    Player player = event.getPlayer();
+                    Tutorial tutorial = getTutorial(event.getPlayer());
+                    if (tutorial != null) {
+                        Action action = event.getAction();
+                        if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) tutorial.goToNextStage(player);
+                        else if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
+                            tutorial.stage = TutorialStage.NOT_IN_TUTORIAL;
+                            tutorial.stage.doStage(player);
+                        }
+                    } else {
+                        Bukkit.getLogger().severe("Error! Check Tutorial.java for the reason why.");
                     }
                 }
             }
@@ -118,4 +101,9 @@ public class Tutorial {
         hasBeenGivenTutorialButton = true;
     }
 
+    private void goToNextStage(Player player) {
+        stage = TutorialStage.getByStageNumber((short) (stage.getStageNumber() + 1));
+        if (stage == null) stage = TutorialStage.NOT_IN_TUTORIAL;
+        stage.doStage(player);
+    }
 }
