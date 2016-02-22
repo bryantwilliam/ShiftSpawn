@@ -73,13 +73,13 @@ public class Tutorial {
                         if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
                             final long INTERVAL = 20 * 5;
                             if (tutorial.taskID != -1) scheduler.cancelTask(tutorial.taskID);
+                            tutorial.goToNextStage(player);
                             tutorial.taskID = scheduler.scheduleSyncRepeatingTask(ShiftSpawn.getInstance(), new BukkitRunnable() {
                                 @Override
                                 public void run() {
                                     tutorial.goToNextStage(player);
                                 }
                             }, INTERVAL, INTERVAL);
-                            tutorial.goToNextStage(player);
                         } else if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
                             tutorial.stage = TutorialStage.NOT_IN_TUTORIAL;
                             tutorial.stage.doStage(player);
