@@ -81,6 +81,7 @@ public class Tutorial {
                                 }
                             }, INTERVAL, INTERVAL);
                         } else if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
+                            scheduler.cancelTask(tutorial.taskID);
                             tutorial.stage = TutorialStage.NOT_IN_TUTORIAL;
                             tutorial.stage.doStage(player);
                         }
@@ -117,7 +118,7 @@ public class Tutorial {
 
     private void goToNextStage(Player player) {
         stage = TutorialStage.getByStageNumber((short) (stage.getStageNumber() + 1));
-        if (stage == null) stage = TutorialStage.NOT_IN_TUTORIAL;
+        if (stage == null) stage = TutorialStage.SELECT_KIT;
         stage.doStage(player);
     }
 }
