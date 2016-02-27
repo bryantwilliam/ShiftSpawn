@@ -58,7 +58,16 @@ public class Tutorial {
         tutorialSet.add(new Tutorial(participant));
     }
 
+    private static void newTutorial(Player player) {
+        Tutorial tutorial = getTutorial(player);
+        if (tutorial != null && !tutorial.hasBeenGivenTutorialButton) tutorial.giveTutorialButton();
+        else addNewTutorialInstance(ShiftSpawn.getInstance().getParticipant(player));
+    }
+
     public static void setUpTutorials() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            newTutorial(player);
+        }
         Bukkit.getPluginManager().registerEvents(new Listener() {
             @EventHandler
             private void onPlayerInteract(PlayerInteractEvent event) {
@@ -71,6 +80,7 @@ public class Tutorial {
                     if (tutorial != null) {
                         Action action = event.getAction();
                         if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
+                            player.sendMessage(ChatColor.LIGHT_PURPLE + "Going to next stage in tutorial...");
                             final long INTERVAL = 20 * 5;
                             if (tutorial.taskID != -1) scheduler.cancelTask(tutorial.taskID);
                             tutorial.goToNextStage(player);
@@ -81,6 +91,7 @@ public class Tutorial {
                                 }
                             }, INTERVAL, INTERVAL);
                         } else if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
+                            player.sendMessage(ChatColor.LIGHT_PURPLE + "Exiting tutorial...");
                             scheduler.cancelTask(tutorial.taskID);
                             tutorial.stage = TutorialStage.NOT_IN_TUTORIAL;
                             tutorial.stage.doStage(player);
@@ -93,11 +104,9 @@ public class Tutorial {
 
             @EventHandler
             private void onPlayerJoin(PlayerJoinEvent event) {
-                Player player = event.getPlayer();
-                Tutorial tutorial = getTutorial(player);
-                if (tutorial != null && !tutorial.hasBeenGivenTutorialButton) tutorial.giveTutorialButton();
-                else addNewTutorialInstance(ShiftSpawn.getInstance().getParticipant(player));
+                newTutorial(event.getPlayer());
             }
+
         }, ShiftSpawn.getInstance());
 
         for (Participant participant : ShiftSpawn.getInstance().getParticipants()) {
