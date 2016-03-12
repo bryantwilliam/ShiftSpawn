@@ -71,33 +71,35 @@ public class Tutorial {
         Bukkit.getPluginManager().registerEvents(new Listener() {
             @EventHandler
             private void onPlayerInteract(PlayerInteractEvent event) {
-                ItemStack itemStack = event.getItem().clone();
-                itemStack.setAmount(1);
+                if (event.getItem() != null) {
+                    ItemStack itemStack = event.getItem().clone();
+                    itemStack.setAmount(1);
 
-                if (itemStack.equals(TUTORIAL_BUTTON)) {
-                    final Player player = event.getPlayer();
-                    final Tutorial tutorial = getTutorial(event.getPlayer());
-                    if (tutorial != null) {
-                        Action action = event.getAction();
-                        if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
-                            player.sendMessage(ChatColor.LIGHT_PURPLE + "Going to next stage in tutorial...");
-                            final long INTERVAL = 20 * 5;
-                            if (tutorial.taskID != -1) scheduler.cancelTask(tutorial.taskID);
-                            tutorial.goToNextStage(player);
-                            tutorial.taskID = scheduler.scheduleSyncRepeatingTask(ShiftSpawn.getInstance(), new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    tutorial.goToNextStage(player);
-                                }
-                            }, INTERVAL, INTERVAL);
-                        } else if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
-                            player.sendMessage(ChatColor.LIGHT_PURPLE + "Exiting tutorial...");
-                            scheduler.cancelTask(tutorial.taskID);
-                            tutorial.stage = TutorialStage.NOT_IN_TUTORIAL;
-                            tutorial.stage.doStage(player);
+                    if (itemStack.equals(TUTORIAL_BUTTON)) {
+                        final Player player = event.getPlayer();
+                        final Tutorial tutorial = getTutorial(event.getPlayer());
+                        if (tutorial != null) {
+                            Action action = event.getAction();
+                            if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
+                                player.sendMessage(ChatColor.LIGHT_PURPLE + "Going to next stage in tutorial...");
+                                final long INTERVAL = 20 * 5;
+                                if (tutorial.taskID != -1) scheduler.cancelTask(tutorial.taskID);
+                                tutorial.goToNextStage(player);
+                                tutorial.taskID = scheduler.scheduleSyncRepeatingTask(ShiftSpawn.getInstance(), new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        tutorial.goToNextStage(player);
+                                    }
+                                }, INTERVAL, INTERVAL);
+                            } else if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
+                                player.sendMessage(ChatColor.LIGHT_PURPLE + "Exiting tutorial...");
+                                scheduler.cancelTask(tutorial.taskID);
+                                tutorial.stage = TutorialStage.NOT_IN_TUTORIAL;
+                                tutorial.stage.doStage(player);
+                            }
+                        } else {
+                            Bukkit.getLogger().severe("Error! Check Tutorial.java for the reason why.");
                         }
-                    } else {
-                        Bukkit.getLogger().severe("Error! Check Tutorial.java for the reason why.");
                     }
                 }
             }
