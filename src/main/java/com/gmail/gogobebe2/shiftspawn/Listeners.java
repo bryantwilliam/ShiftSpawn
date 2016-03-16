@@ -57,7 +57,7 @@ public class Listeners implements Listener {
     @EventHandler
     private void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_CHICKEN_EGG, 1, 1.2F);
+        player.getWorld().playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1.2F);
         if (!plugin.hasParticipantSet(player)) {
             // Clearing players inventory to fix weird bug:
             player.getInventory().clear();
@@ -125,12 +125,12 @@ public class Listeners implements Listener {
             if (!playerShiftKilledEvent.isCancelled()) {
                 Participant k = plugin.getParticipant(killer);
                 k.addKills(1);
-                killer.playSound(killer.getLocation(), Sound.BLOCK_NOTE_HARP, 1.4F, 1.6F);
+                killer.playSound(killer.getLocation(), Sound.NOTE_PIANO, 1.4F, 1.6F);
                 killer.giveExpLevels(1);
             }
         }
         plugin.spawn(player);
-        player.playSound(player.getLocation(), Sound.ENTITY_IRONGOLEM_DEATH, 0.9F, 1);
+        player.playSound(player.getLocation(), Sound.IRONGOLEM_DEATH, 0.9F, 1);
 
         String randomDeathMessage = getRandomDeathMessage(player, killer);
         if (randomDeathMessage != null) {
@@ -197,7 +197,7 @@ public class Listeners implements Listener {
                 if (!playerShiftScoreEvent.isCancelled()) {
                     Participant participant = plugin.getParticipant(player);
                     participant.addPoints(1);
-                    player.getWorld().playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 1.2F, 0.4F);
+                    player.getWorld().playSound(player.getLocation(), Sound.ANVIL_LAND, 1.2F, 0.4F);
                 }
             }
             plugin.getAlphaCores().add(block);

@@ -6,7 +6,7 @@
 
     <groupId>com.gmail.gogobebe2</groupId>
     <artifactId>ShiftSpawn</artifactId>
-    <version>1.6.3-BETA-SNAPSHOT</version>
+    <version>1.6.4-BETA-SNAPSHOT</version>
 
     <build>
         <plugins>
@@ -66,7 +66,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>LATEST</version>
+            <version>1.8-R0.1-SNAPSHOT</version>
         </dependency>
         <!-- INSTEAD OF LINKING TO THE FILE, RUN `mvn install:install-file -Dfile=./ShiftStats-1.5.6-DEVELOPMENT-SNAPSHOT.jar -DgroupId=com.gmail.gogobebe2 -DartifactId=ShiftStats -Dversion=1.5.6-DEVELOPMENT-SNAPSHOT -Dpackaging=jar`
          IN THE SAME DIRECTORY AS SHIFT STATS TO USE THIS \/ -->
