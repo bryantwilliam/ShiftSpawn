@@ -47,9 +47,7 @@ public class Tutorial {
 
     private static Tutorial getTutorial(Player player) {
         for (Tutorial tutorial : tutorialSet) {
-            if (tutorial.participant.getPlayer().getUniqueId().equals(player.getUniqueId())) {
-                return tutorial;
-            }
+            if (tutorial.participant.getPlayer().getUniqueId().equals(player.getUniqueId())) return tutorial;
         }
         return null;
     }
@@ -98,6 +96,8 @@ public class Tutorial {
                                 tutorial.stage.doStage(player);
                             }
                         } else {
+                            newTutorial(player);
+                            player.sendMessage(ChatColor.RED + "An error occured while trying to enter the tutorial, please try again.");
                             Bukkit.getLogger().severe("Error! Check Tutorial.java for the reason why.");
                         }
                     }
