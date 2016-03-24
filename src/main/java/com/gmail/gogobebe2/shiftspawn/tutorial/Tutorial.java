@@ -73,7 +73,7 @@ public class Tutorial {
                     ItemStack itemStack = event.getItem().clone();
                     itemStack.setAmount(1);
 
-                    if (itemStack.equals(TUTORIAL_BUTTON)) {
+                    if (itemStack.getItemMeta().equals(TUTORIAL_BUTTON.getItemMeta())) {
                         final Player player = event.getPlayer();
                         final Tutorial tutorial = getTutorial(event.getPlayer());
                         if (tutorial != null) {
